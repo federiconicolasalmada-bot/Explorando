@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para vos </title>
+<title>Para vos</title>
 
 <style>
 body {
@@ -11,7 +11,7 @@ body {
     height: 100vh;
     background: linear-gradient(to top, #000000, #1a1a1a);
     color: white;
-    font-family: "Arial", sans-serif;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,6 @@ body {
     overflow: hidden;
 }
 
-/* Contenedor */
 .container {
     max-width: 90%;
 }
@@ -59,18 +58,34 @@ button {
     cursor: pointer;
     opacity: 0;
     animation: aparecer 1s forwards;
-    animation-delay: 5.5s;
+    animation-delay: 7.5s;
 }
 
-/* Link oculto */
-.link-box {
+/* QR oculto */
+.qr-container {
     display: none;
-    margin-top: 20px;
-    background: #111;
-    padding: 10px;
-    border-radius: 10px;
-    word-break: break-all;
-    font-size: 14px;
+    margin-top: 25px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+/* Animación QR */
+.qr-container.show {
+    display: block;
+    animation: aparecerQR 0.8s forwards;
+}
+
+@keyframes aparecerQR {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.qr-container img {
+    margin-top: 15px;
+    border-radius: 12px;
 }
 </style>
 </head>
@@ -79,31 +94,31 @@ button {
 
 <div class="container">
 
-    <h2 class="line">Esto es para vos </h2>
+    <h2 class="line">Esto es para vos ❤️</h2>
 
     <p class="line">Buscá un lugar tranquilo 🌙</p>
-    <p class="line">Para una mejor experiencia,usá 💻</p>
+    <p class="line">Para una mejor experiencia, usá un ordenador 💻</p>
     <p class="line">Tomate unos minutos para vos ✨</p>
     <p class="line">Cuando estés lista</p>
     <p class="line">seguí las instrucciones</p>
     <p class="line">Prometo que vale la pena…</p>
 
-    <button onclick="mostrarLink()">Continuar</button>
+    <button onclick="mostrarQR()">Continuar</button>
 
-    <div class="link-box" id="link">
-        https://federiconicolasalmada-bot.github.io/Explorando/
+    <!-- QR -->
+    <div class="qr-container" id="qr">
+        <p>Lo que sigue es para verlo bien 💻</p>
+        <p>Escaneá este código desde tu ordenador</p>
+
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://federiconicolasalmada-bot.github.io/Explorando/" alt="QR">
     </div>
 
 </div>
 
 <script>
-function mostrarLink() {
-    const link = document.getElementById("link");
-    link.style.display = "block";
-
-    navigator.clipboard.writeText(link.innerText);
-
-    alert("Link copiado ❤️");
+function mostrarQR() {
+    const qr = document.getElementById("qr");
+    qr.classList.add("show");
 }
 </script>
 
