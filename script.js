@@ -12,46 +12,51 @@ document.addEventListener("DOMContentLoaded", () => {
     let sonando = false;
 
     // 👉 CLICK: abre/cierra + música + explosión
-    sobre.addEventListener("click", () => {
+sobre.addEventListener("click", () => {
 
-        const abierto = sobre.classList.toggle("abierto");
+    const abierto = sobre.classList.toggle("abierto");
 
-        if (abierto) {
-            audio.currentTime = 0;
-            audio.play().catch(e => console.log("Error audio:", e));
+    if (abierto) {
+        audio.currentTime = 0;
+        audio.play();
 
-            // 💥 EXPLOSIÓN DE CORAZONES
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement("div");
-                heart.innerHTML = "❤️";
+        // 💥 explosión de corazones
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.style.position = "absolute";
+            heart.style.left = "50%";
+            heart.style.top = "40%";
+            heart.style.fontSize = "20px";
+            heart.style.pointerEvents = "none";
+            heart.style.zIndex = "999";
 
-                heart.style.position = "absolute";
-                heart.style.left = "50%";
-                heart.style.top = "40%";
-                heart.style.fontSize = "20px";
-                heart.style.pointerEvents = "none";
-                heart.style.zIndex = "999";
+            const x = (Math.random() - 0.5) * 400;
+            const y = (Math.random() - 0.5) * 400;
 
-                const x = (Math.random() - 0.5) * 400;
-                const y = (Math.random() - 0.5) * 400;
+            heart.style.transition = "transform 1s ease, opacity 1s ease";
+            document.body.appendChild(heart);
 
-                heart.style.transition = "transform 1s ease, opacity 1s ease";
-                document.body.appendChild(heart);
+            setTimeout(() => {
+                heart.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
+                heart.style.opacity = 0;
+            }, 10);
 
-                setTimeout(() => {
-                    heart.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
-                    heart.style.opacity = 0;
-                }, 10);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 1000);
-            }
-
-        } else {
-            audio.pause();
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
         }
-    });
+
+        // 💌 MENSAJE (acá va)
+        setTimeout(() => {
+            alert("Espero que esto te saque una sonrisa ❤️");
+        }, 1500);
+
+    } else {
+        audio.pause();
+    }
+
+});
 
     // ❤️ efecto corazón (opcional)
     sobre.addEventListener('mouseover', () => {
