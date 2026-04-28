@@ -73,34 +73,40 @@ button {
     animation: aparecer 0.8s forwards;
 }
 
-/* BLOQUE URL + TEXTO */
+/* BLOQUE URL + TEXTO EN COLUMNA */
 .url-wrapper {
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Pone los elementos uno debajo de otro */
     align-items: center;
-    gap: 10px;
+    gap: 15px; /* Espacio entre el texto y el link */
     margin-top: 15px;
-    flex-wrap: wrap;
 }
 
 .url-box {
     background: #111;
-    padding: 10px;
+    padding: 12px 20px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     color: #ff4d6d;
     border: 1px solid #333;
     word-break: break-all;
-
-    /* 🚫 no copiar */
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
+    width: fit-content;
+    max-width: 95%;
+    /* Permitimos copiar ahora que es para que ella lo use */
+    user-select: all;
+    -webkit-user-select: all;
 }
 
 .copy-text {
-    font-size: 12px;
+    font-size: 14px;
     color: #ccc;
+    font-style: italic;
+}
+
+.important-text {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -120,15 +126,14 @@ button {
 
     <button onclick="mostrarQR()">Continuar</button>
 
-    <!-- BLOQUE FINAL -->
     <div class="qr-container" id="qr">
-        <p>Ahora viene lo importante 💻</p>
+        <p class="important-text">Ahora viene lo importante 💻</p>
 
         <div class="url-wrapper">
+            <span class="copy-text">Copiá esto en tu computadora:</span>
             <div class="url-box">
                 https://federiconicolasalmada-bot.github.io/Explorando/previa.html
             </div>
-            <span class="copy-text">copiá ento tu computadora</span>
         </div>
     </div>
 
@@ -141,4 +146,4 @@ function mostrarQR() {
 </script>
 
 </body>
-</html
+</html>
