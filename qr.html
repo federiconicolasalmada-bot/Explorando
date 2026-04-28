@@ -7,37 +7,68 @@
 
 <style>
 body {
-    background: black;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to top, #000000, #1a1a1a);
     color: white;
-    font-family: Arial;
+    font-family: "Arial", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     text-align: center;
+    overflow: hidden;
 }
 
+/* Contenedor */
 .container {
     max-width: 90%;
 }
 
-.link-box {
-    background: #111;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 10px;
-    word-break: break-all;
-    font-size: 14px;
+/* Texto animado */
+.line {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: aparecer 1s forwards;
 }
 
+.line:nth-child(1) { animation-delay: 0.5s; }
+.line:nth-child(2) { animation-delay: 1.5s; }
+.line:nth-child(3) { animation-delay: 2.5s; }
+.line:nth-child(4) { animation-delay: 3.5s; }
+.line:nth-child(5) { animation-delay: 4.5s; }
+
+/* Animación */
+@keyframes aparecer {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Botón */
 button {
-    margin-top: 15px;
-    padding: 10px 15px;
+    margin-top: 30px;
+    padding: 12px 20px;
     font-size: 16px;
     background: #ff4d6d;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     color: white;
+    cursor: pointer;
+    opacity: 0;
+    animation: aparecer 1s forwards;
+    animation-delay: 5.5s;
+}
+
+/* Link oculto */
+.link-box {
+    display: none;
+    margin-top: 20px;
+    background: #111;
+    padding: 10px;
+    border-radius: 10px;
+    word-break: break-all;
+    font-size: 14px;
 }
 </style>
 </head>
@@ -45,21 +76,32 @@ button {
 <body>
 
 <div class="container">
-    <h2>Esto es para vos ❤️</h2>
 
-    <p>📱 Subí el volumen</p>
-    <p>🎧 Usá auriculares</p>
-    <p>🌙 Buscá un lugar tranquilo</p>
+    <h2 class="line">Esto es para vos ❤️</h2>
 
-    <p style="margin-top:20px;">
-        Ahora copiá este enlace y abrilo en tu navegador:
-    </p>
+    <p class="line">Buscá un lugar tranquilo 🌙</p>
+    <p class="line">Si podés, usá un ordenador 💻</p>
+    <p class="line">Tomate unos minutos para vos ✨</p>
+    <p class="line">Prometo que vale la pena…</p>
 
-    <div class="link-box">
+    <button onclick="mostrarLink()">Continuar</button>
+
+    <div class="link-box" id="link">
         https://federiconicolasalmada-bot.github.io/Explorando/
     </div>
 
 </div>
+
+<script>
+function mostrarLink() {
+    const link = document.getElementById("link");
+    link.style.display = "block";
+
+    navigator.clipboard.writeText(link.innerText);
+
+    alert("Link copiado ❤️");
+}
+</script>
 
 </body>
 </html>
