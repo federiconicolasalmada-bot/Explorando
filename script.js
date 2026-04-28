@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let timeoutId;
 
     // 🎵 AUDIO
-    const audio = new Audio("mi-cancion.MP3");
+    const audio = new Audio("mi-cancion.mp3");
     audio.volume = 0.1;
 
     let sonando = false;
