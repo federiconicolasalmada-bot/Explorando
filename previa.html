@@ -1,3 +1,8 @@
+Para que esta "antesala" se vea mucho más profesional y romántica, podemos usar un fondo con un degradado animado (que se mueva suavemente) y un efecto de desenfoque (glassmorphism) en el contenedor.
+
+Aquí tienes el código mejorado con un diseño mucho más atractivo y las instrucciones claras para cuando Karen esté en la computadora:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,37 +12,82 @@
 
 <style>
 body {
-    background: black;
+    margin: 0;
+    height: 100vh;
+    /* Degradado animado de fondo */
+    background: linear-gradient(-45deg, #000000, #1a1a1a, #4a0e1c, #000000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     color: white;
-    font-family: Arial;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    text-align: center;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
-    max-width: 90%;
+    max-width: 400px;
+    width: 85%;
+    padding: 40px;
+    /* Efecto de cristal difuminado */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    text-align: center;
 }
 
 h2 {
+    margin-bottom: 30px;
+    color: #ff4d6d;
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+.steps {
+    text-align: left;
+    display: inline-block;
     margin-bottom: 20px;
 }
 
 p {
-    margin: 10px 0;
+    margin: 15px 0;
+    font-size: 16px;
+    color: #e0e0e0;
+    line-height: 1.5;
 }
 
 button {
     margin-top: 25px;
-    padding: 12px 20px;
+    width: 100%;
+    padding: 15px;
     font-size: 18px;
+    font-weight: bold;
     background: #ff4d6d;
     border: none;
     border-radius: 12px;
     color: white;
     cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+}
+
+button:hover {
+    background: #ff758f;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 </style>
 </head>
@@ -45,19 +95,23 @@ button {
 <body>
 
 <div class="container">
-    <h2>Antes de continuar...</h2>
+    <h2>Antes de continuar... ❤️</h2>
 
-    <p>📱 Sube el volumen de tu celular</p>
-    <p>🎧 Ponte auriculares</p>
-    <p>🌙 Busca un lugar tranquilo</p>
-    <p>❤️ Esto es solo para vos</p>
+    <div class="steps">
+        <p>🔊 <b>Sube el volumen</b> de tu computadora.</p>
+        <p>🎧 <b>Ponte auriculares</b> para una mejor experiencia.</p>
+        <p>🌙 <b>Busca un lugar tranquilo</b> y sin prisas.</p>
+        <p>✨ <b>Pon la ventana en pantalla completa</b> (presiona F11).</p>
+        <p>🖱️ <b>Interactúa con el sobre</b> que aparecerá a continuación.</p>
+    </div>
 
-    <button onclick="entrar()">Estoy listo</button>
+    <button onclick="entrar()">Estoy lista</button>
 </div>
 
 <script>
 function entrar() {
-    window.location.href = "carta.html";
+    // Asegúrate de que el archivo final se llame index.html o cambia este nombre
+    window.location.href = "index.html";
 }
 </script>
 
