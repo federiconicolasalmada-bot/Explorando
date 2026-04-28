@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let timeoutId;
 
-    // 🎵 AUDIO
+    // 🎵 AUDIO (primero se crea)
     const audio = new Audio("mi-cancion.mp3");
     audio.volume = 0.1;
 
@@ -16,13 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const abierto = sobre.classList.toggle("abierto");
 
-        if (!sonando) {
-            audio.play();
-            sonando = true;
-        }
-
-        // 💥 SOLO explota cuando se abre
         if (abierto) {
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log("Error audio:", e));
+
+            // 💥 EXPLOSIÓN DE CORAZONES
             for (let i = 0; i < 20; i++) {
                 const heart = document.createElement("div");
                 heart.innerHTML = "❤️";
@@ -49,10 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     heart.remove();
                 }, 1000);
             }
+
+        } else {
+            audio.pause();
         }
     });
 
-    // ❤️ efecto corazón hover
+    // ❤️ efecto corazón (opcional)
     sobre.addEventListener('mouseover', () => {
         clearTimeout(timeoutId);
         heartSeal.style.opacity = 0;
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sobre.addEventListener('mouseout', () => {
         timeoutId = setTimeout(() => {
             heartSeal.style.opacity = 1;
-        }, 1500); 
+        }, 1500);
     });
 
     heartSeal.style.transition = 'opacity 0.3s ease';
