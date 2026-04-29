@@ -30,7 +30,7 @@ body {
     width: 180px;
     height: 285px;
     background-color: #fff;
-    border: 1px solid;
+    border: 1px solid #000;
     transform-style: preserve-3d;
     will-change: transform;
     transition: transform 250ms;
@@ -69,6 +69,32 @@ body {
     place-items: center;
 }
 
+/* ✨ MARCO DE ESQUINAS (NUEVO) ✨ */
+/* Estas son las esquinas superiores */
+.card-side::before {
+    content: "";
+    position: absolute;
+    inset: 10px; /* Separación del borde */
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    height: 30px; /* Qué tan largo baja el borde */
+    pointer-events: none;
+}
+
+/* Estas son las esquinas inferiores */
+.card-side::after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    height: 30px;
+    top: auto; /* Para que se pegue abajo */
+    pointer-events: none;
+}
+
 .card-side-secondary {
     transform: rotateY(180deg);
     box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.1);
@@ -80,10 +106,8 @@ body {
     font-size: 14px; 
     letter-spacing: 2px;
     text-transform: uppercase;
-    
-/* 👇 USAMOS ESTO PARA SUBIRLO SÍ O SÍ 👇 */
     position: relative;
-    top: -15px; /* Entre más negativo el número, más sube */
+    top: -15px;
 }
 
 .card-title-main {
@@ -93,8 +117,6 @@ body {
     line-height: 0.8;
     text-align: center;
     width: 100%;
-
-    /* 👇 TAMBIÉN SUBIMOS UN POCO EL NOMBRE 👇 */
     position: relative;
     top: -15px;
 }
@@ -105,7 +127,6 @@ body {
 }
 
 .dedicatoria {
-/* 👇 SUBIMOS LA FRASE DE ABAJO 👇 */
     position: relative;
     top: 5px;
 }
