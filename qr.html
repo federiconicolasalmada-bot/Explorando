@@ -149,16 +149,37 @@ button:hover {
     <p class="fade-up delay-3">Para una mejor experiencia, usá un ordenador 💻</p>
     <p class="fade-up delay-4">Tomate unos minutos para vos ✨</p>
     <p class="fade-up delay-5">Seguí las instrucciones 👇</p>
-    <p class="fade-up delay-6">Prometo que vale la pena… ❤️</p>
+    <p class="fade-up delay-6">Prometo que vale la pena… </p>
 
     <button class="fade-up delay-7" onclick="mostrar()">Continuar</button>
 
     <div class="link-container" id="linkBox">
         <p>Ahora viene lo importante 👇</p>
 
-        <div class="url-box">
-            federiconicolasalmada-bot.github.io/Explorando/previa.html
-        </div>
+       <script>
+function mostrar() {
+    document.getElementById("linkBox").classList.add("show");
+}
+
+function copiarLink() {
+    const texto = "https://federiconicolasalmada-bot.github.io/Explorando/previa.html";
+    const check = document.getElementById("check");
+
+    navigator.clipboard.writeText(texto).then(() => {
+
+        // mostrar tilde
+        check.classList.add("show");
+
+        // ocultar después
+        setTimeout(() => {
+            check.classList.remove("show");
+        }, 2000);
+
+    }).catch(err => {
+        console.error("Error al copiar:", err);
+    });
+}
+</script>
 
         <div class="copy-text">
             Escribilo en tu ordenador 💻
