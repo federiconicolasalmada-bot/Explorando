@@ -281,41 +281,89 @@ body {
     50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* ✨ CIELO ESTRELLADO (Ajustado) ✨ */
+/* =========================================
+   ✨ CIELO ESTRELLADO (CONFIGURACIÓN) ✨ 
+   ========================================= */
 .stars {
     position: fixed;
     width: 100%;
     height: 100%;
     z-index: 0;
+    overflow: hidden; /* Evita que las estrellas generen barras de desplazamiento */
 }
 
+/* TAMAÑO Y FORMA DE LAS ESTRELLAS:
+   Si querés que sean más grandes, cambiá el width y height a 3px o 4px.
+*/
 .stars::before, .stars::after {
     content: "";
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: 2px;  /* Aumentado a 2px para que se noten más */
+    height: 2px; /* Aumentado a 2px para que se noten más */
     background: white;
-    border-radius: 50%;
+    border-radius: 50%; /* Las hace redonditas */
 }
 
+/* UBICACIÓN DE LAS ESTRELLAS:
+   Se usa "vw" (ancho de la pantalla) y "vh" (alto de la pantalla).
+   - El primer número (ej: 10vw) mueve la estrella de izquierda a derecha.
+   - El segundo número (ej: 5vh) mueve la estrella de arriba hacia abajo.
+   
+   ⚠️ REGLA DE ORO PARA SUBIR/BAJAR ESTRELLAS:
+   Si el valor 'vh' es 0vh, está pegada al techo.
+   Si el valor 'vh' es 100vh, está pegada al piso.
+   Para mantenerlas arriba, asegurate de que todos los valores 'vh' sean menores a 60vh.
+*/
+
+/* Capa 1: Estrellas de fondo (Fijas) - Todas entre 5vh y 55vh (Bien arriba) */
 .stars::before {
     box-shadow: 
-        10vw 20vh white, 25vw 15vh white, 40vw 35vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 55vh white, 30vw 70vh white, 50vw 85vh white, 75vw 60vh white, 95vw 80vh white,
-        15vw 40vh white, 45vw 5vh white, 65vw 90vh white, 80vw 45vh white, 20vw 95vh white;
+        10vw 5vh white, 25vw 15vh white, 40vw 35vh white, 60vw 10vh white, 85vw 25vh white,
+        5vw 55vh white, 30vw 20vh white, 50vw 15vh white, 75vw 40vh white, 95vw 10vh white,
+        15vw 40vh white, 45vw 5vh white, 65vw 30vh white, 80vw 45vh white, 20vw 25vh white,
+        12vw 8vh white, 3vw 12vh white, 20vw 22vh white, 33vw 18vh white, 48vw 28vh white,
+        63vw 8vh white, 78vw 15vh white, 92vw 22vh white, 55vw 5vh white, 70vw 33vh white,
+        18vw 48vh white, 42vw 38vh white, 68vw 42vh white, 88vw 38vh white, 2vw 20vh white,
+        97vw 12vh white, 11vw 33vh white, 24vw 5vh white, 37vw 15vh white, 49vw 25vh white,
+        51vw 35vh white, 64vw 5vh white, 77vw 12vh white, 91vw 18vh white, 5vw 44vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
 
+/* Capa 2: Estrellas que titilan - Todas entre 5vh y 62vh (Bien arriba) */
 .stars::after {
     box-shadow: 
         12vw 12vh white, 22vw 35vh white, 32vw 18vh white, 42vw 45vh white, 52vw 25vh white,
-        62vw 38vh white, 72vw 15vh white, 82vw 42vh white, 92vw 28vh white, 8vw 65vh white,
-        18vw 85vh white, 28vw 55vh white, 38vw 75vh white, 48vw 62vh white, 58vw 88vh white,
-        68vw 52vh white, 78vw 78vh white, 88vw 68vh white, 3vw 30vh white, 97vw 50vh white,
-        15vw 5vh white, 35vw 95vh white, 55vw 5vh white, 75vw 95vh white, 90vw 10vh white;
-    animation: parpadeo 1.5s infinite alternate;
+        62vw 38vh white, 72vw 15vh white, 82vw 42vh white, 92vw 28vh white, 8vw 55vh white,
+        18vw 45vh white, 28vw 55vh white, 38vw 15vh white, 48vw 62vh white, 58vw 18vh white,
+        68vw 52vh white, 78vw 28vh white, 88vw 48vh white, 3vw 30vh white, 97vw 50vh white,
+        15vw 5vh white, 35vw 25vh white, 55vw 5vh white, 75vw 35vh white, 90vw 10vh white,
+        25vw 40vh white, 45vw 20vh white, 65vw 50vh white, 85vw 55vh white, 5vw 10vh white,
+        10vw 8vh white, 30vw 12vh white, 50vw 22vh white, 70vw 30vh white, 90vw 18vh white,
+        15vw 25vh white, 35vw 35vh white, 55vw 42vh white, 75vw 38vh white, 95vw 28vh white;
+    
+    /* Si querés que titilen más rápido, bajá el "2s" a "1s" */
+    animation: parpadeoNuevo 2s infinite alternate; 
 }
 
-@keyframes aparecerEstrellas { to { opacity: 0.6; } }
-@keyframes parpadeo { from { opacity: 0.1; } to { opacity: 0.9; } }
+/* BRILLO DE LAS ESTRELLAS:
+   Acá controlamos qué tan fuerte brillan.
+   1 significa 100% de brillo (blanco puro).
+   0.3 significa 30% de brillo (más apagado).
+*/
+@keyframes aparecerEstrellas { 
+    to { opacity: 0.9; } /* Brillan casi al máximo */
+}
+
+@keyframes parpadeoNuevo { 
+    from { opacity: 0.3; transform: scale(1); } /* Cuando se apagan, no desaparecen del todo */
+    to { opacity: 1; transform: scale(1.3); } /* Cuando brillan, crecen un poquito (scale 1.3) */
+}
+   
+
+   
+   
+
+
+
+
