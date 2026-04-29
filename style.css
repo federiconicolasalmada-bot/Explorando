@@ -80,9 +80,10 @@ body {
     font-size: 14px; 
     letter-spacing: 2px;
     text-transform: uppercase;
-    /* Subimos mucho el "PARA" para que no se pise con el nombre */
-    margin-top: -50px; 
-    margin-bottom: 25px; 
+    
+/* 👇 USAMOS ESTO PARA SUBIRLO SÍ O SÍ 👇 */
+    position: relative;
+    top: -60px; /* Entre más negativo el número, más sube */
 }
 
 .card-title-main {
@@ -92,6 +93,10 @@ body {
     line-height: 0.8;
     text-align: center;
     width: 100%;
+
+    /* 👇 TAMBIÉN SUBIMOS UN POCO EL NOMBRE 👇 */
+    position: relative;
+    top: -20px;
 }
 
 .corazon-chiquito {
@@ -100,7 +105,9 @@ body {
 }
 
 .dedicatoria {
-    margin-top: 25px; /* Espacio equilibrado para "CON MUCHO CARIÑO" */
+/* 👇 SUBIMOS LA FRASE DE ABAJO 👇 */
+    position: relative;
+    top: -10px;
 }
 
 /* CONTENIDO INTERIOR */
