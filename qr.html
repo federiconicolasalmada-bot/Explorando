@@ -26,7 +26,7 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Contenedor */
+/* CONTENEDOR */
 .container {
     max-width: 400px;
     width: 85%;
@@ -37,23 +37,41 @@ body {
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 8px 32px rgba(0,0,0,0.8);
     text-align: center;
-    animation: aparecer 1s ease;
 }
 
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
+/* ✨ ANIMACIÓN TEXTO */
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards;
+}
+
+@keyframes fadeUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
+/* delays */
+.delay-1 { animation-delay: 0.5s; }
+.delay-2 { animation-delay: 1.2s; }
+.delay-3 { animation-delay: 1.9s; }
+.delay-4 { animation-delay: 2.6s; }
+.delay-5 { animation-delay: 3.3s; }
+.delay-6 { animation-delay: 4s; }
+.delay-7 { animation-delay: 4.8s; }
+
+/* ✨ TÍTULO */
 h2 {
     color: #ff4d6d;
     margin-bottom: 20px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px #ff4d6d; }
+    to { text-shadow: 0 0 20px #ff4d6d; }
 }
 
 p {
@@ -61,9 +79,9 @@ p {
     color: #ddd;
 }
 
-/* Botón */
+/* BOTÓN */
 button {
-    margin-top: 20px;
+    margin-top: 25px;
     padding: 14px;
     width: 100%;
     font-size: 18px;
@@ -74,13 +92,14 @@ button {
     color: white;
     cursor: pointer;
     transition: 0.3s;
+    opacity: 0;
 }
 
 button:hover {
     background: #ff758f;
 }
 
-/* BLOQUE OCULTO */
+/* LINK FINAL */
 .link-container {
     margin-top: 25px;
     display: none;
@@ -90,7 +109,7 @@ button:hover {
 
 .link-container.show {
     display: block;
-    animation: aparecer 1s forwards;
+    animation: fadeUp 0.8s forwards;
 }
 
 /* LINK */
@@ -103,9 +122,15 @@ button:hover {
     font-size: 13px;
     border: 1px solid #333;
     user-select: none;
+
+    animation: glowLink 2s infinite alternate;
 }
 
-/* TEXTO */
+@keyframes glowLink {
+    from { box-shadow: 0 0 5px rgba(255,77,109,0.3); }
+    to { box-shadow: 0 0 15px rgba(255,77,109,0.8); }
+}
+
 .copy-text {
     margin-top: 10px;
     font-size: 14px;
@@ -118,15 +143,15 @@ button:hover {
 
 <div class="container">
 
-    <h2 class="line">Esto es para vos ❤️</h2>
+    <h2 class="fade-up delay-1">Esto es para vos ❤️</h2>
 
-    <p class="line">Buscá un lugar tranquilo 🌙</p>
-    <p class="line">Para una mejor experiencia, usá un ordenador 💻</p>
-    <p class="line">Tomate unos minutos para vos ✨</p>
-    <p class="line">Cuando estés lista, seguí las instrucciones 👇</p>
-    <p class="line">Prometo que vale la pena… ❤️</p>
-    
-    <button class="line" onclick="mostrar()">Continuar</button>
+    <p class="fade-up delay-2">Buscá un lugar tranquilo 🌙</p>
+    <p class="fade-up delay-3">Para una mejor experiencia, usá un ordenador 💻</p>
+    <p class="fade-up delay-4">Tomate unos minutos para vos ✨</p>
+    <p class="fade-up delay-5">Seguí las instrucciones 👇</p>
+    <p class="fade-up delay-6">Prometo que vale la pena… ❤️</p>
+
+    <button class="fade-up delay-7" onclick="mostrar()">Continuar</button>
 
     <div class="link-container" id="linkBox">
         <p>Ahora viene lo importante 👇</p>
