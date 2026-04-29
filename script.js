@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const sobre = document.getElementById("sobre");
-    const carta = document.querySelector(".card"); // 🔥 NUEVO: Seleccionamos la carta
+    const carta = document.querySelector(".card"); 
     const heartSeal = document.querySelector('.heart-seal');
 
     let timeoutId;
@@ -12,8 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let sonando = false;
 
-    // 👉 PRIMER CLICK (EN EL SOBRE): abre/cierra + música + explosión
-    sobre.addEventListener("click", () => {
+    // 👉 PRIMER CLICK (EN EL SOBRE)
+    sobre.addEventListener("click", (evento) => {
+
+        // 🔥 ESTE ES EL SEGURO VITAL: Si el clic fue en la carta, el sobre lo ignora y no se cierra
+        if (evento.target.closest('.card')) return;
 
         const abierto = sobre.classList.toggle("abierto");
 
@@ -50,18 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
             audio.pause();
-            // Si el sobre se cierra, también cerramos la carta para que se guarde doblada
+            // Si el sobre se cierra (haciendo clic fuera de la carta), guardamos la carta
             carta.classList.remove("desplegada");
         }
 
     });
 
     // 👉 SEGUNDO CLICK (EN LA CARTA): despliega la portada para leer
-    carta.addEventListener("click", (evento) => {
-        // VITAL: Evita que el clic traspase la carta y cierre el sobre sin querer
-        evento.stopPropagation(); 
-        
-        // Solo permite abrir la carta si el sobre ya salió
+    carta.addEventListener("click", () => {
+        // Solo permite abrir/cerrar la portada de la carta si el sobre ya salió
         if (sobre.classList.contains("abierto")) {
             carta.classList.toggle("desplegada");
         }
@@ -70,15 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ❤️ efecto corazón (opcional)
     sobre.addEventListener('mouseover', () => {
         clearTimeout(timeoutId);
-        heartSeal.style.opacity = 0;
+        if (heartSeal) heartSeal.style.opacity = 0;
     });
 
     sobre.addEventListener('mouseout', () => {
         timeoutId = setTimeout(() => {
-            heartSeal.style.opacity = 1;
+            if (heartSeal) heartSeal.style.opacity = 1;
         }, 1500);
     });
 
-    heartSeal.style.transition = 'opacity 0.3s ease';
+    if (heartSeal) heartSeal.style.transition = 'opacity 0.3s ease';
 
 });
