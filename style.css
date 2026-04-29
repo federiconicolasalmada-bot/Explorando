@@ -69,20 +69,18 @@ body {
     place-items: center;
 }
 
-/* ✨ MARCO DE ESQUINAS (NUEVO) ✨ */
-/* Estas son las esquinas superiores */
+/* ✨ MARCO DE ESQUINAS MINIMALISTA ✨ */
 .card-side::before {
     content: "";
     position: absolute;
-    inset: 10px; /* Separación del borde */
+    inset: 10px; 
     border-top: 1px solid #ddd;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    height: 30px; /* Qué tan largo baja el borde */
+    height: 30px; 
     pointer-events: none;
 }
 
-/* Estas son las esquinas inferiores */
 .card-side::after {
     content: "";
     position: absolute;
@@ -91,7 +89,7 @@ body {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     height: 30px;
-    top: auto; /* Para que se pegue abajo */
+    top: auto; 
     pointer-events: none;
 }
 
@@ -107,7 +105,7 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     position: relative;
-    top: -15px;
+    top: -35px; /* Subida equilibrada */
 }
 
 .card-title-main {
@@ -128,7 +126,7 @@ body {
 
 .dedicatoria {
     position: relative;
-    top: 5px;
+    top: 15px; /* Espacio para que respire abajo */
 }
 
 /* CONTENIDO INTERIOR */
@@ -283,7 +281,7 @@ body {
     50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* ESTRELLAS */
+/* ✨ CIELO ESTRELLADO (Ajustado) ✨ */
 .stars {
     position: fixed;
     width: 100%;
@@ -294,21 +292,30 @@ body {
 .stars::before, .stars::after {
     content: "";
     position: absolute;
-    width: 2px;
-    height: 2px;
+    width: 1px;
+    height: 1px;
     background: white;
+    border-radius: 50%;
 }
 
 .stars::before {
-    box-shadow: 50px 100px white, 200px 200px white, 400px 150px white, 600px 250px white, 800px 100px white, 1000px 200px white;
+    box-shadow: 
+        10vw 20vh white, 25vw 15vh white, 40vw 35vh white, 60vw 10vh white, 85vw 25vh white,
+        5vw 55vh white, 30vw 70vh white, 50vw 85vh white, 75vw 60vh white, 95vw 80vh white,
+        15vw 40vh white, 45vw 5vh white, 65vw 90vh white, 80vw 45vh white, 20vw 95vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
 
 .stars::after {
-    box-shadow: 100px 150px white, 300px 50px white, 700px 150px white, 900px 150px white, 150px 150px white, 1200px 200px white, 1500px 100px white;
-    animation: parpadeo 2s infinite alternate;
+    box-shadow: 
+        12vw 12vh white, 22vw 35vh white, 32vw 18vh white, 42vw 45vh white, 52vw 25vh white,
+        62vw 38vh white, 72vw 15vh white, 82vw 42vh white, 92vw 28vh white, 8vw 65vh white,
+        18vw 85vh white, 28vw 55vh white, 38vw 75vh white, 48vw 62vh white, 58vw 88vh white,
+        68vw 52vh white, 78vw 78vh white, 88vw 68vh white, 3vw 30vh white, 97vw 50vh white,
+        15vw 5vh white, 35vw 95vh white, 55vw 5vh white, 75vw 95vh white, 90vw 10vh white;
+    animation: parpadeo 1.5s infinite alternate;
 }
 
-@keyframes aparecerEstrellas { to { opacity: 1; } }
-@keyframes parpadeo { from { opacity: 0.2; } to { opacity: 1; } }
+@keyframes aparecerEstrellas { to { opacity: 0.6; } }
+@keyframes parpadeo { from { opacity: 0.1; } to { opacity: 0.9; } }
