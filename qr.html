@@ -122,7 +122,7 @@ button:hover {
     font-size: 13px;
     border: 1px solid #333;
     user-select: none;
-
+    cursor: pointer; /* Agregado para que se note que se puede tocar */
     animation: glowLink 2s infinite alternate;
 }
 
@@ -135,6 +135,7 @@ button:hover {
     margin-top: 10px;
     font-size: 14px;
     color: #aaa;
+    transition: color 0.3s;
 }
 </style>
 </head>
@@ -146,7 +147,7 @@ button:hover {
     <h2 class="fade-up delay-1">Esto es para vos ❤️</h2>
 
     <p class="fade-up delay-2">Buscá un lugar tranquilo 🌙</p>
-    <p class="fade-up delay-3">Para una mejor experiencia, usá un ordenador 💻</p>
+    <p class="fade-up delay-3">Para una mejor experiencia, usá tu compu 💻</p>
     <p class="fade-up delay-4">Tomate unos minutos para vos ✨</p>
     <p class="fade-up delay-5">Seguí las instrucciones 👇</p>
     <p class="fade-up delay-6">Prometo que vale la pena… </p>
@@ -156,33 +157,12 @@ button:hover {
     <div class="link-container" id="linkBox">
         <p>Ahora viene lo importante 👇</p>
 
-       <script>
-function mostrar() {
-    document.getElementById("linkBox").classList.add("show");
-}
+        <div class="url-box" onclick="copiarLink()">
+            https://federiconicolasalmada-bot.github.io/Explorando/previa.html
+        </div>
 
-function copiarLink() {
-    const texto = "https://federiconicolasalmada-bot.github.io/Explorando/previa.html";
-    const check = document.getElementById("check");
-
-    navigator.clipboard.writeText(texto).then(() => {
-
-        // mostrar tilde
-        check.classList.add("show");
-
-        // ocultar después
-        setTimeout(() => {
-            check.classList.remove("show");
-        }, 2000);
-
-    }).catch(err => {
-        console.error("Error al copiar:", err);
-    });
-}
-</script>
-
-        <div class="copy-text">
-            Escribilo en tu ordenador 💻
+        <div class="copy-text" id="mensaje-copia">
+            Tocá el link para copiarlo o escribilo en tu compu 💻
         </div>
     </div>
 
@@ -191,6 +171,25 @@ function copiarLink() {
 <script>
 function mostrar() {
     document.getElementById("linkBox").classList.add("show");
+}
+
+function copiarLink() {
+    const texto = "https://federiconicolasalmada-bot.github.io/Explorando/previa.html";
+    const mensaje = document.getElementById("mensaje-copia");
+
+    navigator.clipboard.writeText(texto).then(() => {
+        // Mostrar mensaje de éxito
+        mensaje.innerHTML = "¡Copiado! ✅ Envialo a tu compu";
+        mensaje.style.color = "#ff4d6d";
+
+        // Ocultar después de 3 segundos
+        setTimeout(() => {
+            mensaje.innerHTML = "Tocá el link para copiarlo o escribilo en tu compu 💻";
+            mensaje.style.color = "#aaa";
+        }, 3000);
+    }).catch(err => {
+        console.error("Error al copiar:", err);
+    });
 }
 </script>
 
