@@ -21,7 +21,12 @@ body {
 
 .container {
     max-width: 90%;
+    padding: 10px;
 }
+
+/* Textos ajustados para celular */
+h2.line { font-size: 24px; margin-bottom: 20px; }
+p.line { font-size: 16px; margin: 8px 0; }
 
 /* Texto animado */
 .line {
@@ -45,11 +50,14 @@ body {
     }
 }
 
-/* Botón */
+/* Botón más grande para tocar fácil en celular */
 button {
     margin-top: 30px;
-    padding: 12px 20px;
-    font-size: 16px;
+    padding: 15px 30px;
+    width: 80%;
+    max-width: 250px;
+    font-size: 18px;
+    font-weight: bold;
     background: #ff4d6d;
     border: none;
     border-radius: 12px;
@@ -58,6 +66,11 @@ button {
     opacity: 0;
     animation: aparecer 1s forwards;
     animation-delay: 7.5s;
+    transition: transform 0.1s;
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 /* CONTENEDOR FINAL */
@@ -76,15 +89,15 @@ button {
 /* BLOQUE URL + TEXTO EN COLUMNA */
 .url-wrapper {
     display: flex;
-    flex-direction: column; /* Pone los elementos uno debajo de otro */
+    flex-direction: column;
     align-items: center;
-    gap: 15px; /* Espacio entre el texto y el link */
+    gap: 15px;
     margin-top: 15px;
 }
 
 .url-box {
     background: #111;
-    padding: 12px 20px;
+    padding: 15px 20px;
     border-radius: 8px;
     font-size: 14px;
     color: #ff4d6d;
@@ -92,15 +105,24 @@ button {
     word-break: break-all;
     width: fit-content;
     max-width: 95%;
-    /* Permitimos copiar ahora que es para que ella lo use */
-    user-select: all;
-    -webkit-user-select: all;
+    cursor: pointer;
+    /* Quitamos la selección nativa porque ahora se copia solo con un toque */
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background 0.2s;
+}
+
+/* Efecto al tocar la caja del link */
+.url-box:active {
+    background: #2a0a11;
+    border-color: #ff4d6d;
 }
 
 .copy-text {
     font-size: 14px;
     color: #ccc;
     font-style: italic;
+    transition: color 0.3s;
 }
 
 .important-text {
@@ -130,8 +152,8 @@ button {
         <p class="important-text">Ahora viene lo importante 💻</p>
 
         <div class="url-wrapper">
-            <span class="copy-text">Copiá esto en tu computadora:</span>
-            <div class="url-box">
+            <span class="copy-text" id="mensaje-copia">Tocá el link para copiarlo:</span>
+            <div class="url-box" onclick="copiarAlPortapapeles()">
                 https://federiconicolasalmada-bot.github.io/Explorando/previa.html
             </div>
         </div>
@@ -142,6 +164,29 @@ button {
 <script>
 function mostrarQR() {
     document.getElementById("qr").classList.add("show");
+}
+
+function copiarAlPortapapeles() {
+    // El texto que se va a copiar al celular
+    const texto = "https://federiconicolasalmada-bot.github.io/Explorando/previa.html";
+    
+    // Función de JavaScript para copiar al portapapeles
+    navigator.clipboard.writeText(texto).then(() => {
+        // Cambiamos el texto temporalmente para avisarle que ya se copió
+        const mensaje = document.getElementById('mensaje-copia');
+        mensaje.innerHTML = "¡Copiado! ✅ Ahora envíatelo a la compu";
+        mensaje.style.color = "#ff4d6d";
+        mensaje.style.fontWeight = "bold";
+        
+        // Vuelve a la normalidad después de 4 segundos
+        setTimeout(() => {
+            mensaje.innerHTML = "Tocá el link para copiarlo:";
+            mensaje.style.color = "#ccc";
+            mensaje.style.fontWeight = "normal";
+        }, 4000);
+    }).catch(err => {
+        console.error('Error al copiar: ', err);
+    });
 }
 </script>
 
