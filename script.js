@@ -1,23 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const sobre = document.getElementById("sobre");
-    const carta = document.querySelector(".card"); 
+    const cartaWrapper = document.querySelector(".card-wrapper"); // Envuelve la carta
+    const carta = document.querySelector(".card"); // La carta física
     const heartSeal = document.querySelector('.heart-seal');
 
     let timeoutId;
 
-    // 🎵 AUDIO (primero se crea)
+    // 🎵 AUDIO
     const audio = new Audio("mi-cancion.mp3");
     audio.volume = 0.1;
 
-    let sonando = false;
-
-    // 👉 PRIMER CLICK (EN EL SOBRE)
-    sobre.addEventListener("click", (evento) => {
-
-        // 🔥 ESTE ES EL SEGURO VITAL: Si el clic fue en la carta, el sobre lo ignora y no se cierra
-        if (evento.target.closest('.card')) return;
-
+    // 👉 PRIMER CLICK (EN EL SOBRE): Abre el sobre y saca la carta
+    sobre.addEventListener("click", () => {
         const abierto = sobre.classList.toggle("abierto");
 
         if (abierto) {
@@ -53,17 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
             audio.pause();
-            // Si el sobre se cierra (haciendo clic fuera de la carta), guardamos la carta
+            // Si cerramos el sobre, guardamos la tapa de la carta también
             carta.classList.remove("desplegada");
         }
-
     });
 
-    // 👉 SEGUNDO CLICK (EN LA CARTA): despliega la portada para leer
-    carta.addEventListener("click", () => {
-        // Solo permite abrir/cerrar la portada de la carta si el sobre ya salió
+    // 👉 SEGUNDO CLICK (EN LA CARTA): Despliega la portada
+    cartaWrapper.addEventListener("click", (evento) => {
+        // 🔥 LA MAGIA: Solo activamos el escudo si el sobre ya salió
         if (sobre.classList.contains("abierto")) {
-            carta.classList.toggle("desplegada");
+            // Esto frena el clic en seco para que NO llegue al sobre
+            evento.stopPropagation(); 
+            
+            // Abre o cierra la tapa de la carta
+            carta.classList.toggle("desplegada"); 
         }
     });
 
