@@ -85,7 +85,7 @@ body {
 
 .card-title-main {
     display: block; 
-    font-family: "Petemoss", serif;
+    font-family: "Annie Use Your Telescope", cursive;
     /* 👇 Bajamos de 64px a 50px para que el nombre y el corazón sean más chicos 👇 */
     font-size: 55px; 
     line-height: 0.8;
