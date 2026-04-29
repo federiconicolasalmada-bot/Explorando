@@ -83,7 +83,7 @@ body {
     
 /* 👇 USAMOS ESTO PARA SUBIRLO SÍ O SÍ 👇 */
     position: relative;
-    top: -60px; /* Entre más negativo el número, más sube */
+    top: -35px; /* Entre más negativo el número, más sube */
 }
 
 .card-title-main {
@@ -96,7 +96,7 @@ body {
 
     /* 👇 TAMBIÉN SUBIMOS UN POCO EL NOMBRE 👇 */
     position: relative;
-    top: -20px;
+    top: -15px;
 }
 
 .corazon-chiquito {
@@ -107,7 +107,7 @@ body {
 .dedicatoria {
 /* 👇 SUBIMOS LA FRASE DE ABAJO 👇 */
     position: relative;
-    top: -10px;
+    top: 5px;
 }
 
 /* CONTENIDO INTERIOR */
