@@ -76,27 +76,31 @@ body {
 /* TITULO */
 .card-title-secondary {
     display: block; 
-    font-size: 14px; /* Bajamos un poquito el tamaño para que no compita con el nombre */
+    font-size: 14px; 
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-top: 8px; /* Espacio arriba */
-    margin-bottom: 8px; /* Espacio abajo */
+    /* Ajuste de separación superior e inferior */
+    margin-top: 15px; 
+    margin-bottom: 15px; 
 }
 
 .card-title-main {
     display: block; 
     font-family: "Petemoss", serif;
-    /* 👇 Bajamos de 64px a 50px para que el nombre y el corazón sean más chicos 👇 */
     font-size: 55px; 
     line-height: 0.8;
-    /* 👇 Esto empuja todo el bloque hacia arriba 👇 */
-    margin-top: -30px; 
+    
+    /* 👇 Esto empuja TODO EL BLOQUE hacia arriba 👇 */
+    margin-top: -35px; 
+    
+    /* 👇 Esto asegura que TODO esté centrado 👇 */
     text-align: center;
+    width: 100%;
 }
 /* Esto achica solo el corazón de la portada */
 .corazon-chiquito {
-    font-size: 30px; /* Cambia este número para hacerlo más grande o más chico */
-    font-family: "Roboto", sans-serif; /* Esto evita que el corazón tome la fuente cursiva que a veces deforma los emojis */
+    font-size: 30px; 
+    font-family: "Roboto", sans-serif; 
 }
 
 .card-title-apostrophe {
@@ -104,6 +108,11 @@ body {
     top: 34px;
     right: 8px;
     font-size: 8px;
+}
+
+/* Esto empuja solo la frase de abajo */
+.dedicatoria {
+    margin-top: 15px; /* Misma separación que el "Para" de arriba */
 }
 
 /* CONTENIDO */
