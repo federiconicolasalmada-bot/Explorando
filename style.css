@@ -83,7 +83,7 @@ body {
     
 /* 👇 USAMOS ESTO PARA SUBIRLO SÍ O SÍ 👇 */
     position: relative;
-    top: -35px; /* Entre más negativo el número, más sube */
+    top: -25px; /* Entre más negativo el número, más sube */
 }
 
 .card-title-main {
