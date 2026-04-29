@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const sobre = document.getElementById("sobre");
+    const carta = document.querySelector(".card"); // 🔥 NUEVO: Seleccionamos la carta
     const heartSeal = document.querySelector('.heart-seal');
 
     let timeoutId;
@@ -11,47 +12,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let sonando = false;
 
-    // 👉 CLICK: abre/cierra + música + explosión
-sobre.addEventListener("click", () => {
+    // 👉 PRIMER CLICK (EN EL SOBRE): abre/cierra + música + explosión
+    sobre.addEventListener("click", () => {
 
-    const abierto = sobre.classList.toggle("abierto");
+        const abierto = sobre.classList.toggle("abierto");
 
-    if (abierto) {
-        audio.currentTime = 0;
-        audio.play();
+        if (abierto) {
+            audio.currentTime = 0;
+            audio.play();
 
-        // 💥 explosión de corazones
-        for (let i = 0; i < 20; i++) {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.style.position = "absolute";
-            heart.style.left = "50%";
-            heart.style.top = "40%";
-            heart.style.fontSize = "20px";
-            heart.style.pointerEvents = "none";
-            heart.style.zIndex = "999";
+            // 💥 explosión de corazones
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.style.position = "absolute";
+                heart.style.left = "50%";
+                heart.style.top = "40%";
+                heart.style.fontSize = "20px";
+                heart.style.pointerEvents = "none";
+                heart.style.zIndex = "999";
 
-            const x = (Math.random() - 0.5) * 400;
-            const y = (Math.random() - 0.5) * 400;
+                const x = (Math.random() - 0.5) * 400;
+                const y = (Math.random() - 0.5) * 400;
 
-            heart.style.transition = "transform 1s ease, opacity 1s ease";
-            document.body.appendChild(heart);
+                heart.style.transition = "transform 1s ease, opacity 1s ease";
+                document.body.appendChild(heart);
 
-            setTimeout(() => {
-                heart.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
-                heart.style.opacity = 0;
-            }, 10);
+                setTimeout(() => {
+                    heart.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
+                    heart.style.opacity = 0;
+                }, 10);
 
-            setTimeout(() => {
-                heart.remove();
-            }, 1000);
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+
+        } else {
+            audio.pause();
+            // Si el sobre se cierra, también cerramos la carta para que se guarde doblada
+            carta.classList.remove("desplegada");
         }
 
-    } else {
-        audio.pause();
-    }
+    });
 
-});
+    // 👉 SEGUNDO CLICK (EN LA CARTA): despliega la portada para leer
+    carta.addEventListener("click", (evento) => {
+        // VITAL: Evita que el clic traspase la carta y cierre el sobre sin querer
+        evento.stopPropagation(); 
+        
+        // Solo permite abrir la carta si el sobre ya salió
+        if (sobre.classList.contains("abierto")) {
+            carta.classList.toggle("desplegada");
+        }
+    });
 
     // ❤️ efecto corazón (opcional)
     sobre.addEventListener('mouseover', () => {
