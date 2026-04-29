@@ -82,24 +82,49 @@ button:hover {
 button:active {
     transform: translateY(0);
 }
+
+/* ✨ ANIMACIÓN EN CASCADA */
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tiempos de aparición (cada línea tarda un poquito más) */
+.delay-1 { animation-delay: 0.4s; }
+.delay-2 { animation-delay: 1.2s; }
+.delay-3 { animation-delay: 2.0s; }
+.delay-4 { animation-delay: 2.8s; }
+.delay-5 { animation-delay: 3.6s; }
+.delay-6 { animation-delay: 4.4s; }
+.delay-7 { animation-delay: 5.2s; }
+.delay-8 { animation-delay: 6.0s; } /* El botón aparece al final */
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>Antes de continuar... ❤️</h2>
+    <h2 class="fade-up delay-1">Antes de continuar... ❤️</h2>
 
     <div class="steps">
-        <p>🎧 <b>Ponte auriculares</b> para una mejor experiencia.</p>
-        <p>🔊 <b>Sube el volumen</b> de tu computadora.</p>
-        <p>🌙 <b>Busca un lugar tranquilo</b>
-        <p>✨ <b>Pon la ventana en pantalla completa</b> (F11).</p>
-        <p>   <b>Espero que esto almenos te quite un sonrisa</b>
-        <p>🖱️ <b>Interactúa con el sobre</b> que aparecerá a continuación.</p>
+        <p class="fade-up delay-2">🎧 <b>Ponte auriculares</b> para una mejor experiencia.</p>
+        <p class="fade-up delay-3">🔊 <b>Sube el volumen</b> de tu computadora.</p>
+        <p class="fade-up delay-4">🌙 <b>Busca un lugar tranquilo.</b></p>
+        <p class="fade-up delay-5">✨ <b>Pon la ventana en pantalla completa</b> (F11).</p>
+        <p class="fade-up delay-6">🤍 <b>Espero que esto al menos te saque una sonrisa.</b></p>
+        <p class="fade-up delay-7">🖱️ <b>Interactúa con el sobre</b> que aparecerá a continuación.</p>
     </div>
 
-    <button onclick="entrar()">Estoy lista</button>
+    <button class="fade-up delay-8" onclick="entrar()">Estoy lista</button>
 </div>
 
 <script>
