@@ -47,11 +47,6 @@ sobre.addEventListener("click", () => {
             }, 1000);
         }
 
-        // 💌 MENSAJE (acá va)
-        setTimeout(() => {
-            alert("Espero que esto te saque una sonrisa ❤️");
-        }, 1500);
-
     } else {
         audio.pause();
     }
