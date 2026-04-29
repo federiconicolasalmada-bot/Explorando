@@ -6,7 +6,7 @@
     padding: 0;
 }
 
-/* 🌅 Fondo real */
+/* 🌅 Fondo con imagen y degradado */
 body {
     font-family: "Roboto", serif;
     height: 100vh;
@@ -19,12 +19,13 @@ body {
     background-position: center;
 }
 
-/* CARD */
+/* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
 }
 
+/* LA CARTA FÍSICA */
 .card {
     width: 180px;
     height: 285px;
@@ -34,16 +35,21 @@ body {
     will-change: transform;
     transition: transform 250ms;
     box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.1);
-    cursor: pointer; /* 🔥 Indica que la carta es clickable */
+    cursor: pointer;
 }
 
-/* 🔥 SEGUNDO CLICK: DESPLEGAR LA CARTA */
+/* 🔥 ESTADO: CARTA DESPLEGADA (Segundo clic) */
 .card.desplegada {
     transform: rotateY(-15deg);
-    transition-delay: 0ms; /* Se activa al instante del clic */
+    transition-delay: 0ms;
 }
 
-/* COVER */
+.card.desplegada .card-cover {
+    transform: rotateY(-135deg);
+    transition-delay: 0ms;
+}
+
+/* PORTADA DE LA CARTA */
 .card-cover {
     position: absolute;
     inset: 0;
@@ -52,12 +58,6 @@ body {
     transform-style: preserve-3d;
     transform-origin: left;
     transition: transform 500ms 0ms;
-}
-
-/* 🔥 SEGUNDO CLICK: ABRIR LA PORTADA */
-.card.desplegada .card-cover {
-    transform: rotateY(-135deg);
-    transition-delay: 0ms; /* Se abre al instante del clic */
 }
 
 .card-side {
@@ -74,15 +74,15 @@ body {
     box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* TITULO */
+/* ✨ TITULOS DE LA PORTADA ✨ */
 .card-title-secondary {
     display: block; 
     font-size: 14px; 
     letter-spacing: 2px;
     text-transform: uppercase;
-    /* 👇 Ajuste para subir la palabra "PARA" 👇 */
-    margin-top: -15px; 
-    margin-bottom: 5px; 
+    /* Subimos mucho el "PARA" para que no se pise con el nombre */
+    margin-top: -50px; 
+    margin-bottom: 25px; 
 }
 
 .card-title-main {
@@ -90,34 +90,20 @@ body {
     font-family: "Petemoss", serif;
     font-size: 55px; 
     line-height: 0.8;
-    
-    /* 👇 Esto empuja TODO EL BLOQUE hacia arriba 👇 */
-    margin-top: -35px; 
-    
-    /* 👇 Esto asegura que TODO esté centrado 👇 */
     text-align: center;
     width: 100%;
 }
 
-/* Esto achica solo el corazón de la portada */
 .corazon-chiquito {
     font-size: 30px; 
     font-family: "Roboto", sans-serif; 
 }
 
-.card-title-apostrophe {
-    position: absolute;
-    top: 34px;
-    right: 8px;
-    font-size: 8px;
-}
-
-/* Esto empuja solo la frase de abajo */
 .dedicatoria {
-    margin-top: 15px; /* Misma separación que el "Para" de arriba original */
+    margin-top: 25px; /* Espacio equilibrado para "CON MUCHO CARIÑO" */
 }
 
-/* CONTENIDO */
+/* CONTENIDO INTERIOR */
 .card-body {
     font-family: "Shantell Sans", serif;
     padding: 14px;
@@ -125,16 +111,11 @@ body {
 
 .card-body p {
     font-size: 10px;
+    color: #333;
 }
 
 .card-body p + p {
     margin-top: 5px;
-}
-
-/* Ajuste para que el texto del lado izquierdo empiece desde arriba */
-.card-body.lado-izquierdo {
-    align-self: start;
-    width: 100%;
 }
 
 /* SOBRE */
@@ -162,7 +143,7 @@ body {
     border-left: 150px solid white;
 }
 
-/* 🔥 ANIMACION CON CLICK (El sobre se abre y escupe la carta, pero NO despliega la portada) */
+/* ANIMACIONES DEL SOBRE */
 .envelope.abierto .card-wrapper {
     animation: show-card 1000ms 600ms forwards;
 }
@@ -171,15 +152,12 @@ body {
     animation: hide-card 1000ms forwards;
 }
 
-/* KEYFRAMES Modificados para mover la carta a la derecha al final */
 @keyframes show-card {
     50% {
-        /* En el medio de la animación, sube centrada */
         transform: translateY(-75%) rotate(-90deg) translateX(0);
         z-index: -1;
     }
     100% {
-        /* Al final, baja PERO se mueve 100px a la derecha y se endereza */
         transform: translateY(0) rotate(0deg) translateX(100px); 
         z-index: 10;
     }
@@ -199,7 +177,7 @@ body {
     }
 }
 
-/* TAPA */
+/* TAPA DEL SOBRE */
 .envelope-lid {
     position: absolute;
     inset: 0;
@@ -235,7 +213,6 @@ body {
     transform-origin: top;
 }
 
-/* 🔥 CAMBIO TAPA */
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
     transition-delay: 100ms;
@@ -246,7 +223,6 @@ body {
     animation: close-lid-stacking 1250ms forwards;
 }
 
-/* KEYFRAMES */
 @keyframes open-lid-stacking {
     50% { z-index: 1; }
     100% { z-index: -1; }
@@ -257,7 +233,7 @@ body {
     100% { z-index: 1; }
 }
 
-/* CORAZON */
+/* SELLO DE CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
@@ -266,22 +242,20 @@ body {
     font-size: 28px;
     z-index: 5;
     transition: all 0.4s ease;
+    animation: latido 1s infinite;
 }
+
 .envelope.abierto .heart-seal {
     transform: translate(-50%, -50%) scale(0);
     opacity: 0;
 }
-.heart-seal {
-    animation: latido 1s infinite;
-}
 
 @keyframes latido {
-    0% { transform: translate(-50%, -50%) scale(1); }
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.2); }
-    100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* 🌟 Estrellas */
+/* ESTRELLAS */
 .stars {
     position: fixed;
     width: 100%;
@@ -289,79 +263,24 @@ body {
     z-index: 0;
 }
 
-/* ✨ Estrellas */
-.stars::before {
+.stars::before, .stars::after {
     content: "";
     position: absolute;
     width: 2px;
     height: 2px;
     background: white;
+}
 
-    box-shadow:
-        50px 100px white,
-        200px 200px white,
-        400px 150px white,
-        600px 250px white,
-        800px 100px white,
-        1000px 200px white,
-        1200px 350px white,
-        1400px 150px white,
-        1600px 300px white;
-
+.stars::before {
+    box-shadow: 50px 100px white, 200px 200px white, 400px 150px white, 600px 250px white, 800px 100px white, 1000px 200px white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
 
-/* ✨ Estrellas que titilan */
 .stars::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-
-    box-shadow:
-        100px 150px white,
-        300px 50px white,
-        700px 150px white,
-        900px 150px white,
-        150px 150px white,  
-        250px 50px white,
-        450px 200px white,
-        550px 350px white,
-        650px 350px white,
-        800px 350px white,
-        1000px 100px white,
-        1100px 300px white,
-        1200px 200px white,
-        1300px 150px white,
-        1400px 200px white,
-        1500px 100px white,
-        1600px 200px white,
-        1700px 150px white,
-        1800px 300px white,
-        50px 50px white,
-        350px 50px white,
-        600px 100px white,
-        1250px 350px white,
-        1450px 260px white,
-        1150px 350px white,
-        950px 50px white,
-        750px 150px white,
-        200px 250px white,
-        1750px 50px white,
-        1650px 150px white;
-
+    box-shadow: 100px 150px white, 300px 50px white, 700px 150px white, 900px 150px white, 150px 150px white, 1200px 200px white, 1500px 100px white;
     animation: parpadeo 2s infinite alternate;
 }
 
-/* 🌌 Animaciones */
-@keyframes aparecerEstrellas {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes parpadeo {
-    from { opacity: 0.2; }
-    to { opacity: 1; }
-}
+@keyframes aparecerEstrellas { to { opacity: 1; } }
+@keyframes parpadeo { from { opacity: 0.2; } to { opacity: 1; } }
