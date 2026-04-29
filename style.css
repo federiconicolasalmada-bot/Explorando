@@ -80,9 +80,9 @@ body {
     font-size: 14px; 
     letter-spacing: 2px;
     text-transform: uppercase;
-    /* Ajuste de separación superior e inferior */
-    margin-top: 15px; 
-    margin-bottom: 15px; 
+    /* 👇 Ajuste para subir la palabra "PARA" 👇 */
+    margin-top: -15px; 
+    margin-bottom: 5px; 
 }
 
 .card-title-main {
@@ -114,7 +114,7 @@ body {
 
 /* Esto empuja solo la frase de abajo */
 .dedicatoria {
-    margin-top: 15px; /* Misma separación que el "Para" de arriba */
+    margin-top: 15px; /* Misma separación que el "Para" de arriba original */
 }
 
 /* CONTENIDO */
