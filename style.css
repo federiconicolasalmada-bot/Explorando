@@ -315,20 +315,6 @@ body {
    Para mantenerlas arriba, asegurate de que todos los valores 'vh' sean menores a 60vh.
 */
 
-/* Capa 1: Estrellas de fondo (Fijas) - Todas entre 5vh y 55vh (Bien arriba) */
-.stars::before {
-    box-shadow: 
-        10vw 5vh white, 25vw 15vh white, 40vw 35vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 30vh white, 95vw 10vh white,
-        15vw 20vh white, 45vw 5vh white, 65vw 30vh white, 80vw 45vh white, 20vw 25vh white,
-        12vw 8vh white, 3vw 12vh white, 20vw 22vh white, 33vw 18vh white, 48vw 28vh white,
-        63vw 8vh white, 78vw 15vh white, 92vw 22vh white, 55vw 5vh white, 70vw 23vh white,
-        18vw 38vh white, 42vw 38vh white, 68vw 32vh white, 88vw 28vh white, 2vw 20vh white,
-        97vw 12vh white, 11vw 33vh white, 24vw 5vh white, 37vw 15vh white, 49vw 25vh white,
-        51vw 25vh white, 64vw 5vh white, 77vw 12vh white, 91vw 18vh white, 5vw 34vh white;
-    opacity: 0;
-    animation: aparecerEstrellas 4s forwards;
-}
 
 /* Capa 2: Estrellas que titilan - Todas entre 5vh y 62vh (Bien arriba) */
 .stars::after {
