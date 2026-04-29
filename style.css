@@ -88,7 +88,10 @@ body {
     font-family: "Petemoss", serif;
     /* 👇 Bajamos de 64px a 50px para que el nombre y el corazón sean más chicos 👇 */
     font-size: 55px; 
-    line-height: 0.8; 
+    line-height: 0.8;
+    /* 👇 Esto empuja todo el bloque hacia arriba 👇 */
+    margin-top: -30px; 
+    text-align: center;
 }
 /* Esto achica solo el corazón de la portada */
 .corazon-chiquito {
