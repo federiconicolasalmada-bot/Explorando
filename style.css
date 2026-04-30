@@ -295,37 +295,43 @@ body {
 .stars::before, .stars::after {
     content: "";
     position: absolute;
+    /* Damos la posición inicial al "punto semilla" bien arriba a la izquierda */
+    top: 2vh;
+    left: 2vw;
     width: 2px;  
     height: 2px; 
-    background: white;
+    background: white; /* Color base del punto original */
     border-radius: 50%; 
 }
 
-/* Capa 1: Estrellas 100% fijas de fondo (No titilan, mantienen brillo constante) */
+/* Capa 1: Estrellas 100% fijas de fondo */
 .stars::before {
     box-shadow: 
         10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white; /* 👈 Acá va punto y coma */
+        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
 
-/* Capa 2: Estrellas que están quietas en su lugar pero TITILAN (solo cambian su luz) */
+/* Capa 2: Estrellas que están quietas en su lugar pero TITILAN */
 .stars::after {
+    /* Le damos una posición de inicio diferente a esta capa para que no se pise con la otra */
+    top: 4vh;
+    left: 4vw;
     box-shadow: 
         12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white; /* 👈 Acá va punto y coma */
+        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
     animation: parpadeo 2s infinite alternate; 
 }
 
 /* Animaciones */
 @keyframes aparecerEstrellas { 
-    to { opacity: 0.7; } /* Las fijas brillan a un 70% para no robar protagonismo */
+    to { opacity: 0.7; }
 }
 
 @keyframes parpadeo { 
-    from { opacity: 0.1; } /* Se apagan suavecito */
-    to { opacity: 1; }     /* Brillan al 100% (SIN MOVERSE NI CRECER) */
+    from { opacity: 0.1; } 
+    to { opacity: 1; }     
 }
    
 
