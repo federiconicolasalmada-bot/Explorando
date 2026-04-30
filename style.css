@@ -309,7 +309,6 @@ body {
         15vw 30vh white, 45vw 5vh white, 65vw 30vh white, 80vw 35vh white, 20vw 25vh white,
         12vw 8vh white, 3vw 12vh white, 20vw 22vh white, 33vw 18vh white, 48vw 28vh white,
         63vw 8vh white, 78vw 15vh white, 92vw 22vh white, 55vw 5vh white, 70vw 33vh white,
-        18vw 38vh white, 42vw 28vh white, 68vw 42vh white, 88vw 38vh white, 2vw 20vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
@@ -321,8 +320,6 @@ body {
         62vw 38vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white,
         18vw 35vh white, 28vw 25vh white, 38vw 15vh white, 48vw 22vh white, 58vw 18vh white,
         68vw 32vh white, 78vw 28vh white, 88vw 28vh white, 3vw 30vh white, 97vw 25vh white,
-        15vw 5vh white, 35vw 25vh white, 55vw 5vh white, 75vw 35vh white, 90vw 10vh white;
-    
     animation: parpadeo 2s infinite alternate; 
 }
 
