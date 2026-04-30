@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const sobre = document.getElementById("sobre");
-    const cartaWrapper = document.querySelector(".card-wrapper"); // Envuelve la carta
-    const carta = document.querySelector(".card"); // La carta física
+    const cartaWrapper = document.querySelector(".card-wrapper");
+    const carta = document.querySelector(".card");
     const heartSeal = document.querySelector('.heart-seal');
 
     let timeoutId;
@@ -11,7 +11,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const audio = new Audio("mi-cancion.mp3");
     audio.volume = 0.1;
 
-    // 👉 PRIMER CLICK (EN EL SOBRE): Abre el sobre y saca la carta
+    /* =========================================
+       🔥 ANIMACIÓN INICIAL AUTOMÁTICA
+       ========================================= */
+
+    // Estado inicial: sobre abierto
+    sobre.classList.add("inicial");
+
+    // Activar animación después de un pequeño delay
+    setTimeout(() => {
+        sobre.classList.add("animar");
+    }, 300);
+
+    // Cuando termina la animación:
+    setTimeout(() => {
+        // Limpiamos estados iniciales
+        sobre.classList.remove("inicial");
+        sobre.classList.remove("animar");
+
+        // Dejamos el sobre cerrado listo para interactuar
+        sobre.classList.remove("abierto");
+
+    }, 2000);
+
+
+    /* =========================================
+       👉 CLICK EN EL SOBRE
+       ========================================= */
+
     sobre.addEventListener("click", () => {
         const abierto = sobre.classList.toggle("abierto");
 
@@ -23,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < 20; i++) {
                 const heart = document.createElement("div");
                 heart.innerHTML = "❤️";
+
                 heart.style.position = "absolute";
                 heart.style.left = "50%";
                 heart.style.top = "40%";
@@ -48,24 +76,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
             audio.pause();
-            // Si cerramos el sobre, guardamos la tapa de la carta también
             carta.classList.remove("desplegada");
         }
     });
 
-    // 👉 SEGUNDO CLICK (EN LA CARTA): Despliega la portada
+
+    /* =========================================
+       👉 CLICK EN LA CARTA
+       ========================================= */
+
     cartaWrapper.addEventListener("click", (evento) => {
-        // 🔥 LA MAGIA: Solo activamos el escudo si el sobre ya salió
         if (sobre.classList.contains("abierto")) {
-            // Esto frena el clic en seco para que NO llegue al sobre
-            evento.stopPropagation(); 
-            
-            // Abre o cierra la tapa de la carta
-            carta.classList.toggle("desplegada"); 
+            evento.stopPropagation();
+            carta.classList.toggle("desplegada");
         }
     });
 
-    // ❤️ efecto corazón (opcional)
+
+    /* =========================================
+       ❤️ EFECTO CORAZÓN HOVER
+       ========================================= */
+
     sobre.addEventListener('mouseover', () => {
         clearTimeout(timeoutId);
         if (heartSeal) heartSeal.style.opacity = 0;
