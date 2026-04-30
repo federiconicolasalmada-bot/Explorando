@@ -6,11 +6,10 @@
     padding: 0;
 }
 
-/* 🌅 Fondo con imagen y degradado */
+/* 🌅 Fondo */
 body {
     font-family: "Roboto", serif;
     height: 100vh;
-    margin: 0;
     overflow: hidden;
     background: 
         linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
@@ -25,111 +24,92 @@ body {
     transform: rotate(-90deg);
 }
 
-/* LA CARTA FÍSICA */
+/* CARTA */
 .card {
     width: 180px;
     height: 285px;
     background-color: #fff;
     border: 1px solid #000;
     transform-style: preserve-3d;
-    will-change: transform;
     transition: transform 250ms;
-    box-shadow: inset 5px 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
     cursor: pointer;
 }
 
-/* 🔥 ESTADO: CARTA DESPLEGADA (Segundo clic) */
+/* CARTA ABIERTA */
 .card.desplegada {
     transform: rotateY(-15deg);
-    transition-delay: 0ms;
 }
 
 .card.desplegada .card-cover {
     transform: rotateY(-135deg);
-    transition-delay: 0ms;
 }
 
-/* PORTADA DE LA CARTA */
+/* PORTADA */
 .card-cover {
     position: absolute;
     inset: 0;
-    text-align: center;
-    outline: 1px solid #000;
     transform-style: preserve-3d;
     transform-origin: left;
-    transition: transform 500ms 0ms;
+    transition: transform 500ms;
 }
 
 .card-side {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    background-color: #fff;
+    background: #fff;
     display: grid;
     place-items: center;
 }
 
-/* ✨ MARCO DE ESQUINAS MINIMALISTA ✨ */
-.card-side::before {
-    content: "";
-    position: absolute;
-    inset: 10px; 
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    height: 30px; 
-    pointer-events: none;
-}
-
+/* DECORACIÓN */
+.card-side::before,
 .card-side::after {
     content: "";
     position: absolute;
     inset: 10px;
-    border-bottom: 1px solid #ddd;
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     height: 30px;
-    top: auto; 
-    pointer-events: none;
 }
 
-.card-side-secondary {
-    transform: rotateY(180deg);
-    box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.1);
+.card-side::before {
+    top: 0;
+    border-top: 1px solid #ddd;
 }
 
-/* ✨ TITULOS DE LA PORTADA ✨ */
+.card-side::after {
+    bottom: 0;
+    border-bottom: 1px solid #ddd;
+}
+
+/* TEXTO */
 .card-title-secondary {
-    display: block; 
-    font-size: 14px; 
+    font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
     position: relative;
-    top: -35px; /* Subida equilibrada */
+    top: -35px;
 }
 
 .card-title-main {
-    display: block; 
     font-family: "Petemoss", serif;
-    font-size: 55px; 
-    line-height: 0.8;
-    text-align: center;
-    width: 100%;
+    font-size: 55px;
     position: relative;
     top: -15px;
 }
 
 .corazon-chiquito {
-    font-size: 30px; 
-    font-family: "Roboto", sans-serif; 
+    font-size: 30px;
 }
 
 .dedicatoria {
     position: relative;
-    top: 15px; /* Espacio para que respire abajo */
+    top: 15px;
 }
 
-/* CONTENIDO INTERIOR */
+/* CONTENIDO */
 .card-body {
     font-family: "Shantell Sans", serif;
     padding: 14px;
@@ -140,23 +120,19 @@ body {
     color: #333;
 }
 
-.card-body p + p {
-    margin-top: 5px;
-}
-
 /* SOBRE */
 .envelope {
     width: 300px;
     height: 200px;
-    background-color: #fff;
+    background: #fff;
     display: grid;
     place-content: center;
-    cursor: pointer;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0 1px #000;
+    cursor: pointer;
 }
 
 .envelope::after {
@@ -169,212 +145,141 @@ body {
     border-left: 150px solid white;
 }
 
-/* ANIMACIONES DEL SOBRE */
+/* 🔥 FIX CLAVE (evita conflicto con animación inicial) */
+.envelope:not(.abierto):not(.inicial) .card-wrapper {
+    animation: hide-card 1000ms forwards;
+}
+
+/* CUANDO SE ABRE */
 .envelope.abierto .card-wrapper {
     animation: show-card 1000ms 600ms forwards;
 }
 
-.envelope:not(.abierto) .card-wrapper {
-    animation: hide-card 1000ms forwards;
-}
-
 @keyframes show-card {
     50% {
-        transform: translateY(-75%) rotate(-90deg) translateX(0);
+        transform: translateY(-75%) rotate(-90deg);
         z-index: -1;
     }
     100% {
-        transform: translateY(0) rotate(0deg) translateX(100px); 
+        transform: translateY(0) rotate(0deg) translateX(100px);
         z-index: 10;
     }
 }
 
 @keyframes hide-card {
     0% {
-        z-index: 10;
         transform: rotate(0deg) translateX(100px);
     }
     50% {
-        transform: translateY(-75%) rotate(-90deg) translateX(0);
-        z-index: -1;
+        transform: translateY(-75%) rotate(-90deg);
     }
     100% {
         transform: translateY(0) rotate(-90deg);
     }
 }
 
-/* TAPA DEL SOBRE */
+/* TAPA */
 .envelope-lid {
     position: absolute;
     inset: 0;
-    z-index: 1;
-}
-
-.envelope-lid::before,
-.envelope-lid::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 1px;
-    height: calc(100% - 31.85px);
-    background-color: #000;
-}
-
-.envelope-lid::before {
-    left: 0;
-    transform: rotate(-63.1deg);
-    transform-origin: top left;
-}
-
-.envelope-lid::after {
-    right: 0;
-    transform: rotate(63.1deg);
-    transform-origin: top right;
 }
 
 .envelope-lid-secondary {
-    background-color: #fff;
+    background: #fff;
     clip-path: polygon(50% 38%, 0 0, 100% 0);
-    transition: transform 500ms 1000ms;
     transform-origin: top;
 }
 
+/* ABIERTO */
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
-    transition-delay: 100ms;
-    animation: open-lid-stacking 500ms forwards;
 }
 
-.envelope:not(.abierto) .envelope-lid-secondary {
-    animation: close-lid-stacking 1250ms forwards;
-}
-
-@keyframes open-lid-stacking {
-    50% { z-index: 1; }
-    100% { z-index: -1; }
-}
-
-@keyframes close-lid-stacking {
-    0%, 50% { z-index: -2; }
-    100% { z-index: 1; }
-}
-
-/* SELLO DE CORAZÓN */
+/* ❤️ CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%);
     font-size: 28px;
-    z-index: 5;
-    transition: all 0.4s ease;
     animation: latido 1s infinite;
 }
 
-.envelope.abierto .heart-seal {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-}
-
 @keyframes latido {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* =========================================
-   ✨ CIELO ESTRELLADO (MIX: FIJAS + TITILANTES) ✨ 
-   ========================================= */
+/* 🌌 ESTRELLAS */
 .stars {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    overflow: hidden; 
 }
 
-.stars::before, .stars::after {
+.stars::before {
     content: "";
     position: absolute;
-    /* Damos la posición inicial al "punto semilla" bien arriba a la izquierda */
-    top: 2vh;
-    left: 2vw;
-    width: 2px;  
-    height: 2px; 
-    background: white; /* Color base del punto original */
-    border-radius: 50%; 
-}
-
-/* Capa 1: Estrellas 100% fijas de fondo */
-.stars::before {
+    width: 2px;
+    height: 2px;
+    background: white;
     box-shadow: 
-        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
-    opacity: 0;
-    animation: aparecerEstrellas 4s forwards;
+        10vw 5vh white,
+        30vw 20vh white,
+        60vw 10vh white,
+        80vw 25vh white;
+    animation: parpadeo 2s infinite alternate;
 }
 
-/* Capa 2: Estrellas que están quietas en su lugar pero TITILAN */
-.stars::after {
-    /* Le damos una posición de inicio diferente a esta capa para que no se pise con la otra */
-    top: 4vh;
-    left: 4vw;
-    box-shadow: 
-        12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
-    animation: parpadeo 2s infinite alternate; 
+@keyframes parpadeo {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
 }
 
-/* Animaciones */
-@keyframes aparecerEstrellas { 
-    to { opacity: 0.7; }
-}
+/* =========================
+   🎬 ANIMACIÓN INICIAL
+========================= */
 
-@keyframes parpadeo { 
-    from { opacity: 0.1; } 
-    to { opacity: 1; }     
-}
-   
-/* 🟢 ESTADO INICIAL: SOBRE ABIERTO */
+/* Sobre abierto al inicio */
 .envelope.inicial .envelope-lid-secondary {
     transform: rotateX(180deg);
-    z-index: -1;
 }
 
-/* La carta empieza afuera (visible) */
+/* Carta afuera */
 .envelope.inicial .card-wrapper {
     transform: rotate(0deg) translateX(100px);
 }
-   
+
+/* Carta entra */
 @keyframes entrar-carta {
     0% {
         transform: rotate(0deg) translateX(100px);
-        z-index: 10;
     }
     50% {
-        transform: translateY(-75%) rotate(-90deg) translateX(0);
-        z-index: -1;
+        transform: translateY(-75%) rotate(-90deg);
     }
     100% {
         transform: translateY(0) rotate(-90deg);
-        z-index: -1;
     }
-}  
+}
 
 .envelope.inicial.animar .card-wrapper {
     animation: entrar-carta 1200ms forwards;
 }
+
+/* Sobre se cierra */
 .envelope.inicial.animar .envelope-lid-secondary {
     animation: cerrar-inicial 800ms 1200ms forwards;
 }
 
 @keyframes cerrar-inicial {
-    from {
-        transform: rotateX(180deg);
-    }
-    to {
-        transform: rotateX(0deg);
-    }
+    from { transform: rotateX(180deg); }
+    to { transform: rotateX(0deg); }
 }
+
+
+
+
+
 
 
 
