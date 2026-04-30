@@ -305,7 +305,7 @@ body {
 .stars::before {
     box-shadow: 
         10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white,
+        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
@@ -314,7 +314,7 @@ body {
 .stars::after {
     box-shadow: 
         12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white,
+        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
     animation: parpadeo 2s infinite alternate; 
 }
 
