@@ -169,21 +169,22 @@ body {
     font-size: 13px;
 }
 
-/* 🔥 CONTENIDO INTERIOR AJUSTADO */
+/* 🔥 CONTENIDO INTERIOR OPTIMIZADO */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
     padding: 6px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 3px; /* 🔥 más compacto */
+    justify-content: space-between; /* 🔥 clave */
+    gap: 2px;
 }
 
 .card-body p {
-    font-size: 5.4px; /* 🔥 ajuste clave */
-    line-height: 1.12;
+    font-size: 5.8px; /* 🔥 mejor balance */
+    line-height: 1.15;
     text-align: justify;
+    text-indent: 4px; /* 🔥 efecto carta real */
     margin: 0;
     color: #333;
 }
@@ -212,3 +213,4 @@ body {
     font-size: 28px;
     z-index: 40;
 }
+
