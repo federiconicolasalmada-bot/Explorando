@@ -6,10 +6,11 @@
     padding: 0;
 }
 
-/* 🌅 Fondo */
+/* 🌅 Fondo con imagen y degradado */
 body {
     font-family: "Roboto", serif;
     height: 100vh;
+    margin: 0;
     overflow: hidden;
     background: 
         linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
@@ -24,7 +25,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    pointer-events: none;
+    overflow: hidden;
+    pointer-events: none; /* 🔥 evita bloquear clicks */
 }
 
 .stars::before, .stars::after {
@@ -40,10 +42,8 @@ body {
 
 .stars::before {
     box-shadow: 
-        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 
-        60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 
-        50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
+        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
+        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
@@ -52,10 +52,8 @@ body {
     top: 4vh;
     left: 4vw;
     box-shadow: 
-        12vw 12vh white, 22vw 25vh white, 32vw 18vh white,
-        42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white,
-        82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
+        12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
+        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
     animation: parpadeo 2s infinite alternate ease-in-out;
 }
 
@@ -82,6 +80,11 @@ body {
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0 1px #000;
     z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.envelope:active {
+    transform: translate(-50%, -50%) scale(0.97);
 }
 
 .envelope::after {
@@ -104,13 +107,15 @@ body {
 .card {
     width: 180px;
     height: 285px;
-    background: #fff;
+    background-color: #fff;
     border: 1px solid #000;
     transform-style: preserve-3d;
-    transition: transform 400ms ease;
+    transition: transform 400ms cubic-bezier(0.25, 1, 0.5, 1);
     box-shadow: 
-        inset 5px 0 10px rgba(0,0,0,0.1),
+        inset 5px 0 10px rgba(0, 0, 0, 0.1),
         0 10px 25px rgba(0,0,0,0.2);
+    cursor: pointer;
+    backface-visibility: hidden;
 }
 
 /* DESPLEGADO */
@@ -126,77 +131,53 @@ body {
 .card-cover {
     position: absolute;
     inset: 0;
+    text-align: center;
+    outline: 1px solid #000;
     transform-style: preserve-3d;
     transform-origin: left;
     transition: transform 500ms;
 }
 
-/* 🔥 ACÁ ESTÁ LA MAGIA DEL CENTRADO */
 .card-side {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    background: #fff;
+    background-color: #fff;
+    display: grid;
+    place-items: center;
 
-    display: flex;
+    display: flex;              /* 🔥 cambio clave */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-
-    text-align: center;
+    gap: 8px;                  /* espacio entre elementos */
 }
 
-/* MARCO */
-.card-side::before,
-.card-side::after {
-    content: "";
-    position: absolute;
-    inset: 10px;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-}
-
-.card-side::before {
-    border-top: 1px solid #ddd;
-    height: 30px;
-}
-
-.card-side::after {
-    border-bottom: 1px solid #ddd;
-    height: 30px;
-    top: auto;
-}
-
-.card-side-secondary {
-    transform: rotateY(180deg);
-}
-
-/* ✨ TEXTOS */
-.card-title-secondary {
+/* ✨ MARCO MINIMAL */
+@@ -179,133 +183,130 @@
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    position: relative;
+    top: -35px;
 }
 
-/* 👉 Karen + ❤️ alineados */
 .card-title-main {
     font-family: "Petemoss", serif;
     font-size: 55px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    line-height: 0.8;
+    position: relative;
+    top: -15px;
 }
 
-/* ❤️ */
 .corazon-chiquito {
     font-size: 30px;
+    margin: 5px 0;
 }
 
-/* 👉 texto de abajo */
 .dedicatoria {
-    font-size: 13px;
-    margin-top: 6px;
+    position: relative;
+    top: 15px;
 }
 
 /* CONTENIDO */
@@ -207,6 +188,11 @@ body {
 
 .card-body p {
     font-size: 10px;
+    color: #333;
+}
+
+.card-body p + p {
+    margin-top: 5px;
 }
 
 /* ANIMACIONES */
@@ -214,12 +200,31 @@ body {
     animation: show-card 1000ms 600ms forwards;
 }
 
+.envelope:not(.abierto) .card-wrapper {
+    animation: hide-card 1000ms forwards;
+}
+
 @keyframes show-card {
     50% {
         transform: translateY(-75%) rotate(-90deg);
+        z-index: -1;
     }
     100% {
         transform: translateY(0) rotate(0deg) translateX(100px);
+        z-index: 10;
+    }
+}
+
+@keyframes hide-card {
+    0% {
+        transform: rotate(0deg) translateX(100px);
+    }
+    50% {
+        transform: translateY(-75%) rotate(-90deg);
+        z-index: -1;
+    }
+    100% {
+        transform: rotate(-90deg);
     }
 }
 
@@ -227,20 +232,43 @@ body {
 .envelope-lid {
     position: absolute;
     inset: 0;
+    z-index: 1;
+}
+
+.envelope-lid::before,
+.envelope-lid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: calc(100% - 31.85px);
+    background-color: #000;
+}
+
+.envelope-lid::before {
+    left: 0;
+    transform: rotate(-63.1deg);
+    transform-origin: top left;
+}
+
+.envelope-lid::after {
+    right: 0;
+    transform: rotate(63.1deg);
+    transform-origin: top right;
 }
 
 .envelope-lid-secondary {
-    background: #fff;
+    background-color: #fff;
     clip-path: polygon(50% 38%, 0 0, 100% 0);
     transform-origin: top;
-    transition: transform 500ms;
+    transition: transform 500ms 1000ms;
 }
 
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
 }
 
-/* ❤️ CORAZÓN SOBRE */
+/* ❤️ CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
@@ -248,11 +276,16 @@ body {
     transform: translate(-50%, -50%);
     font-size: 28px;
     z-index: 20;
-    pointer-events: none;
+    pointer-events: none; /* 🔥 no bloquea click */
     animation: latido 1s infinite;
 }
 
-@keyframes latido {
-    0%,100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.2); }
+.envelope.abierto .heart-seal {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
 }
+
+@keyframes latido {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+} Crees que este eta bien? cual es la diferencia con el otro que te pase?
