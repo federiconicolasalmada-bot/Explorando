@@ -170,22 +170,23 @@ body {
     font-size: 13px;
 }
 
-/* CONTENIDO */
+/* 🔥 CONTENIDO (Ajustes de márgenes y letra aplicados acá) */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    padding: 8px; 
+    padding: 2px; 
     height: 100%; 
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
-    gap: 4px; 
+    gap: 3px; 
 }
 
 .card-body p {
-    font-size: 7.5px; 
-    line-height: 1.3;
+    font-size: 6.5px; 
+    line-height: 1.15;
     text-align: center; 
+    margin: 0;
 }
 
 /* ANIMACION DEL SOBRE */
