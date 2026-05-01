@@ -6,9 +6,9 @@
     padding: 0;
 }
 
-/* Fondo */
+/* FONDO */
 body {
-    font-family: "Roboto", serif;
+    font-family: "Roboto", sans-serif;
     height: 100vh;
     overflow: hidden;
     background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
@@ -17,18 +17,11 @@ body {
     background-position: center;
 }
 
-/* Estrellas */
-.stars {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-}
-
 /* SOBRE */
 .envelope {
     width: 300px;
     height: 200px;
-    background: white;
+    background-color: white;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -42,7 +35,7 @@ body {
     z-index: 10;
 }
 
-/* cuerpo */
+/* CUERPO SOBRE */
 .envelope::after {
     content: '';
     position: absolute;
@@ -54,42 +47,42 @@ body {
     z-index: 1;
 }
 
-/* SOLAPA */
+/* 🔥 SOLAPA (IGUAL AL QUE FUNCIONA) */
 .envelope-lid-secondary {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: white;
-
-    clip-path: polygon(0 0, 100% 0, 50% 70%);
-
+    inset: 0;
+    background-color: white;
+    clip-path: polygon(50% 38%, 0 0, 100% 0);
     transform-origin: top;
-    transition: transform 0.5s ease;
-
+    transform: rotateX(0deg);
+    transition: transform 0.5s;
     z-index: 20;
 }
 
+/* ABRIR */
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
 }
 
-/* CARTA */
+/* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
     z-index: 2;
 }
 
+/* CARTA */
 .card {
     width: 180px;
     height: 285px;
-    background: white;
-    border: 1px solid black;
+    background-color: #fff;
+    border: 1px solid #000;
     transform-style: preserve-3d;
-    transition: transform 0.4s ease;
+    transition: transform 400ms ease;
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
 }
 
-/* abrir carta */
+/* DESPLEGAR */
 .card.desplegada {
     transform: rotateY(-15deg);
 }
@@ -98,29 +91,29 @@ body {
     transform: rotateY(-135deg);
 }
 
-/* portada */
+/* COVER */
 .card-cover {
     position: absolute;
     inset: 0;
-    transform-origin: left;
     transform-style: preserve-3d;
-    transition: transform 0.5s;
+    transform-origin: left;
+    transition: transform 500ms;
 }
 
-/* lados */
+/* LADOS */
 .card-side {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    background: white;
+    background-color: white;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 6px;
 
     text-align: center;
-    gap: 6px;
     padding: 10px;
 }
 
@@ -128,9 +121,10 @@ body {
     transform: rotateY(180deg);
 }
 
-/* textos */
+/* TEXTOS */
 .card-title-secondary {
     font-size: 14px;
+    letter-spacing: 2px;
     text-transform: uppercase;
 }
 
@@ -141,7 +135,7 @@ body {
 }
 
 .card-title-main {
-    font-family: "Petemoss", serif;
+    font-family: "Petemoss", cursive;
     font-size: 50px;
 }
 
@@ -153,23 +147,24 @@ body {
     font-size: 13px;
 }
 
-/* contenido */
+/* CONTENIDO */
 .card-body {
-    font-family: "Shantell Sans", serif;
+    font-family: "Shantell Sans", sans-serif;
     padding: 12px;
 }
 
 .card-body p {
     font-size: 9px;
     line-height: 1.4;
+    text-align: justify;
 }
 
-/* ANIMACION CARTA */
+/* 🔥 ANIMACION DEL SOBRE (ADAPTADA DE HOVER → CLICK) */
 .envelope.abierto .card-wrapper {
-    animation: subir 1s forwards;
+    animation: show-card 1s 0.5s forwards;
 }
 
-@keyframes subir {
+@keyframes show-card {
     50% {
         transform: translateY(-75%) rotate(-90deg);
     }
@@ -179,7 +174,7 @@ body {
     }
 }
 
-/* corazón */
+/* CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
