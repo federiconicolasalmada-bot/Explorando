@@ -83,7 +83,7 @@ body {
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
-    z-index: 5; 
+    z-index: 5;
 }
 
 /* CARTA */
@@ -132,7 +132,7 @@ body {
     padding: 6px;
 }
 
-/* BORDE INTERNO */
+/* BORDE DOBLEZ */
 .card-side-primary {
     border-right: 1px solid rgba(0, 0, 0, 0.2); 
     box-shadow: 3px 0px 5px rgba(0,0,0,0.08);
@@ -143,7 +143,7 @@ body {
     border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* TEXTOS TAPA */
+/* TEXTOS PORTADA */
 .card-title-secondary {
     font-size: 14px;
     letter-spacing: 2px;
@@ -169,22 +169,23 @@ body {
     font-size: 13px;
 }
 
-/* 🔥 CONTENIDO INTERIOR AJUSTADO */
+/* 🔥 CONTENIDO INTERIOR CORREGIDO */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
     padding: 6px;
-    height: 100%; 
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 3px;
+    justify-content: flex-start; /* 🔥 CLAVE */
+    gap: 4px;
 }
 
 .card-body p {
     font-size: 7.2px;
-    line-height: 1.25;
+    line-height: 1.3;
     text-align: justify;
     margin: 0;
+    color: #333;
 }
 
 /* ANIMACION */
