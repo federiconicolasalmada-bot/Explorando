@@ -6,10 +6,11 @@
     padding: 0;
 }
 
-/* 🌅 Fondo */
+/* 🌅 Fondo con imagen y degradado */
 body {
     font-family: "Roboto", serif;
     height: 100vh;
+    margin: 0;
     overflow: hidden;
     background: 
         linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
@@ -24,7 +25,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    pointer-events: none;
+    overflow: hidden;
+    pointer-events: none; /* 🔥 evita bloquear clicks */
 }
 
 .stars::before, .stars::after {
@@ -40,10 +42,8 @@ body {
 
 .stars::before {
     box-shadow: 
-        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 
-        60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 
-        50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
+        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
+        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
     opacity: 0;
     animation: aparecerEstrellas 4s forwards;
 }
@@ -52,10 +52,8 @@ body {
     top: 4vh;
     left: 4vw;
     box-shadow: 
-        12vw 12vh white, 22vw 25vh white, 32vw 18vh white,
-        42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white,
-        82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
+        12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
+        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
     animation: parpadeo 2s infinite alternate ease-in-out;
 }
 
@@ -97,17 +95,12 @@ body {
     border-right: 150px solid white;
     border-bottom: 125px solid white;
     border-left: 150px solid white;
-    pointer-events: none; /* 🔥 FIX CLAVE */
 }
 
 /* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
-    width: 180px;
-    height: 285px;
-    position: relative;
-    z-index: 15;
 }
 
 /* CARTA */
@@ -122,6 +115,7 @@ body {
         inset 5px 0 10px rgba(0, 0, 0, 0.1),
         0 10px 25px rgba(0,0,0,0.2);
     cursor: pointer;
+    backface-visibility: hidden;
 }
 
 /* DESPLEGADO */
@@ -137,63 +131,64 @@ body {
 .card-cover {
     position: absolute;
     inset: 0;
+    text-align: center;
+    outline: 1px solid #000;
     transform-style: preserve-3d;
     transform-origin: left;
     transition: transform 500ms;
 }
 
-/* LADOS */
 .card-side {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
     background-color: #fff;
+    display: grid;
+    place-items: center;
 
-    display: flex;
+    display: flex;              /* 🔥 cambio clave */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-
-    text-align: center;
+    gap: 8px;                  /* espacio entre elementos */
 }
 
-.card-side-secondary {
-    transform: rotateY(180deg);
-}
-
-/* TEXTOS */
-.card-title-secondary {
+/* ✨ MARCO MINIMAL */
+@@ -179,133 +183,130 @@
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    position: relative;
+    top: -35px;
 }
 
 .card-title-main {
     font-family: "Petemoss", serif;
     font-size: 55px;
+    line-height: 0.8;
+    position: relative;
+    top: -15px;
 }
 
 .corazon-chiquito {
     font-size: 30px;
+    margin: 5px 0;
 }
 
 .dedicatoria {
-    font-size: 13px;
+    position: relative;
+    top: 15px;
 }
 
 /* CONTENIDO */
 .card-body {
     font-family: "Shantell Sans", serif;
     padding: 14px;
-    overflow-y: auto;       /* 🔥 FIX DESBORDE */
-    overflow-x: hidden;
-    word-wrap: break-word;
 }
 
 .card-body p {
     font-size: 10px;
-    line-height: 1.4;
+    color: #333;
 }
 
 .card-body p + p {
@@ -212,18 +207,21 @@ body {
 @keyframes show-card {
     50% {
         transform: translateY(-75%) rotate(-90deg);
+        z-index: -1;
     }
     100% {
-        transform: translateY(0) rotate(0deg) translateX(120px);
+        transform: translateY(0) rotate(0deg) translateX(100px);
+        z-index: 10;
     }
 }
 
 @keyframes hide-card {
     0% {
-        transform: rotate(0deg) translateX(120px);
+        transform: rotate(0deg) translateX(100px);
     }
     50% {
         transform: translateY(-75%) rotate(-90deg);
+        z-index: -1;
     }
     100% {
         transform: rotate(-90deg);
@@ -235,6 +233,28 @@ body {
     position: absolute;
     inset: 0;
     z-index: 1;
+}
+
+.envelope-lid::before,
+.envelope-lid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: calc(100% - 31.85px);
+    background-color: #000;
+}
+
+.envelope-lid::before {
+    left: 0;
+    transform: rotate(-63.1deg);
+    transform-origin: top left;
+}
+
+.envelope-lid::after {
+    right: 0;
+    transform: rotate(63.1deg);
+    transform-origin: top right;
 }
 
 .envelope-lid-secondary {
@@ -256,7 +276,7 @@ body {
     transform: translate(-50%, -50%);
     font-size: 28px;
     z-index: 20;
-    pointer-events: none;
+    pointer-events: none; /* 🔥 no bloquea click */
     animation: latido 1s infinite;
 }
 
