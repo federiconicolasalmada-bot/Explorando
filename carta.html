@@ -7,6 +7,31 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Petemoss&family=Roboto&family=Shantell+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Agrega esto a tu style.css o déjalo aquí para arreglar los espacios -->
+    <style>
+        .card-body {
+            /* Le da espacio interno para que el texto no toque los bordes */
+            padding: 25px; 
+            box-sizing: border-box;
+            
+            /* Distribuye los párrafos uniformemente a lo alto de la tarjeta */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra el contenido verticalmente */
+            gap: 15px; /* Espacio exacto entre cada párrafo */
+            height: 100%;
+            
+            /* Mejora la lectura */
+            text-align: center; /* Puedes cambiarlo a 'justify' si prefieres texto cuadrado */
+            font-size: 1.1rem; /* Ajusta el tamaño si es necesario */
+        }
+
+        .card-body p {
+            margin: 0; /* Quitamos el margen por defecto para usar el 'gap' del contenedor */
+            line-height: 1.4; /* Da espacio entre las líneas del mismo párrafo */
+        }
+    </style>
 </head>
 
 <body>
@@ -20,83 +45,69 @@
         <div class="card-wrapper">
             <div class="card">
 
-                <!-- PORTADA -->
+                <!-- PORTADA E INTERIOR IZQUIERDO -->
                 <div class="card-cover">
 
+                    <!-- PORTADA -->
                     <div class="card-side card-side-primary">
-
                         <span class="card-title-secondary">Para</span>
-
                         <div class="nombre-container">
                             <span class="card-title-main">Karen</span>
                             <span class="corazon-chiquito">❤️</span>
                         </div>
-
                         <span class="card-title-secondary dedicatoria">
                             Con mucho cariño
                         </span>
-
                     </div>
 
                     <!-- IZQUIERDA -->
                     <div class="card-side card-side-secondary">
                         <div class="card-body">
-
                             <p><strong>Un pequeño mensaje:</strong></p>
-
                             <p>
                                 Hice esto porque me parecía una forma linda
                                 y distinta de ser sincero.
                             </p>
-
                             <p>
                                 Con el tiempo empecé a sentir un aprecio
                                 y un cariño especial por vos.
                             </p>
-
                             <p>
                                 Me pareció lo más honesto decírtelo,
                                 sin vueltas.
                             </p>
-
                             <p>
                                 No quiero cometer errores ni generar
                                 una situación incómoda.
                             </p>
-
                         </div>
                     </div>
 
                 </div>
 
                 <!-- DERECHA -->
-                <div class="card-body">
-
+                <div class="card-body right-side">
+                    <!-- Moví este párrafo a la derecha superior para balancear -->
                     <p>
                         Tampoco espero una respuesta en particular,
                         simplemente sentía la necesidad de ser transparente.
                     </p>
-
                     <p>
                         Quiero que sepas que podés contar conmigo
                         y que, en lo que esté a mi alcance,
                         siempre voy a acompañarte.
                     </p>
-
                     <p>
                         Ojalá esta pequeña sorpresa haya logrado
                         sacarte al menos una sonrisa ✨.
                     </p>
-
                     <p>
                         Nunca dejes de creer en vos,
                         porque sos increíble.
                     </p>
-
                     <p>
-                        Siempre voy a desearte lo mejor ❤️
+                        <strong>Siempre voy a desearte lo mejor ❤️</strong>
                     </p>
-
                 </div>
 
             </div>
@@ -106,7 +117,6 @@
     </div>
 
     <audio id="musica" src="mi-cancion.mp3" loop></audio>
-
     <script src="script.js"></script>
 
 </body>
