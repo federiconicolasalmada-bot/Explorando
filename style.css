@@ -1,18 +1,37 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* FONDO */
+body {
+    font-family: "Roboto", sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                url("atardecer.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
 /* SOBRE */
 .envelope {
     width: 300px;
     height: 200px;
-    background-color: #fff;
-
+    background-color: white;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    display: grid;
-    place-content: center;
-
-    border: 2px solid black; /* ✔ borde */
+    box-shadow: 0 0 0 1px #000;
     z-index: 10;
 }
 
@@ -21,34 +40,23 @@
     content: '';
     position: absolute;
     inset: 0;
-
     border-top: 75px solid transparent;
     border-right: 150px solid white;
     border-bottom: 125px solid white;
     border-left: 150px solid white;
-
-    z-index: 5;
+    z-index: 1;
 }
 
-/* 🔥 SOLAPA (NO se toca posición) */
+/* 🔥 SOLAPA (IGUAL AL QUE FUNCIONA) */
 .envelope-lid-secondary {
     position: absolute;
     inset: 0;
-    background: #fff;
-
+    background-color: white;
     clip-path: polygon(50% 38%, 0 0, 100% 0);
-
     transform-origin: top;
     transform: rotateX(0deg);
-
     transition: transform 0.5s;
-
-    z-index: 15;
-
-    /* ✔ bordes visibles */
-    border-top: 2px solid black;
-    border-left: 2px solid black;
-    border-right: 2px solid black;
+    z-index: 20;
 }
 
 /* ABRIR */
@@ -56,31 +64,124 @@
     transform: rotateX(180deg);
 }
 
-/* 🔥 CLAVE: carta empieza DENTRO */
+/* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
-
-    /* ❌ NO tocamos transform original */
     transform: rotate(-90deg);
-
-    position: relative;
-    z-index: 1; /* 👈 debajo del sobre */
+    z-index: 2;
 }
 
-/* 🔥 cuando se abre, pasa arriba */
+/* CARTA */
+.card {
+    width: 180px;
+    height: 285px;
+    background-color: #fff;
+    border: 1px solid #000;
+    transform-style: preserve-3d;
+    transition: transform 400ms ease;
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
+}
+
+/* DESPLEGAR */
+.card.desplegada {
+    transform: rotateY(-15deg);
+}
+
+.card.desplegada .card-cover {
+    transform: rotateY(-135deg);
+}
+
+/* COVER */
+.card-cover {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transition: transform 500ms;
+}
+
+/* LADOS */
+.card-side {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    text-align: center;
+    padding: 10px;
+}
+
+.card-side-secondary {
+    transform: rotateY(180deg);
+}
+
+/* TEXTOS */
+.card-title-secondary {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.nombre-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-title-main {
+    font-family: "Petemoss", cursive;
+    font-size: 50px;
+}
+
+.corazon-chiquito {
+    font-size: 28px;
+}
+
+.dedicatoria {
+    font-size: 13px;
+}
+
+/* CONTENIDO */
+.card-body {
+    font-family: "Shantell Sans", sans-serif;
+    padding: 12px;
+}
+
+.card-body p {
+    font-size: 9px;
+    line-height: 1.4;
+    text-align: justify;
+}
+
+/* 🔥 ANIMACION DEL SOBRE (ADAPTADA DE HOVER → CLICK) */
 .envelope.abierto .card-wrapper {
-    animation: show-card 1000ms 600ms forwards;
+    animation: show-card 1s 0.5s forwards;
 }
 
 @keyframes show-card {
     50% {
         transform: translateY(-75%) rotate(-90deg);
-        z-index: 1;
     }
     100% {
         transform: translateY(0) rotate(0deg) translateX(100px);
-        z-index: 20; /* 👈 ahora arriba */
+        z-index: 30;
     }
+}
+
+/* CORAZÓN */
+.heart-seal {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    z-index: 40;
 }
 
 
