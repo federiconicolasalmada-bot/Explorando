@@ -72,18 +72,21 @@ body {
 .envelope {
     width: 300px;
     height: 200px;
-    background-color: #fff;
-    display: grid;
-    place-content: center;
-    cursor: pointer;
+    background-color: white;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     box-shadow: 0 0 0 1px #000;
     z-index: 10;
 }
 
+/* CUERPO DEL SOBRE */
 .envelope::after {
     content: '';
     position: absolute;
@@ -95,7 +98,30 @@ body {
     z-index: 2;
 }
 
-/* CARD WRAPPER (NO SE TOCA POSICIÓN ORIGINAL) */
+/* 🔥 SOLAPA CORRECTA DESDE EL INICIO */
+.envelope-lid-secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: white;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+    transform-origin: top;
+    transform: rotateX(0deg);
+
+    z-index: 5;
+    transition: transform 0.5s ease;
+}
+
+/* ANIMACIÓN */
+.envelope.abierto .envelope-lid-secondary {
+    transform: rotateX(180deg);
+}
+
+/* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
@@ -138,8 +164,8 @@ body {
 .card-side {
     position: absolute;
     inset: 0;
-    backface-visibility: hidden;
     background: #fff;
+    backface-visibility: hidden;
 
     display: flex;
     flex-direction: column;
@@ -183,13 +209,6 @@ body {
     text-transform: uppercase;
 }
 
-.nombre-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
 .card-title-main {
     font-family: "Petemoss", serif;
     font-size: 50px;
@@ -217,15 +236,13 @@ body {
     color: #333;
 }
 
-/* ANIMACIÓN */
+/* ANIMACIÓN CARTA */
 .envelope.abierto .card-wrapper {
     animation: show-card 1000ms 600ms forwards;
 }
 
 @keyframes show-card {
-    0% {
-        z-index: 1;
-    }
+    0% { z-index: 1; }
     50% {
         transform: translateY(-75%) rotate(-90deg);
         z-index: 1;
@@ -234,28 +251,6 @@ body {
         transform: translateY(0) rotate(0deg) translateX(100px);
         z-index: 20;
     }
-}
-
-/* TAPA */
-.envelope-lid {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-}
-
-/* 🔥 CORRECCIÓN: SOLAPA VISIBLE DESDE EL INICIO */
-.envelope-lid-secondary {
-    background: #fff;
-    clip-path: polygon(50% 38%, 0 0, 100% 0);
-    transform-origin: top;
-
-    transform: rotateX(0deg); /* 👈 clave */
-    z-index: 6;
-}
-
-/* ANIMACIÓN DE APERTURA */
-.envelope.abierto .envelope-lid-secondary {
-    transform: rotateX(180deg);
 }
 
 /* ❤️ CORAZÓN */
