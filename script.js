@@ -79,4 +79,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (heartSeal) heartSeal.style.transition = 'opacity 0.3s ease';
 
-});
+}); 
