@@ -22,41 +22,56 @@ body {
     width: 300px;
     height: 200px;
     background-color: white;
+
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
 
-    box-shadow: 0 0 0 1px #000;
+    border: 2px solid black; /* 🔥 BORDE EXTERNO */
     z-index: 10;
 }
 
-/* CUERPO SOBRE */
+/* CUERPO DEL SOBRE */
 .envelope::after {
     content: '';
     position: absolute;
     inset: 0;
+
     border-top: 75px solid transparent;
     border-right: 150px solid white;
     border-bottom: 125px solid white;
     border-left: 150px solid white;
+
     z-index: 1;
+
+    /* 🔥 bordes negros visibles */
+    filter: drop-shadow(0 0 0 black);
 }
 
-/* 🔥 SOLAPA (IGUAL AL QUE FUNCIONA) */
+/* 🔥 SOLAPA PERFECTA */
 .envelope-lid-secondary {
     position: absolute;
     inset: 0;
     background-color: white;
+
     clip-path: polygon(50% 38%, 0 0, 100% 0);
+
     transform-origin: top;
     transform: rotateX(0deg);
-    transition: transform 0.5s;
+
+    transition: transform 0.5s ease;
+
     z-index: 20;
+
+    /* 🔥 BORDE TRIÁNGULO */
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
 }
 
 /* ABRIR */
@@ -64,10 +79,10 @@ body {
     transform: rotateX(180deg);
 }
 
-/* CARD WRAPPER */
+/* 🔥 CARTA ARRANCA DENTRO DEL SOBRE */
 .card-wrapper {
     perspective: 1000px;
-    transform: rotate(-90deg);
+    transform: translateY(20px) rotate(-90deg); /* 🔥 clave */
     z-index: 2;
 }
 
@@ -76,9 +91,11 @@ body {
     width: 180px;
     height: 285px;
     background-color: #fff;
-    border: 1px solid #000;
+    border: 1px solid black;
+
     transform-style: preserve-3d;
     transition: transform 400ms ease;
+
     box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
 }
 
@@ -95,8 +112,10 @@ body {
 .card-cover {
     position: absolute;
     inset: 0;
+
     transform-style: preserve-3d;
     transform-origin: left;
+
     transition: transform 500ms;
 }
 
@@ -111,8 +130,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
 
+    gap: 6px;
     text-align: center;
     padding: 10px;
 }
@@ -159,7 +178,7 @@ body {
     text-align: justify;
 }
 
-/* 🔥 ANIMACION DEL SOBRE (ADAPTADA DE HOVER → CLICK) */
+/* 🔥 ANIMACION PERFECTA */
 .envelope.abierto .card-wrapper {
     animation: show-card 1s 0.5s forwards;
 }
@@ -174,7 +193,7 @@ body {
     }
 }
 
-/* CORAZÓN */
+/* ❤️ CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
