@@ -92,12 +92,15 @@ body {
     border-right: 150px solid white;
     border-bottom: 125px solid white;
     border-left: 150px solid white;
+    z-index: 5;
 }
 
 /* CARD WRAPPER */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
+    position: relative;
+    z-index: 1; /* 🔥 arranca abajo */
 }
 
 /* CARTA */
@@ -131,7 +134,7 @@ body {
     transition: transform 500ms;
 }
 
-/* 🔥 CENTRADO PERFECTO */
+/* CENTRADO */
 .card-side {
     position: absolute;
     inset: 0;
@@ -145,7 +148,6 @@ body {
 
     text-align: center;
     gap: 6px;
-
     padding: 10px;
 }
 
@@ -174,14 +176,13 @@ body {
     transform: rotateY(180deg);
 }
 
-/* ✨ TEXTOS */
+/* TEXTOS */
 .card-title-secondary {
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
-/* 👉 CONTENEDOR REAL (coincide con HTML) */
 .nombre-container {
     display: flex;
     align-items: center;
@@ -189,19 +190,15 @@ body {
     gap: 8px;
 }
 
-/* 👉 Karen */
 .card-title-main {
     font-family: "Petemoss", serif;
     font-size: 50px;
-    line-height: 1;
 }
 
-/* ❤️ */
 .corazon-chiquito {
     font-size: 28px;
 }
 
-/* 👉 texto de abajo */
 .dedicatoria {
     font-size: 13px;
     margin-top: 4px;
@@ -214,28 +211,28 @@ body {
 }
 
 .card-body p {
-    font-size: 10px;
-    line-height: 1.3;
+    font-size: 9px;
+    line-height: 1.4;
+    text-align: justify;
     color: #333;
 }
 
-/* 🔥 evita que el texto se salga */
-.lado-izquierdo {
-    max-width: 100%;
-    overflow: hidden;
-}
-
-/* ANIMACIÓN */
+/* 🔥 ANIMACIÓN CORREGIDA */
 .envelope.abierto .card-wrapper {
     animation: show-card 1000ms 600ms forwards;
 }
 
 @keyframes show-card {
+    0% {
+        z-index: 1;
+    }
     50% {
         transform: translateY(-75%) rotate(-90deg);
+        z-index: 1;
     }
     100% {
         transform: translateY(0) rotate(0deg) translateX(100px);
+        z-index: 20; /* 🔥 ahora SI queda arriba */
     }
 }
 
@@ -256,14 +253,14 @@ body {
     transform: rotateX(180deg);
 }
 
-/* ❤️ CORAZÓN SOBRE */
+/* ❤️ CORAZÓN */
 .heart-seal {
     position: absolute;
     top: 38%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 28px;
-    z-index: 20;
+    z-index: 30;
     pointer-events: none;
     animation: latido 1s infinite;
 }
