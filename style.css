@@ -92,15 +92,15 @@ body {
     border-right: 150px solid white;
     border-bottom: 125px solid white;
     border-left: 150px solid white;
-    z-index: 5;
+    z-index: 2;
 }
 
-/* CARD WRAPPER */
+/* CARD WRAPPER (NO SE TOCA POSICIÓN ORIGINAL) */
 .card-wrapper {
     perspective: 1000px;
     transform: rotate(-90deg);
     position: relative;
-    z-index: 1; /* 🔥 arranca abajo */
+    z-index: 1;
 }
 
 /* CARTA */
@@ -217,7 +217,7 @@ body {
     color: #333;
 }
 
-/* 🔥 ANIMACIÓN CORREGIDA */
+/* ANIMACIÓN */
 .envelope.abierto .card-wrapper {
     animation: show-card 1000ms 600ms forwards;
 }
@@ -232,7 +232,7 @@ body {
     }
     100% {
         transform: translateY(0) rotate(0deg) translateX(100px);
-        z-index: 20; /* 🔥 ahora SI queda arriba */
+        z-index: 20;
     }
 }
 
@@ -240,15 +240,20 @@ body {
 .envelope-lid {
     position: absolute;
     inset: 0;
+    z-index: 5;
 }
 
+/* 🔥 CORRECCIÓN: SOLAPA VISIBLE DESDE EL INICIO */
 .envelope-lid-secondary {
     background: #fff;
     clip-path: polygon(50% 38%, 0 0, 100% 0);
     transform-origin: top;
-    transition: transform 500ms;
+
+    transform: rotateX(0deg); /* 👈 clave */
+    z-index: 6;
 }
 
+/* ANIMACIÓN DE APERTURA */
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
 }
@@ -269,4 +274,6 @@ body {
     0%,100% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.2); }
 }
+
+
 
