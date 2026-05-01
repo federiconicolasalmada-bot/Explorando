@@ -126,10 +126,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2px; /* 🔥 Achicamos de 6px a 2px */
-
     text-align: center;
-    padding: 2px; /* 🔥 Acá estaba el problema: lo pasamos de 10px a 2px para recuperar espacio */
 }
 
 /* MARCAR LA TAPA */
@@ -170,21 +167,27 @@ body {
     font-size: 13px;
 }
 
-/* 🔥 CONTENIDO INTERIOR (Ajustes extremos de márgenes y letra) */
+/* 🔥 CONTENIDO INTERIOR (El truco maestro para engañar al navegador) */
 .card-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px; 
+    height: 380px; 
+    transform: translate(-50%, -50%) scale(0.65);
+    
     font-family: "Shantell Sans", sans-serif;
-    padding: 0px; /* 🔥 Sin márgenes extra */
-    height: 100%; 
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
-    gap: 2px; /* 🔥 Párrafos más juntitos */
+    gap: 14px; 
+    padding: 0;
 }
 
 .card-body p {
-    font-size: 5.5px; /* 🔥 Letra un poco más chica */
-    line-height: 1.1; /* 🔥 Interlineado bien pegadito */
+    font-size: 14px; 
+    line-height: 1.3;
     text-align: center; 
     margin: 0;
 }
