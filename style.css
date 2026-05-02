@@ -6,18 +6,20 @@
     padding: 0;
 }
 
-/* FONDO */
+/* 🌅 FONDO CON IMAGEN Y DEGRADADO */
 body {
     font-family: "Roboto", sans-serif;
     height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-                url("atardecer.jpg");
+    margin: 0;
+    overflow: hidden; /* Evita barras de desplazamiento en la pantalla principal */
+    background: 
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url("atardecer.jpg");
     background-size: cover;
     background-position: center;
 }
 
-/* SOBRE */
+/* SOBRE (Contenedor principal) */
 .envelope {
     width: 300px;
     height: 200px;
@@ -33,9 +35,10 @@ body {
 
     box-shadow: 0 0 0 1px #000;
     z-index: 10;
+    cursor: pointer;
 }
 
-/* CUERPO SOBRE */
+/* CUERPO DEL SOBRE (Efecto visual 3D) */
 .envelope::after {
     content: '';
     position: absolute;
@@ -45,19 +48,20 @@ body {
     border-bottom: 125px solid #f4f4f4; 
     border-left: 150px solid #fcfcfc;   
     z-index: 10; 
-    pointer-events: none; 
+    pointer-events: none; /* Permite hacer clic a través de esta capa */
 }
 
-/* SOLAPA */
+/* SOLAPA DEL SOBRE */
 .envelope-lid-secondary {
     position: absolute;
     inset: 0;
     transform-origin: top;
     transform: rotateX(0deg);
-    transition: transform 0.5s;
+    transition: transform 0.5s ease;
     z-index: 20;
 }
 
+/* Sombra de la solapa */
 .envelope-lid-secondary::before {
     content: '';
     position: absolute;
@@ -66,6 +70,7 @@ body {
     clip-path: polygon(50% 39.5%, 0 0, 100% 0); 
 }
 
+/* Parte blanca de la solapa */
 .envelope-lid-secondary::after {
     content: '';
     position: absolute;
@@ -74,19 +79,20 @@ body {
     clip-path: polygon(50% 38%, 0 0, 100% 0); 
 }
 
-/* ABRIR */
+/* ESTADO: SOBRE ABRIRSE (Al hacer clic) */
 .envelope.abierto .envelope-lid-secondary {
     transform: rotateX(180deg);
 }
 
-/* CARD WRAPPER */
+/* CARD WRAPPER (Maneja la perspectiva 3D) */
 .card-wrapper {
     perspective: 1000px;
-    transform: rotate(-90deg);
+    transform: rotate(-90deg); /* La carta sale rotada */
     z-index: 5;
+    will-change: transform;
 }
 
-/* CARTA */
+/* LA CARTA FÍSICA */
 .card {
     width: 180px;
     height: 285px;
@@ -95,31 +101,32 @@ body {
     transform-style: preserve-3d;
     transition: transform 400ms ease;
     box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
-/* DESPLEGAR */
+/* ESTADO: DESPLEGAR CARTA (Al hacer segundo clic) */
 .card.desplegada {
-    transform: rotateY(-15deg);
+    transform: rotateY(-15deg); /* Inclinación 3D del cuerpo */
 }
 
 .card.desplegada .card-cover {
-    transform: rotateY(-135deg);
+    transform: rotateY(-135deg); /* Apertura de la portada */
 }
 
-/* COVER */
+/* PORTADA DE LA CARTA (La tapa) */
 .card-cover {
     position: absolute;
     inset: 0;
     transform-style: preserve-3d;
-    transform-origin: left;
-    transition: transform 500ms;
+    transform-origin: left; /* Abre desde la izquierda */
+    transition: transform 500ms ease;
 }
 
-/* LADOS */
+/* LADOS DE LA CARTA (Estilos comunes) */
 .card-side {
     position: absolute;
     inset: 0;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Oculta la parte trasera al girar */
     background-color: white;
 
     display: flex;
@@ -132,28 +139,33 @@ body {
     padding: 6px;
 }
 
-/* BORDE DOBLEZ */
+/* Lado Frontal (Portada) */
 .card-side-primary {
     border-right: 1px solid rgba(0, 0, 0, 0.2); 
     box-shadow: 3px 0px 5px rgba(0,0,0,0.08);
 }
 
+/* Lado Interior Izquierdo (Reverso de la portada) */
 .card-side-secondary {
     transform: rotateY(180deg);
     border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* TEXTOS PORTADA */
+/* ✨ TEXTOS DE LA PORTADA ✨ */
 .card-title-secondary {
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    position: relative;
+    top: -35px; /* Ajuste de posición vertical */
 }
 
 .nombre-container {
     display: flex;
     align-items: center;
     gap: 6px;
+    position: relative;
+    top: -15px; /* Ajuste de posición vertical */
 }
 
 .card-title-main {
@@ -167,44 +179,59 @@ body {
 
 .dedicatoria {
     font-size: 13px;
+    position: relative;
+    top: 15px; /* Ajuste de posición vertical */
 }
 
-/* 🔥 CONTENIDO INTERIOR OPTIMIZADO */
+/* =========================================
+   🔥 CONTENIDO INTERIOR (EL MENSAJE) 🔥
+   Optimizado para quedar dentro de los bordes.
+   ========================================= */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    padding: 6px;
+    /* padding: Muro invisible de 18px en los 4 lados para que el texto no toque el borde */
+    padding: 18px; 
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 🔥 clave */
-    gap: 2px;
+    /* justify-content: Centra verticalmente todo el bloque de texto */
+    justify-content: center; 
+    /* gap: Espacio uniforme y prolijo entre cada párrafo */
+    gap: 10px;
+    /* overflow: Asegura que nada se corte si la letra es muy grande */
+    overflow: hidden; 
 }
 
 .card-body p {
-    font-size: 5.8px; /* 🔥 mejor balance */
-    line-height: 1.15;
-    text-align: justify;
-    text-indent: 4px; /* 🔥 efecto carta real */
+    /* font-size: Tamaño ideal y legible para una carta de 180px de ancho */
+    font-size: 9px; 
+    /* line-height: Da aire entre renglones para que no se vea amontonado */
+    line-height: 1.3;
+    /* text-align: Alineación a la izquierda para evitar espacios raros del justify */
+    text-align: left;
     margin: 0;
     color: #333;
 }
 
-/* ANIMACION */
+/* ANIMACIÓN: SALIDA DE LA CARTA DEL SOBRE */
 .envelope.abierto .card-wrapper {
-    animation: show-card 1s 0.5s forwards;
+    /* Tarda 1s en salir, esperando 0.5s a que se abra la solapa */
+    animation: show-card 1s 0.5s forwards ease-out;
 }
 
 @keyframes show-card {
     50% {
+        /* Sube para salir del sobre */
         transform: translateY(-75%) rotate(-90deg);
     }
     100% {
+        /* Se endereza y se mueve a la derecha */
         transform: translateY(0) rotate(0deg) translateX(100px);
-        z-index: 30;
+        z-index: 30; /* Queda por encima de todo */
     }
 }
 
-/* CORAZÓN */
+/* SELLO DE CORAZÓN EN LA SOLAPA */
 .heart-seal {
     position: absolute;
     top: 38%;
@@ -212,5 +239,58 @@ body {
     transform: translate(-50%, -50%);
     font-size: 28px;
     z-index: 40;
+}
+
+/* =========================================
+   ✨ CIELO ESTRELLADO (MIX: FIJAS + TITILANTES) ✨ 
+   ========================================= */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden; 
+}
+
+.stars::before, .stars::after {
+    content: "";
+    position: absolute;
+    /* Posición inicial semilla */
+    top: 2vh;
+    left: 2vw;
+    width: 2px;  
+    height: 2px; 
+    background: white; 
+    border-radius: 50%; 
+}
+
+/* Capa 1: Estrellas 100% fijas de fondo */
+.stars::before {
+    box-shadow: 
+        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
+        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
+    opacity: 0;
+    animation: aparecerEstrellas 4s forwards;
+}
+
+/* Capa 2: Estrellas que están quietas en su lugar pero TITILAN */
+.stars::after {
+    /* Posición semilla diferente */
+    top: 4vh;
+    left: 4vw;
+    box-shadow: 
+        12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
+        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
+    animation: parpadeo 2s infinite alternate; 
+}
+
+/* Animaciones de las estrellas */
+@keyframes aparecerEstrellas { 
+    to { opacity: 0.7; }
+}
+
+@keyframes parpadeo { 
+    from { opacity: 0.1; } 
+    to { opacity: 1; }     
 }
 
