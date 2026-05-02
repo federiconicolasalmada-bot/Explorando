@@ -188,7 +188,7 @@ body {
    ========================================= */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    /* 🔥 padding: Arriba, Derecha, Abajo, Izquierda. Le damos 20px arriba para que no toque el borde */
+    /* 🔥 padding: Arriba, Derecha, Abajo, Izquierda. Le damos 24px arriba para que no toque el borde */
     padding: 24px 14px 14px 14px; 
     height: 100%;
     display: flex;
@@ -199,7 +199,7 @@ body {
 }
 
 .card-body p {
-    font-size: 10.5px; /* 🔥 Letra más grande (podes probar con 11px si aún queda lugar) */
+    font-size: 10.5px; /* 🔥 Letra más grande */
     line-height: 1.25; /* Ajustamos el aire entre renglones para que encaje perfecto */
     text-align: left;
     margin: 0;
@@ -224,7 +224,9 @@ body {
     }
 }
 
-/* SELLO DE CORAZÓN EN LA SOLAPA */
+/* =========================================
+   ❤️ SELLO DE CORAZÓN EN LA SOLAPA ❤️
+   ========================================= */
 .heart-seal {
     position: absolute;
     top: 38%;
@@ -232,6 +234,29 @@ body {
     transform: translate(-50%, -50%);
     font-size: 28px;
     z-index: 40;
+    
+    /* Estado: SOBRE CERRADO (Visible y latiendo) */
+    opacity: 1;
+    visibility: visible;
+    /* Al cerrarse la carta, espera 1 segundo (1s) antes de reaparecer */
+    transition: opacity 0.4s ease 1s, visibility 0s linear 1s; 
+    animation: latido 1s infinite;
+}
+
+/* ESTADO: SOBRE ABIERTO */
+.envelope.abierto .heart-seal {
+    /* Estado: SOBRE ABIERTO (Invisible y apagado) */
+    opacity: 0;
+    visibility: hidden; /* Lo elimina físicamente para que no tape la carta */
+    /* Desaparece inmediatamente (0s) al abrir la carta */
+    transition: opacity 0.3s ease 0s, visibility 0s linear 0s;
+    animation: none; /* 🔥 APAGA el latido para que no vuelva a aparecer a la fuerza */
+}
+
+/* Animación del latido */
+@keyframes latido {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
 /* =========================================
@@ -286,4 +311,3 @@ body {
     from { opacity: 0.1; } 
     to { opacity: 1; }     
 }
-
