@@ -185,29 +185,21 @@ body {
 
 /* =========================================
    🔥 CONTENIDO INTERIOR (EL MENSAJE) 🔥
-   Optimizado para quedar dentro de los bordes.
    ========================================= */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    /* padding: Muro invisible de 18px en los 4 lados para que el texto no toque el borde */
-    padding: 18px; 
+    padding: 14px; /* Le damos un poco más de ancho útil al texto */
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* justify-content: Centra verticalmente todo el bloque de texto */
     justify-content: center; 
-    /* gap: Espacio uniforme y prolijo entre cada párrafo */
-    gap: 10px;
-    /* overflow: Asegura que nada se corte si la letra es muy grande */
+    gap: 7px; /* Reducimos apenitas el espacio entre párrafos */
     overflow: hidden; 
 }
 
 .card-body p {
-    /* font-size: Tamaño ideal y legible para una carta de 180px de ancho */
-    font-size: 9px; 
-    /* line-height: Da aire entre renglones para que no se vea amontonado */
-    line-height: 1.3;
-    /* text-align: Alineación a la izquierda para evitar espacios raros del justify */
+    font-size: 10.5px; /* 🔥 Letra más grande (podes probar con 11px si aún queda lugar) */
+    line-height: 1.25; /* Ajustamos el aire entre renglones para que encaje perfecto */
     text-align: left;
     margin: 0;
     color: #333;
