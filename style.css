@@ -188,14 +188,19 @@ body {
    ========================================= */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    /* 🔥 Bajamos el primer número a 10px para que el texto arranque más arriba */
-    padding: 10px 14px 14px 14px; 
+    /* Ajustamos el padding a 14px parejo para que el marco quede perfectamente centrado */
+    padding: 14px; 
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start; 
     gap: 7px; 
     overflow: hidden; 
+
+    /* ✨ NUEVOS ESTILOS DE BORDE Y FONDO ✨ */
+    background-color: #fffafa; /* Un blanco apenitas rosado/cálido para matar el brillo */
+    outline: 1px dashed #ff758f; /* Un marco punteado color rosa/rojo suave */
+    outline-offset: -6px; /* Mete el marco 6 píxeles hacia adentro de la hoja */
 }
 
 .card-body p {
