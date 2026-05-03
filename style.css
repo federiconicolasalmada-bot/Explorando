@@ -9,7 +9,7 @@
 /* 🌅 FONDO CON IMAGEN Y DEGRADADO */
 body {
     font-family: "Roboto", sans-serif;
-    min-height: 100dvh; /* 🔥 ACÁ ESTÁ EL CAMBIO DINÁMICO PARA CELULARES */
+    height: 100vh;
     margin: 0;
     overflow: hidden; /* Evita barras de desplazamiento en la pantalla principal */
     background: 
@@ -188,7 +188,7 @@ body {
    ========================================= */
 .card-body {
     font-family: "Shantell Sans", sans-serif;
-    /* 🔥 Bajamos el primer número a 10px para que el texto arranque más arriba */
+    /* 🔥 Bajamos el primer número a 16px para que el texto arranque más arriba */
     padding: 10px 14px 14px 14px; 
     height: 100%;
     display: flex;
@@ -310,4 +310,4 @@ body {
 @keyframes parpadeo { 
     from { opacity: 0.1; } 
     to { opacity: 1; }     
-} 
+}
