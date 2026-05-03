@@ -1,313 +1,274 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* 🌅 FONDO CON IMAGEN Y DEGRADADO */
+/* 🌅 FONDO */
 body {
-    font-family: "Roboto", sans-serif;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden; /* Evita barras de desplazamiento en la pantalla principal */
-    background: 
-        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-        url("atardecer.jpg");
-    background-size: cover;
-    background-position: center;
+    font-family: "Roboto", sans-serif;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: 
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url("atardecer.jpg");
+    background-size: cover;
+    background-position: center;
 }
 
-/* SOBRE (Contenedor principal) */
+/* SOBRE */
 .envelope {
-    width: 300px;
-    height: 200px;
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    box-shadow: 0 0 0 1px #000;
-    z-index: 10;
-    cursor: pointer;
+    box-shadow: 0 0 0 1px #000;
+    z-index: 10;
+    cursor: pointer;
 }
 
-/* CUERPO DEL SOBRE (Efecto visual 3D) */
+/* CUERPO SOBRE */
 .envelope::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-top: 75px solid transparent;
-    border-right: 150px solid #fcfcfc;  
-    border-bottom: 125px solid #f4f4f4; 
-    border-left: 150px solid #fcfcfc;   
-    z-index: 10; 
-    pointer-events: none; /* Permite hacer clic a través de esta capa */
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: 75px solid transparent;
+    border-right: 150px solid #fcfcfc;  
+    border-bottom: 125px solid #f4f4f4; 
+    border-left: 150px solid #fcfcfc;   
+    z-index: 10; 
+    pointer-events: none;
 }
 
-/* SOLAPA DEL SOBRE */
+/* SOLAPA */
 .envelope-lid-secondary {
-    position: absolute;
-    inset: 0;
-    transform-origin: top;
-    transform: rotateX(0deg);
-    transition: transform 0.5s ease;
-    z-index: 20;
+    position: absolute;
+    inset: 0;
+    transform-origin: top;
+    transform: rotateX(0deg);
+    transition: transform 0.5s ease;
+    z-index: 20;
 }
 
-/* Sombra de la solapa */
 .envelope-lid-secondary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.2); 
-    clip-path: polygon(50% 39.5%, 0 0, 100% 0); 
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2); 
+    clip-path: polygon(50% 39.5%, 0 0, 100% 0); 
 }
 
-/* Parte blanca de la solapa */
 .envelope-lid-secondary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: white; 
-    clip-path: polygon(50% 38%, 0 0, 100% 0); 
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: white; 
+    clip-path: polygon(50% 38%, 0 0, 100% 0); 
 }
 
-/* ESTADO: SOBRE ABRIRSE (Al hacer clic) */
+/* ABRIR */
 .envelope.abierto .envelope-lid-secondary {
-    transform: rotateX(180deg);
+    transform: rotateX(180deg);
 }
 
-/* CARD WRAPPER (Maneja la perspectiva 3D) */
+/* CARD WRAPPER */
 .card-wrapper {
-    perspective: 1000px;
-    transform: rotate(-90deg); /* La carta sale rotada */
-    z-index: 5;
-    will-change: transform;
+    perspective: 1000px;
+    transform: rotate(-90deg);
+    z-index: 5;
 }
 
-/* LA CARTA FÍSICA */
+/* CARTA */
 .card {
-    width: 180px;
-    height: 285px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    transform-style: preserve-3d;
-    transition: transform 400ms ease;
-    box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
-    cursor: pointer;
+    width: 180px;
+    height: 285px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+    transition: transform 400ms ease;
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
-/* ESTADO: DESPLEGAR CARTA (Al hacer segundo clic) */
+/* DESPLEGAR */
 .card.desplegada {
-    transform: rotateY(-15deg); /* Inclinación 3D del cuerpo */
+    transform: rotateY(-15deg);
 }
 
 .card.desplegada .card-cover {
-    transform: rotateY(-135deg); /* Apertura de la portada */
+    transform: rotateY(-135deg);
 }
 
-/* PORTADA DE LA CARTA (La tapa) */
+/* COVER */
 .card-cover {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    transform-origin: left; /* Abre desde la izquierda */
-    transition: transform 500ms ease;
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transition: transform 500ms ease;
 }
 
-/* LADOS DE LA CARTA (Estilos comunes) */
+/* LADOS */
 .card-side {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden; /* Oculta la parte trasera al girar */
-    background-color: white;
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background-color: white;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
 
-    text-align: center;
-    padding: 6px;
+    text-align: center;
+    padding: 6px;
 }
 
-/* Lado Frontal (Portada) */
 .card-side-primary {
-    border-right: 1px solid rgba(0, 0, 0, 0.2); 
-    box-shadow: 3px 0px 5px rgba(0,0,0,0.08);
+    border-right: 1px solid rgba(0, 0, 0, 0.2); 
+    box-shadow: 3px 0px 5px rgba(0,0,0,0.08);
 }
 
-/* Lado Interior Izquierdo (Reverso de la portada) */
 .card-side-secondary {
-    transform: rotateY(180deg);
-    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    transform: rotateY(180deg);
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-/* ✨ TEXTOS DE LA PORTADA ✨ */
+/* TEXTOS PORTADA */
 .card-title-secondary {
-    font-size: 14px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    position: relative;
-    top: -35px; /* Ajuste de posición vertical */
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    top: -35px;
 }
 
 .nombre-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    position: relative;
-    top: -15px; /* Ajuste de posición vertical */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    top: -15px;
 }
 
 .card-title-main {
-    font-family: "Petemoss", cursive;
-    font-size: 50px;
+    font-family: "Petemoss", cursive;
+    font-size: 50px;
 }
 
 .corazon-chiquito {
-    font-size: 28px;
+    font-size: 28px;
 }
 
 .dedicatoria {
-    font-size: 13px;
-    position: relative;
-    top: 15px; /* Ajuste de posición vertical */
+    font-size: 13px;
+    position: relative;
+    top: 15px;
 }
 
-/* =========================================
-   🔥 CONTENIDO INTERIOR (EL MENSAJE) 🔥
-   ========================================= */
+/* 🔥 CONTENIDO INTERIOR CORREGIDO */
 .card-body {
-    font-family: "Shantell Sans", sans-serif;
-    /* 🔥 Bajamos el primer número a 16px para que el texto arranque más arriba */
-    padding: 10px 14px 14px 14px; 
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; 
-    gap: 7px; 
-    overflow: hidden; 
+    font-family: "Shantell Sans", sans-serif;
+    padding: 8px 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
 }
 
+/* 🔥 AJUSTE CLAVE */
 .card-body p {
-    font-size: 10.5px; /* 🔥 Letra más grande */
-    line-height: 1.25; /* Ajustamos el aire entre renglones para que encaje perfecto */
-    text-align: left;
-    margin: 0;
-    color: #333;
+    font-size: 9.5px;   /* ⬅️ más chica */
+    line-height: 1.3;
+    text-align: left;
+    margin: 0;
+    color: #333;
 }
 
-/* ANIMACIÓN: SALIDA DE LA CARTA DEL SOBRE */
+/* ANIMACION */
 .envelope.abierto .card-wrapper {
-    /* Tarda 1s en salir, esperando 0.5s a que se abra la solapa */
-    animation: show-card 1s 0.5s forwards ease-out;
+    animation: show-card 1s 0.5s forwards ease-out;
 }
 
 @keyframes show-card {
-    50% {
-        /* Sube para salir del sobre */
-        transform: translateY(-75%) rotate(-90deg);
-    }
-    100% {
-        /* Se endereza y se mueve a la derecha */
-        transform: translateY(0) rotate(0deg) translateX(100px);
-        z-index: 30; /* Queda por encima de todo */
-    }
+    50% {
+        transform: translateY(-75%) rotate(-90deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg) translateX(100px);
+        z-index: 30;
+    }
 }
 
-/* =========================================
-   ❤️ SELLO DE CORAZÓN EN LA SOLAPA ❤️
-   ========================================= */
+/* CORAZÓN */
 .heart-seal {
-    position: absolute;
-    top: 38%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    z-index: 40;
-    
-    /* Estado: SOBRE CERRADO (Visible y latiendo) */
-    opacity: 1;
-    visibility: visible;
-    /* Al cerrarse la carta, espera 1 segundo (1s) antes de reaparecer */
-    transition: opacity 0.4s ease 1s, visibility 0s linear 1s; 
-    animation: latido 1s infinite;
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    z-index: 40;
+    animation: latido 1s infinite;
 }
 
-/* ESTADO: SOBRE ABIERTO */
-.envelope.abierto .heart-seal {
-    /* Estado: SOBRE ABIERTO (Invisible y apagado) */
-    opacity: 0;
-    visibility: hidden; /* Lo elimina físicamente para que no tape la carta */
-    /* Desaparece inmediatamente (0s) al abrir la carta */
-    transition: opacity 0.3s ease 0s, visibility 0s linear 0s;
-    animation: none; /* 🔥 APAGA el latido para que no vuelva a aparecer a la fuerza */
-}
-
-/* Animación del latido */
 @keyframes latido {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.2); }
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* =========================================
-   ✨ CIELO ESTRELLADO (MIX: FIJAS + TITILANTES) ✨ 
-   ========================================= */
+/* ESTRELLAS */
 .stars {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden; 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
 .stars::before, .stars::after {
-    content: "";
-    position: absolute;
-    /* Posición inicial semilla */
-    top: 2vh;
-    left: 2vw;
-    width: 2px;  
-    height: 2px; 
-    background: white; 
-    border-radius: 50%; 
+    content: "";
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
 }
 
-/* Capa 1: Estrellas 100% fijas de fondo */
 .stars::before {
-    box-shadow: 
-        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 60vw 10vh white, 85vw 25vh white,
-        5vw 25vh white, 30vw 20vh white, 50vw 15vh white, 75vw 20vh white, 95vw 10vh white;
-    opacity: 0;
-    animation: aparecerEstrellas 4s forwards;
+    box-shadow: 
+        10vw 5vh white, 25vw 15vh white, 40vw 25vh white, 
+        60vw 10vh white, 85vw 25vh white;
+    opacity: 0;
+    animation: aparecerEstrellas 4s forwards;
 }
 
-/* Capa 2: Estrellas que están quietas en su lugar pero TITILAN */
 .stars::after {
-    /* Posición semilla diferente */
-    top: 4vh;
-    left: 4vw;
-    box-shadow: 
-        12vw 12vh white, 22vw 25vh white, 32vw 18vh white, 42vw 25vh white, 52vw 25vh white,
-        62vw 28vh white, 72vw 15vh white, 82vw 32vh white, 92vw 28vh white, 8vw 15vh white;
-    animation: parpadeo 2s infinite alternate; 
+    top: 4vh;
+    left: 4vw;
+    box-shadow: 
+        12vw 12vh white, 22vw 25vh white;
+    animation: parpadeo 2s infinite alternate;
 }
 
-/* Animaciones de las estrellas */
-@keyframes aparecerEstrellas { 
-    to { opacity: 0.7; }
+@keyframes aparecerEstrellas { 
+    to { opacity: 0.7; }
 }
 
-@keyframes parpadeo { 
-    from { opacity: 0.1;} 
-    to { opacity: 1;}     
+@keyframes parpadeo { 
+    from { opacity: 0.1;} 
+    to { opacity: 1;}     
 }
