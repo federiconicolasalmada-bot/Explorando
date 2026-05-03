@@ -215,13 +215,14 @@ body {
 
 /* CORAZÓN */
 .heart-seal {
-    position: absolute;
-    top: 38%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    z-index: 40;
-    animation: latido 1s infinite;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease;
+}
+.envelope.abierto .heart-seal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
 }
 
 @keyframes latido {
