@@ -300,4 +300,24 @@ body {
 
     pointer-events: none;
 }
+/* =========================================
+   🔥 MARCO EXCLUSIVO PARA LA PORTADA (Frente)
+   ========================================= */
+.card-side-primary::before {
+    content: "";
+    position: absolute;
 
+    /* Las mismas medidas que el marco interior */
+    top: 6px;        
+    left: 8px;
+    right: 8px;
+    bottom: 12px;
+
+    /* Los mismos bordes (3 lados) */
+    border-top: 2px solid rgba(0,0,0,0.3);
+    border-left: 2px solid rgba(0,0,0,0.3);
+    border-right: 2px solid rgba(0,0,0,0.3);
+
+    /* ❌ sin borde inferior */
+    pointer-events: none; /* Para que no interfiera con los clics */
+}
