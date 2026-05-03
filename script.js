@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 audio.currentTime = 0;
                 audio.play().catch(() => {}); // evita error si el navegador bloquea
 
+                // 🔥 LIMPIAR EL ESTILO EN LÍNEA DEL CORAZÓN AL ABRIR
+                if(heartSeal) heartSeal.style.opacity = "";
+
                 // 💥 explosión de corazones
                 for (let i = 0; i < 20; i++) {
                     const heart = document.createElement("div");
@@ -74,13 +77,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sobre && heartSeal) {
 
         sobre.addEventListener("mouseover", () => {
-            clearTimeout(timeoutId);
-            heartSeal.style.opacity = 0;
+            // Solo hace el efecto hover si el sobre está CERRADO
+            if (!sobre.classList.contains("abierto")) {
+                clearTimeout(timeoutId);
+                heartSeal.style.opacity = 0;
+            }
         });
 
         sobre.addEventListener("mouseout", () => {
             timeoutId = setTimeout(() => {
-                heartSeal.style.opacity = 1;
+                // 🔥 SOLO vuelve a mostrarlo si el sobre sigue CERRADO
+                if (!sobre.classList.contains("abierto")) {
+                    heartSeal.style.opacity = 1;
+                }
             }, 1500);
         });
 
