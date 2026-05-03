@@ -33,7 +33,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* 🔥 mejora visual */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     z-index: 10;
     cursor: pointer;
 }
@@ -187,7 +187,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     gap: 6px;
-    overflow: hidden; /* 🔥 evita desbordes */
+    overflow: hidden;
 }
 
 .card-body p {
@@ -213,30 +213,27 @@ body {
     }
 }
 
-/* ❤️ CORAZÓN */
+/* ❤️ CORAZÓN EN LA SOLAPA */
 .heart-seal {
-    position: absolute; /* 🔥 FIX IMPORTANTE */
-    top: 38%;
+    position: absolute;
+    top: 32%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 28px;
+    font-size: 26px;
+    z-index: 25;
 
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.3s ease;
     pointer-events: none;
+
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+/* DESAPARECE AL ABRIR */
 .envelope.abierto .heart-seal {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease;
-}
-
-/* ANIMACIÓN CORAZÓN */
-@keyframes latido {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
 /* ESTRELLAS */
