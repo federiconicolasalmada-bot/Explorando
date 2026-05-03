@@ -282,12 +282,8 @@ body {
 
 }
 
-/* 🔥 MARCO EN TODAS LAS CARAS (VISIBLE SI O SI) */
-.card::before,
-.card-cover::before,
-.card-side-secondary::before,
-.card-side-primary::before {
-    content: "";
+/* 🔥 MARCO REAL (SIN BUGS 3D) */
+.marco {
     position: absolute;
 
     top: 6px;
@@ -300,5 +296,5 @@ body {
     border-right: 2px solid rgba(0,0,0,0.3);
 
     pointer-events: none;
-    z-index: 999; /* 🔥 ESTO LO HACE VISIBLE */
+    z-index: 5;
 }
