@@ -282,7 +282,7 @@ body {
 
 }
 
-/* 🔥 MARCO EN TODAS LAS CARAS (incluye portada cerrada) */
+/* 🔥 MARCO EN TODAS LAS CARAS (VISIBLE SI O SI) */
 .card::before,
 .card-cover::before,
 .card-side-secondary::before,
@@ -300,4 +300,5 @@ body {
     border-right: 2px solid rgba(0,0,0,0.3);
 
     pointer-events: none;
+    z-index: 5; /* 🔥 ESTO LO HACE VISIBLE */
 }
