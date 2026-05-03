@@ -280,13 +280,14 @@ body {
     to { opacity: 1;}     
 }
 
-}
-
-/* 🔥 MARCO REAL (SIN BUGS 3D) */
-.marco {
+/* 🔥 MARCO SUPERIOR (3 lados, más grueso y más arriba) */
+.card::before,
+.card-cover::before,
+.card-side-secondary::before {
+    content: "";
     position: absolute;
 
-    top: 6px;
+    top: 6px;        /* 🔥 más arriba */
     left: 8px;
     right: 8px;
     bottom: 12px;
@@ -295,6 +296,8 @@ body {
     border-left: 2px solid rgba(0,0,0,0.3);
     border-right: 2px solid rgba(0,0,0,0.3);
 
+    /* ❌ sin borde inferior */
+
     pointer-events: none;
-    z-index: 5;
 }
+
