@@ -7,9 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let timeoutId;
 
-    // 🎵 AUDIO
-    const audio = new Audio("mi-cancion.mp3");
-    audio.volume = 0.1;
+    // 🎵 AUDIO: Llamamos al que ya pusiste en el HTML
+    const audio = document.getElementById("musica");
+    if (audio) {
+        audio.volume = 0.3; // Volumen ajustado
+    }
 
     // 👉 PRIMER CLICK (SOBRE)
     if (sobre) {
@@ -18,9 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const abierto = sobre.classList.toggle("abierto");
 
             if (abierto) {
-                // 🔊 reproducir audio sin duplicarse
-                audio.currentTime = 0;
-                audio.play().catch(() => {}); // evita error si el navegador bloquea
+                // 🔊 reproducir audio al abrir
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch((error) => console.log("Error de audio:", error)); 
+                }
 
                 // 🔥 LIMPIAR EL ESTILO EN LÍNEA DEL CORAZÓN AL ABRIR
                 if(heartSeal) heartSeal.style.opacity = "";
@@ -52,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
             } else {
-                // 🔇 pausar audio
-                audio.pause();
+                // 🔇 pausar audio al cerrar
+                if (audio) audio.pause();
 
                 // 🔁 cerrar carta si estaba abierta
                 if (carta) carta.classList.remove("desplegada");
