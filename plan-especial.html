@@ -630,7 +630,7 @@ body{
   </div>
 </div>
 
-<button id="skip-btn" onclick="revealMain()">modo dev: ver página →</button>
+<button id="skip-btn" onclick="revealMain()" style="display:none;">modo dev: ver página →</button>
 
 <!-- ════════════ MAIN PAGE ════════════ -->
 <div id="main-screen" style="display:none">
@@ -1136,6 +1136,12 @@ function showModal(){
     `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
   document.getElementById('modal').classList.add('show');
 }
+</script>
+  <script>
+  // Mostrar botón dev solo si la URL tiene "?secreto"
+  if (window.location.search.includes("?secreto")) {
+    document.getElementById("skip-btn").style.display = "block";
+  }
 </script>
 </body>
 </html>
