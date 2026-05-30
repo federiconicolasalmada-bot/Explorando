@@ -361,12 +361,13 @@ body{
 }
 .nope-msg {
   font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
+  font-size: 1rem; /* Le bajamos apenas el tamaño para que entre perfecto */
   color: var(--cream);
   font-style: italic;
   text-align: center;
-  padding: 0 1rem;
+  padding: 0 0.5rem; /* Reducimos un poquito el espacio a los costados */
   opacity: 0;
+  white-space: nowrap; /* 🌟 Esta es la magia: fuerza a que nada baje de línea */
 }
 .nope-overlay.show .nope-msg {
   animation: fadeUp 0.4s 0.2s forwards;
