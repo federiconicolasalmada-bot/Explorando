@@ -334,6 +334,44 @@ body{
 }
 .serie-card.selected .serie-check{opacity:1;transform:scale(1)}
 
+/* ─── Animacion de rechazo (Grey's Anatomy) ─── */
+.nope-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,3,15,0.85);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nope-overlay.show {
+  opacity: 1;
+  pointer-events: all; /* Bloquea clics extra mientras se muestra */
+}
+.nope-cross {
+  font-size: 5rem;
+  color: var(--rose);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.nope-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--cream);
+  font-style: italic;
+  text-align: center;
+  padding: 0 1rem;
+  opacity: 0;
+}
+.nope-overlay.show .nope-msg {
+  animation: fadeUp 0.4s 0.2s forwards;
+}
+
 /* ─── Comment Box ─── */
 .comment-wrap{
   background:var(--card);
@@ -1069,7 +1107,7 @@ function submitPlaceComment(){
    SERIES 
 ═══════════════════════════════ */
 const series = [
-  { id:'s1',  name:'Peaky Blinders',          genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
+  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
   { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
   { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
   { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
@@ -1096,7 +1134,10 @@ series.forEach(s => {
     </div>
   `;
   card.addEventListener('click', ()=>{
+    const isGreysAnatomy = (s.id === 's3');
     const idx = selectedSeries.indexOf(s.id);
+
+    // Selección estándar
     if(idx !== -1){
       selectedSeries.splice(idx, 1);
     } else {
@@ -1104,6 +1145,36 @@ series.forEach(s => {
     }
     refreshSeriesNumbers();
     saveState();
+
+    // Lógica especial para Grey's Anatomy
+    if(isGreysAnatomy && selectedSeries.includes('s3')){
+      let overlay = card.querySelector('.nope-overlay');
+      if(!overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'nope-overlay';
+        overlay.innerHTML = `
+          <span class="nope-cross">✗</span>
+          <span class="nope-msg">justo esa no waa ♡</span>
+        `;
+        card.appendChild(overlay);
+      }
+      
+      // Mostrar overlay con animación
+      setTimeout(() => {
+        overlay.classList.add('show');
+      }, 50);
+
+      // A los 2.5 segundos, destildar y ocultar el mensaje
+      setTimeout(() => {
+        const removeIdx = selectedSeries.indexOf('s3');
+        if(removeIdx !== -1) {
+          selectedSeries.splice(removeIdx, 1);
+          refreshSeriesNumbers();
+          saveState();
+        }
+        overlay.classList.remove('show');
+      }, 2500);
+    }
   });
   seriesGrid.appendChild(card);
 });
