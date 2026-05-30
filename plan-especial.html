@@ -1,59 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Un Plan Especial ✦</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:      #06030f;
-  --bg2:     #0f0819;
-  --card:    #160d24;
-  --card2:   #1e1030;
-  --gold:    #c9a96e;
-  --gold2:   #e8c98a;
-  --rose:    #d4627a;
-  --rose-lt: #e8a0b0;
-  --cream:   #f5e6d3;
-  --muted:   #8a6b7a;
-  --border:  rgba(201,169,110,0.2);
-}
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  background:var(--bg);
-  color:var(--cream);
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-#canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
-
-/* ═══════════════════════
-   COUNTDOWN SCREEN
-═══════════════════════ */
-#countdown-screen{
-  position:fixed;inset:0;z-index:10;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
-  transition:opacity 1.4s ease, transform 1.4s ease;
-}
-#countdown-screen.fade-out{
-  opacity:0;transform:scale(1.06);pointer-events:none;
-}
-.countdown-inner{
-  position:relative;z-index:1;
-  text-align:center;padding:2rem;
-}
-.tagline{
-  font-style:italic;font-size:1rem;
-  color:var(--rose-lt);letter-spacing:0.35em;text-transform:uppercase;
-  margin-bottom:2rem;
-  opacity:0;animation:fadeUp 1s 0.5s forwards;
-}
 .countdown-title{
   font-family:'Playfair Display',serif;
   font-size:clamp(2.8rem,7vw,5.5rem);
@@ -236,6 +180,7 @@ body{
   transition:all 0.3s;z-index:3;
 }
 .heart-btn:hover{transform:scale(1.18);background:rgba(212,98,122,0.2)}
+.heart-btn.active{background:rgba(212,98,122,0.3);border-color:var(--rose)}
 .heart-btn.active{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;-webkit-text-fill-color:white;background:var(--rose);border-color:var(--rose);}
 .card-footer{
   padding:0.7rem 1.5rem 1.2rem;
@@ -599,10 +544,9 @@ body{
 
 <canvas id="canvas"></canvas>
 
-<!-- ════════════ COUNTDOWN ════════════ -->
 <div id="countdown-screen">
   <div class="countdown-inner">
-    <p class="tagline">✦ &nbsp; algo especial se acerca &nbsp; ✦</p>
+    <p class="tagline">✦   algo especial se acerca   ✦</p>
     <h1 class="countdown-title">Un plan <em>un tanto</em><br>especial</h1>
     <p class="countdown-sub">Queda poquito... la espera vale la pena.</p>
     <div class="timer-grid">
@@ -626,26 +570,24 @@ body{
         <span class="time-label">segundos</span>
       </div>
     </div>
-    <p class="ornament-cd">✦ &nbsp;&nbsp; ✦ &nbsp;&nbsp; ✦</p>
+    <p class="ornament-cd">✦    ✦    ✦</p>
   </div>
 </div>
 
 <button id="skip-btn" onclick="revealMain()" style="display:none;">modo dev: ver página →</button>
 
-<!-- ════════════ MAIN PAGE ════════════ -->
 <div id="main-screen" style="display:none">
 
   <header class="main-header">
-    <span class="header-ornament">✦ &nbsp; una sorpresa para vos &nbsp; ✦</span>
+    <span class="header-ornament">✦   una sorpresa para vos   ✦</span>
     <h1 class="main-title">Tu <em>plan perfecto</em><br>te espera</h1>
     <p class="main-subtitle">
       Explorá cada lugar, marcá los que más te gusten<br>
-      y elegí la fecha. El resto lo organizo yo.&nbsp;💌
+      y elegí la fecha. El resto lo organizo yo. 💌
     </p>
     <div class="divider"></div>
   </header>
 
-  <!-- Places -->
   <section id="places-section">
     <p class="section-label">los destinos</p>
     <h2 class="section-title">¿Qué querés vivir?</h2>
@@ -655,41 +597,38 @@ body{
     </p>
     <div class="places-grid" id="places-grid"></div>
 
-    <!-- Caja de sugerencias de LUGARES -->
     <div class="comment-wrap" style="margin-top: 3rem;">
       <div id="place-comment-form">
-        <h3>¿Tenés algún lugar en mente? &nbsp;✨</h3>
+        <h3>¿Tenés algún lugar en mente?  ✨</h3>
         <p>Si hay algún destino que quieras sugerir o un plan que tengas ganas de hacer, contame acá. Lo voy a tener muy en cuenta.</p>
         <textarea
           class="comment-textarea"
           id="place-comment"
           placeholder="Escribí el lugar o la idea que tengas... ✍️"
         ></textarea>
-        <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia &nbsp;✦</button>
+        <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia  ✦</button>
       </div>
       <div class="comment-thanks" id="place-comment-thanks">
         <span class="thanks-icon">🌟</span>
         <p>
           <strong>¡Anotado con todo el amor!</strong><br>
           Tu sugerencia de lugar va a ser tenida muy en cuenta.<br>
-          Lo agregamos a las opciones en breve &nbsp;💌
+          Lo agregamos a las opciones en breve  💌
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Favorites -->
   <section id="favorites-section">
     <div class="divider"></div>
     <p class="section-label">tus elegidos</p>
     <h2 class="section-title">Lo que más te gustó</h2>
     <div class="selected-list" id="selected-list">
-      <p class="no-selection">Todavía no marcaste ningún lugar &nbsp;♡</p>
+      <p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>
     </div>
     <div class="divider"></div>
   </section>
 
-  <!-- ════ SERIES SECTION ════ -->
   <section id="series-section">
     <p class="section-label">Para ver </p>
     <h2 class="section-title">¿Qué serie arrancamos?</h2>
@@ -700,24 +639,23 @@ body{
 
     <div class="series-grid" id="series-grid"></div>
 
-    <!-- Caja de sugerencias de SERIES -->
     <div class="comment-wrap">
       <div id="series-comment-form">
-        <h3>¿Tenés alguna en mente? &nbsp;📺</h3>
+        <h3>¿Tenés alguna en mente?  📺</h3>
         <p>Si hay alguna serie que quieras sugerir o que tengas ganas de ver, contame acá. La voy a tener muy en cuenta.</p>
         <textarea
           class="comment-textarea"
           id="series-comment"
           placeholder="Escribí el nombre o contame de qué va... ✍️"
         ></textarea>
-        <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia &nbsp;✦</button>
+        <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia  ✦</button>
       </div>
       <div class="comment-thanks" id="series-comment-thanks">
         <span class="thanks-icon">🌟</span>
         <p>
           <strong>¡Anotado con todo el amor!</strong><br>
           Tu sugerencia va a ser tenida muy en cuenta.<br>
-          La agregamos a la lista en breve &nbsp;💌
+          La agregamos a la lista en breve  💌
         </p>
       </div>
     </div>
@@ -725,7 +663,6 @@ body{
     <div class="divider" style="margin-top:3rem"></div>
   </section>
 
-  <!-- Calendar -->
   <section id="calendar-section">
     <p class="section-label">la fecha</p>
     <h2 class="section-title">¿Cuándo salimos?</h2>
@@ -751,30 +688,27 @@ body{
         <div class="cal-days" id="cal-days"></div>
       </div>
     </div>
-    <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún &nbsp;♡</p>
+    <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún  ♡</p>
   </section>
 
-  <!-- Confirm -->
   <section id="confirm-section">
-    <button class="confirm-btn" id="confirm-btn" disabled onclick="showModal()">
-      ✦ &nbsp; Confirmar mi plan &nbsp; ✦
+    <button class="confirm-btn" id="confirm-btn" disabled onclick="enviarDatos()">
+      ✦   Confirmar mi plan   ✦
     </button>
     <p class="confirm-hint" id="confirm-hint">Elegí al menos un lugar y una fecha para continuar</p>
   </section>
 
 </div>
 
-<!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <span class="modal-icon">💌</span>
     <h2 class="modal-title">¡Perfecto!</h2>
     <p class="modal-body" id="modal-body"></p>
-    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Cerrar &nbsp;♡</button>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Cerrar  ♡</button>
   </div>
 </div>
 
-<!-- Lightbox -->
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">×</button>
   <button class="lb-btn" id="lb-prev">‹</button>
@@ -1054,7 +988,7 @@ function updateFavorites(){
   const list = document.getElementById('selected-list');
   list.innerHTML = '';
   if(selectedPlaces.length===0){
-    list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar &nbsp;♡</p>';
+    list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
   } else {
     const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine'};
     selectedPlaces.forEach((id, i)=>{
@@ -1221,6 +1155,55 @@ function showModal(){
   document.getElementById('modal-body').innerHTML=
     `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
   document.getElementById('modal').classList.add('show');
+}
+
+/* ═══════════════════════════════
+   ENVIAR DATOS A GOOGLE SHEETS
+═══════════════════════════════ */
+function enviarDatos() {
+  const btn = document.getElementById('confirm-btn');
+  btn.textContent = 'Enviando plan... ⏳'; 
+  btn.disabled = true;
+
+  // 1. Recopilamos la información
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
+  const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
+  const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
+  
+  const opts = {weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  const ds = selDate ? selDate.toLocaleDateString('es-AR',opts) : '';
+  const sugLugar = document.getElementById('place-comment').value.trim();
+  const sugSerie = document.getElementById('series-comment').value.trim();
+
+  // 2. Preparamos el paquete de datos
+  const payload = {
+    destinos: listPlaces || 'Ninguno',
+    sugerenciaLugar: sugLugar || 'Sin sugerencia',
+    series: listSeries || 'Ninguna',
+    sugerenciaSerie: sugSerie || 'Sin sugerencia',
+    fechaElegida: ds || 'Sin fecha'
+  };
+
+  // 3. Lo enviamos a tu Google Sheet
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbyF5zWGWi4STdE51suuSrKX_uAoS_MxY8arLFc6jr7X0d7y39AlUAj1eaIw_cwPKVk1/exec';
+
+  fetch(URL_SCRIPT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    btn.textContent = '✦   Confirmar mi plan   ✦';
+    showModal();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    btn.textContent = 'Error, intentá de nuevo';
+    btn.disabled = false;
+  });
 }
 
 /* ═══════════════════════════════
