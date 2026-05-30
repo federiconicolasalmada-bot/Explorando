@@ -1,3 +1,10 @@
+¡Acá lo tenés! Tomé tu código completo y le agregué el reseteo automático de las sugerencias justo después de que la información se envía con éxito.
+
+Ahora, cuando le dé a confirmar, se va a guardar todo en tu Google Sheet, se le abrirá el cartel de "¡Perfecto!", y por detrás las cajas de texto volverán a quedar vacías y listas por si quiere proponer otra idea distinta.
+
+Copia todo este bloque y reemplaza tu archivo:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -602,7 +609,7 @@ body{
 
 <div id="countdown-screen">
   <div class="countdown-inner">
-    <p class="tagline">✦   algo especial se acerca   ✦</p>
+    <p class="tagline">✦  algo especial se acerca  ✦</p>
     <h1 class="countdown-title">Un plan <em>un tanto</em><br>especial</h1>
     <p class="countdown-sub">Queda poquito... la espera vale la pena.</p>
     <div class="timer-grid">
@@ -1076,7 +1083,7 @@ const series = [
   { id:'s5',  name:'Lost',                     genre:'Misterio · Drama',    img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
   { id:'s6',  name:'Stranger Things',          genre:'Sci-Fi · Terror',     img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
   { id:'s7',  name:'Dr. House',                genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
-  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://images.justwatch.com/poster/242850423/s718/vikingos.jpg' },
+  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://image.tmdb.org/t/p/w342/bQLrHmUhHzELBMiE7NXY0fqxJ6n.jpg' },
   { id:'s9',  name:'Dexter',                   genre:'Crime · Thriller',    img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
   { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
@@ -1252,8 +1259,24 @@ function enviarDatos() {
     body: JSON.stringify(payload)
   })
   .then(() => {
+    // Restauramos el botón
     btn.textContent = '✦   Confirmar mi plan   ✦';
+    btn.disabled = false;
+    
+    // Mostramos el modal de éxito
     showModal();
+
+    // ═══ RESETEO DE SUGERENCIAS ═══
+    // 1. Vaciamos las cajas de texto
+    document.getElementById('place-comment').value = '';
+    document.getElementById('series-comment').value = '';
+    
+    // 2. Ocultamos el mensaje de agradecimiento y mostramos el formulario de nuevo
+    document.getElementById('place-comment-form').style.display = 'block';
+    document.getElementById('place-comment-thanks').style.display = 'none';
+    
+    document.getElementById('series-comment-form').style.display = 'block';
+    document.getElementById('series-comment-thanks').style.display = 'none';
   })
   .catch(error => {
     console.error('Error:', error);
