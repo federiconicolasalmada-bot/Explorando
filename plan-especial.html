@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un Plan Especial ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #06030f;
+  --bg2:     #0f0819;
+  --card:    #160d24;
+  --card2:   #1e1030;
+  --gold:    #c9a96e;
+  --gold2:   #e8c98a;
+  --rose:    #d4627a;
+  --rose-lt: #e8a0b0;
+  --cream:   #f5e6d3;
+  --muted:   #8a6b7a;
+  --border:  rgba(201,169,110,0.2);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--bg);
+  color:var(--cream);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+#canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* ═══════════════════════
+   COUNTDOWN SCREEN
+═══════════════════════ */
+#countdown-screen{
+  position:fixed;inset:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
+  transition:opacity 1.4s ease, transform 1.4s ease;
+}
+#countdown-screen.fade-out{
+  opacity:0;transform:scale(1.06);pointer-events:none;
+}
+.countdown-inner{
+  position:relative;z-index:1;
+  text-align:center;padding:2rem;
+}
+.tagline{
+  font-style:italic;font-size:1rem;
+  color:var(--rose-lt);letter-spacing:0.35em;text-transform:uppercase;
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 1s 0.5s forwards;
+}
 .countdown-title{
   font-family:'Playfair Display',serif;
   font-size:clamp(2.8rem,7vw,5.5rem);
@@ -1185,7 +1241,7 @@ function enviarDatos() {
   };
 
   // 3. Lo enviamos a tu Google Sheet
-  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbyF5zWGWi4STdE51suuSrKX_uAoS_MxY8arLFc6jr7X0d7y39AlUAj1eaIw_cwPKVk1/exec';
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
 
   fetch(URL_SCRIPT, {
     method: 'POST',
