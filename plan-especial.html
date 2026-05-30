@@ -361,15 +361,47 @@ body{
 }
 .nope-msg {
   font-family: 'Playfair Display', serif;
-  font-size: 1rem; /* Le bajamos apenas el tamaño para que entre perfecto */
+  font-size: 1rem;
   color: var(--cream);
   font-style: italic;
   text-align: center;
-  padding: 0 0.5rem; /* Reducimos un poquito el espacio a los costados */
+  padding: 0 0.5rem;
   opacity: 0;
-  white-space: nowrap; /* 🌟 Esta es la magia: fuerza a que nada baje de línea */
+  white-space: nowrap; /* Fuerza a que nada baje de línea */
 }
 .nope-overlay.show .nope-msg {
+  animation: fadeUp 0.4s 0.2s forwards;
+}
+
+/* ─── Animacion de info (Cine) ─── */
+.info-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,3,15,0.88);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.info-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.info-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--cream);
+  font-style: italic;
+  text-align: center;
+  padding: 0 2rem;
+  opacity: 0;
+  line-height: 1.5;
+}
+.info-overlay.show .info-msg {
   animation: fadeUp 0.4s 0.2s forwards;
 }
 
@@ -1046,6 +1078,7 @@ places.forEach(place => {
   document.getElementById(`dots-${place.id}`).addEventListener('click',e=>{
     if(e.target.classList.contains('dot')) goTo(+e.target.dataset.i);
   });
+  
   card.querySelector('.heart-btn').addEventListener('click', function(){
     const id = this.dataset.id;
     const idx = selectedPlaces.indexOf(id);
@@ -1057,6 +1090,27 @@ places.forEach(place => {
     refreshPlaceNumbers();
     updateFavorites();
     saveState();
+
+    // ─── Mensaje temporal para "El Cine" ───
+    if (id === 'cine' && selectedPlaces.includes('cine')) {
+      let overlay = card.querySelector('.info-overlay');
+      if(!overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'info-overlay';
+        overlay.innerHTML = `<span class="info-msg">se puede reprogramar la fecha dependiendo de la película 😉</span>`;
+        card.appendChild(overlay);
+      }
+      
+      // Mostrar el cartelito con animación
+      setTimeout(() => {
+        overlay.classList.add('show');
+      }, 50);
+
+      // Ocultarlo después de 3.5 segundos (la opción queda seleccionada)
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 3500);
+    }
   });
 });
 
