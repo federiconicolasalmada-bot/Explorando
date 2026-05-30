@@ -236,7 +236,7 @@ body{
   transition:all 0.3s;z-index:3;
 }
 .heart-btn:hover{transform:scale(1.18);background:rgba(212,98,122,0.2)}
-.heart-btn.active{background:rgba(212,98,122,0.3);border-color:var(--rose)}
+.heart-btn.active{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;-webkit-text-fill-color:white;background:var(--rose);border-color:var(--rose);}
 .card-footer{
   padding:0.7rem 1.5rem 1.2rem;
   border-top:1px solid var(--border);
@@ -896,7 +896,7 @@ const places = [
   },
   {
     id:'ceramica', tag:'🎨  Manos en la masa', title:'Merienda & Cerámica',
-    desc:'Manos en la arcilla, algo rico para merendar y mucho para reír mientras creamos algo que nos llevamos.',
+    desc:'Manos en la arcilla, algo rico para merendar y mucho para reír mientras creamos algo único que nos llevamos.',
     images:[
       'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-03.jpeg&w=640&q=75',
       'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-02.jpeg&w=640&q=75',
@@ -939,7 +939,7 @@ id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
   }
 ];
 
-const selectedPlaces = new Set();
+const selectedPlaces = []; // Array en lugar de Set para mantener el orden numerado
 const grid = document.getElementById('places-grid');
 
 places.forEach(place => {
@@ -985,31 +985,47 @@ places.forEach(place => {
   });
   card.querySelector('.heart-btn').addEventListener('click', function(){
     const id = this.dataset.id;
-    if(selectedPlaces.has(id)){
-      selectedPlaces.delete(id);
-      this.textContent='♡'; this.classList.remove('active');
-      card.classList.remove('selected');
-      document.getElementById(`lbl-${id}`).textContent='♡ Marcar como favorito';
+    const idx = selectedPlaces.indexOf(id);
+    if(idx !== -1){
+      selectedPlaces.splice(idx, 1);
     } else {
-      selectedPlaces.add(id);
-      this.textContent='♥'; this.classList.add('active');
-      card.classList.add('selected');
-      document.getElementById(`lbl-${id}`).textContent='♥ ¡Elegido!';
+      selectedPlaces.push(id);
     }
+    refreshPlaceNumbers();
     updateFavorites();
   });
 });
 
+function refreshPlaceNumbers(){
+  places.forEach(p => {
+    const btn  = document.querySelector(`#card-${p.id} .heart-btn`);
+    const card = document.getElementById(`card-${p.id}`);
+    const lbl  = document.getElementById(`lbl-${p.id}`);
+    if(!btn) return;
+    const idx = selectedPlaces.indexOf(p.id);
+    if(idx === -1){
+      btn.textContent='♡'; btn.classList.remove('active');
+      card.classList.remove('selected');
+      lbl.textContent='♡ Marcar como favorito';
+    } else {
+      btn.textContent = idx + 1; btn.classList.add('active');
+      card.classList.add('selected');
+      lbl.textContent=`♥ Prioridad #${idx + 1}`;
+    }
+  });
+}
+
 function updateFavorites(){
   const list = document.getElementById('selected-list');
   list.innerHTML = '';
-  if(selectedPlaces.size===0){
+  if(selectedPlaces.length===0){
     list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar &nbsp;♡</p>';
   } else {
     const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine'};
-    selectedPlaces.forEach(id=>{
+    selectedPlaces.forEach((id, i)=>{
       const t=document.createElement('span');
-      t.className='selected-tag'; t.textContent=names[id];
+      t.className='selected-tag';
+      t.textContent=`${i+1}. ${names[id]}`;
       list.appendChild(t);
     });
   }
@@ -1032,7 +1048,7 @@ const series = [
   { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
 
-const selectedSeries = new Set();
+const selectedSeries = []; // Array en lugar de Set para mantener el orden numerado
 const seriesGrid = document.getElementById('series-grid');
 
 series.forEach(s => {
@@ -1047,16 +1063,34 @@ series.forEach(s => {
     </div>
   `;
   card.addEventListener('click', ()=>{
-    if(selectedSeries.has(s.id)){
-      selectedSeries.delete(s.id);
-      card.classList.remove('selected');
+    const idx = selectedSeries.indexOf(s.id);
+    if(idx !== -1){
+      selectedSeries.splice(idx, 1);
     } else {
-      selectedSeries.add(s.id);
-      card.classList.add('selected');
+      selectedSeries.push(s.id);
     }
+    refreshSeriesNumbers();
   });
   seriesGrid.appendChild(card);
 });
+
+function refreshSeriesNumbers(){
+  document.querySelectorAll('.serie-card').forEach((card, ci) => {
+    const sid = series[ci]?.id;
+    if(!sid) return;
+    const check = card.querySelector('.serie-check');
+    const idx = selectedSeries.indexOf(sid);
+    if(idx === -1){
+      card.classList.remove('selected');
+      check.textContent = '♥';
+      check.style.fontSize = '';
+    } else {
+      card.classList.add('selected');
+      check.textContent = idx + 1;
+      check.style.fontSize = '0.85rem';
+    }
+  });
+}
 
 function submitComment(){
   const txt = document.getElementById('series-comment').value.trim();
@@ -1120,11 +1154,11 @@ renderCal();
 function checkConfirm(){
   const btn  = document.getElementById('confirm-btn');
   const hint = document.getElementById('confirm-hint');
-  const ok   = selectedPlaces.size>0 && selDate;
+  const ok   = selectedPlaces.length>0 && selDate;
   btn.disabled = !ok;
   if(!ok){
-    if(selectedPlaces.size===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
-    else if(selectedPlaces.size===0) hint.textContent='Elegí al menos un lugar para continuar';
+    if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
+    else if(selectedPlaces.length===0) hint.textContent='Elegí al menos un lugar para continuar';
     else hint.textContent='Elegí una fecha para continuar';
   } else {
     hint.textContent='¡Todo listo! Confirmá tu plan 💌';
@@ -1132,18 +1166,18 @@ function checkConfirm(){
 }
 
 function showModal(){
-  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena romántica',jardin:'Jardín Japonés',cine:'Cine'};
-  const list=[...selectedPlaces].map(id=>names[id]).join(', ');
+  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
+  const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   const opts={weekday:'long',day:'numeric',month:'long'};
   const ds=selDate.toLocaleDateString('es-AR',opts);
-  const seriesNames=[...selectedSeries].map(id=>series.find(s=>s.id===id)?.name).filter(Boolean).join(', ');
+  const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
   let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
   document.getElementById('modal-body').innerHTML=
     `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
   document.getElementById('modal').classList.add('show');
 }
 </script>
-  <script>
+<script>
   // Mostrar botón dev solo si la URL tiene "?secreto"
   if (window.location.search.includes("?secreto")) {
     document.getElementById("skip-btn").style.display = "block";
