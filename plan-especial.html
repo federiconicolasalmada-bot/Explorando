@@ -762,6 +762,17 @@ body{
 
 <script>
 /* ═══════════════════════════════
+   LOCAL STORAGE - GUARDAR DATOS
+═══════════════════════════════ */
+function saveState(){
+  localStorage.setItem('planEspecialState', JSON.stringify({
+    places: selectedPlaces,
+    series: selectedSeries,
+    date: selDate ? selDate.getTime() : null
+  }));
+}
+
+/* ═══════════════════════════════
    LIGHTBOX
 ═══════════════════════════════ */
 let lbImages = [];
@@ -847,7 +858,7 @@ for(let i=0;i<45;i++) particles.push(new Particle());
 })();
 
 /* ═══════════════════════════════
-   COUNTDOWN  ← sábado 13/06 a las 22:00
+   COUNTDOWN
 ═══════════════════════════════ */
 const TARGET = new Date('2026-06-13T22:00:00');
 
@@ -905,7 +916,7 @@ const places = [
     ]
   },
   {
-id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
+    id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
     desc:'Un lugar tranquilo para comer algo rico, relajarnos un rato y charlar de todo sin mirar el reloj.',
     images:[
       'https://elbodegondebenito.com/wp-content/uploads/2025/09/logo-Bodegon-Benito-Buenos-Aires-400px-RGB.jpg',
@@ -939,7 +950,7 @@ id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
   }
 ];
 
-const selectedPlaces = []; // Array en lugar de Set para mantener el orden numerado
+const selectedPlaces = []; 
 const grid = document.getElementById('places-grid');
 
 places.forEach(place => {
@@ -993,6 +1004,7 @@ places.forEach(place => {
     }
     refreshPlaceNumbers();
     updateFavorites();
+    saveState();
   });
 });
 
@@ -1033,7 +1045,7 @@ function updateFavorites(){
 }
 
 /* ═══════════════════════════════
-   SERIES  ← reemplazá los nombres con los que quieras
+   SERIES 
 ═══════════════════════════════ */
 const series = [
   { id:'s1',  name:'Peaky Blinders',          genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
@@ -1048,7 +1060,7 @@ const series = [
   { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
 
-const selectedSeries = []; // Array en lugar de Set para mantener el orden numerado
+const selectedSeries = []; 
 const seriesGrid = document.getElementById('series-grid');
 
 series.forEach(s => {
@@ -1070,6 +1082,7 @@ series.forEach(s => {
       selectedSeries.push(s.id);
     }
     refreshSeriesNumbers();
+    saveState();
   });
   seriesGrid.appendChild(card);
 });
@@ -1138,7 +1151,9 @@ function pickDay(d){
   const s=selDate.toLocaleDateString('es-AR',opts);
   document.getElementById('selected-date-display').textContent=
     '📅 '+s.charAt(0).toUpperCase()+s.slice(1);
-  renderCal(); checkConfirm();
+  renderCal(); 
+  checkConfirm();
+  saveState();
 }
 document.getElementById('cal-prev').addEventListener('click',()=>{
   calM--;if(calM<0){calM=11;calY--;}renderCal();
@@ -1176,6 +1191,38 @@ function showModal(){
     `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
   document.getElementById('modal').classList.add('show');
 }
+
+/* ═══════════════════════════════
+   LOCAL STORAGE - CARGAR DATOS
+═══════════════════════════════ */
+function loadState(){
+  const saved = localStorage.getItem('planEspecialState');
+  if(!saved) return;
+  
+  const data = JSON.parse(saved);
+  
+  if(data.places && data.places.length > 0){
+    data.places.forEach(id => selectedPlaces.push(id));
+    refreshPlaceNumbers();
+    updateFavorites();
+  }
+  
+  if(data.series && data.series.length > 0){
+    data.series.forEach(id => selectedSeries.push(id));
+    refreshSeriesNumbers();
+  }
+  
+  if(data.date){
+    const d = new Date(data.date);
+    calY = d.getFullYear();
+    calM = d.getMonth();
+    pickDay(d.getDate());
+  }
+}
+
+// Iniciar la carga al abrir la página
+loadState();
+
 </script>
 <script>
   // Mostrar botón dev solo si la URL tiene "?secreto"
