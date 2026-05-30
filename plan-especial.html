@@ -654,6 +654,28 @@ body{
       Podés elegir uno o combinar varios.
     </p>
     <div class="places-grid" id="places-grid"></div>
+
+    <!-- Caja de sugerencias de LUGARES -->
+    <div class="comment-wrap" style="margin-top: 3rem;">
+      <div id="place-comment-form">
+        <h3>¿Tenés algún lugar en mente? &nbsp;✨</h3>
+        <p>Si hay algún destino que quieras sugerir o un plan que tengas ganas de hacer, contame acá. Lo voy a tener muy en cuenta.</p>
+        <textarea
+          class="comment-textarea"
+          id="place-comment"
+          placeholder="Escribí el lugar o la idea que tengas... ✍️"
+        ></textarea>
+        <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia &nbsp;✦</button>
+      </div>
+      <div class="comment-thanks" id="place-comment-thanks">
+        <span class="thanks-icon">🌟</span>
+        <p>
+          <strong>¡Anotado con todo el amor!</strong><br>
+          Tu sugerencia de lugar va a ser tenida muy en cuenta.<br>
+          Lo agregamos a las opciones en breve &nbsp;💌
+        </p>
+      </div>
+    </div>
   </section>
 
   <!-- Favorites -->
@@ -678,8 +700,9 @@ body{
 
     <div class="series-grid" id="series-grid"></div>
 
+    <!-- Caja de sugerencias de SERIES -->
     <div class="comment-wrap">
-      <div id="comment-form">
+      <div id="series-comment-form">
         <h3>¿Tenés alguna en mente? &nbsp;📺</h3>
         <p>Si hay alguna serie que quieras sugerir o que tengas ganas de ver, contame acá. La voy a tener muy en cuenta.</p>
         <textarea
@@ -687,9 +710,9 @@ body{
           id="series-comment"
           placeholder="Escribí el nombre o contame de qué va... ✍️"
         ></textarea>
-        <button class="comment-submit" onclick="submitComment()">Enviar sugerencia &nbsp;✦</button>
+        <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia &nbsp;✦</button>
       </div>
-      <div class="comment-thanks" id="comment-thanks">
+      <div class="comment-thanks" id="series-comment-thanks">
         <span class="thanks-icon">🌟</span>
         <p>
           <strong>¡Anotado con todo el amor!</strong><br>
@@ -1044,6 +1067,14 @@ function updateFavorites(){
   checkConfirm();
 }
 
+function submitPlaceComment(){
+  const txt = document.getElementById('place-comment').value.trim();
+  if(!txt) return;
+  document.getElementById('place-comment-form').style.display = 'none';
+  const thanks = document.getElementById('place-comment-thanks');
+  thanks.style.display = 'block';
+}
+
 /* ═══════════════════════════════
    SERIES 
 ═══════════════════════════════ */
@@ -1105,11 +1136,11 @@ function refreshSeriesNumbers(){
   });
 }
 
-function submitComment(){
+function submitSeriesComment(){
   const txt = document.getElementById('series-comment').value.trim();
   if(!txt) return;
-  document.getElementById('comment-form').style.display = 'none';
-  const thanks = document.getElementById('comment-thanks');
+  document.getElementById('series-comment-form').style.display = 'none';
+  const thanks = document.getElementById('series-comment-thanks');
   thanks.style.display = 'block';
 }
 
