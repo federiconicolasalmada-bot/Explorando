@@ -38,7 +38,7 @@ body{
 #countdown-screen{
   position:fixed;inset:0;z-index:10;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
+  background:transparent; /* Se cambió a transparente para mostrar el canvas animado */
   transition:opacity 1.4s ease, transform 1.4s ease;
 }
 #countdown-screen.fade-out{
@@ -1162,7 +1162,7 @@ function submitPlaceComment(){
    SERIES 
 ═══════════════════════════════ */
 const series = [
-  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
+  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',        img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
   { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
   { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
   { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
