@@ -24,7 +24,7 @@
 html{scroll-behavior:smooth}
 body{
   font-family:'Cormorant Garamond',Georgia,serif;
-  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%)
+  background:var(--bg);
   color:var(--cream);
   min-height:100vh;
   overflow-x:hidden;
@@ -38,7 +38,7 @@ body{
 #countdown-screen{
   position:fixed;inset:0;z-index:10;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:var(--bg);
+  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
   transition:opacity 1.4s ease, transform 1.4s ease;
 }
 #countdown-screen.fade-out{
