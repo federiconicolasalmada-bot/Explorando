@@ -1335,7 +1335,7 @@ function showModal(){
   const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
   let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
   document.getElementById('modal-body').innerHTML=
-    `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
+    `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empiezo a organizar todo! 🥂`;
   document.getElementById('modal').classList.add('show');
 }
 
