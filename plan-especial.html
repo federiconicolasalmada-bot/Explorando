@@ -38,15 +38,28 @@ body{
 #countdown-screen{
   position:fixed;inset:0;z-index:10;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:transparent; /* Se cambió a transparente para mostrar el canvas animado */
+  background:transparent;
   transition:opacity 1.4s ease, transform 1.4s ease;
 }
 #countdown-screen.fade-out{
   opacity:0;transform:scale(1.06);pointer-events:none;
 }
+
+/* ─── FLORES DEL CONTADOR ─── */
+#flower-canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .countdown-inner{
-  position:relative;z-index:1;
+  position:relative;z-index:2;
   text-align:center;padding:2rem;
+  text-shadow: 0 4px 20px rgba(6, 3, 15, 0.8);
 }
 .tagline{
   font-style:italic;font-size:1rem;
@@ -350,7 +363,7 @@ body{
 }
 .nope-overlay.show {
   opacity: 1;
-  pointer-events: all; /* Bloquea clics extra mientras se muestra */
+  pointer-events: all; 
 }
 .nope-cross {
   font-size: 5rem;
@@ -367,7 +380,7 @@ body{
   text-align: center;
   padding: 0 0.5rem;
   opacity: 0;
-  white-space: nowrap; /* Fuerza a que nada baje de línea */
+  white-space: nowrap; 
 }
 .nope-overlay.show .nope-msg {
   animation: fadeUp 0.4s 0.2s forwards;
@@ -672,6 +685,7 @@ body{
 <canvas id="canvas"></canvas>
 
 <div id="countdown-screen">
+  <canvas id="flower-canvas"></canvas>
   <div class="countdown-inner">
     <p class="tagline">✦  algo especial se acerca  ✦</p>
     <h1 class="countdown-title">Un plan <em>un tanto</em><br>especial</h1>
@@ -704,7 +718,6 @@ body{
 <button id="skip-btn" onclick="revealMain()" style="display:none;">modo dev: ver página →</button>
 
 <div id="main-screen" style="display:none">
-
   <header class="main-header">
     <span class="header-ornament">✦   una sorpresa para vos   ✦</span>
     <h1 class="main-title">Tu <em>plan perfecto</em><br>te espera</h1>
@@ -728,11 +741,7 @@ body{
       <div id="place-comment-form">
         <h3>¿Tenés algún lugar en mente?  ✨</h3>
         <p>Si hay algún destino que quieras sugerir o un plan que tengas ganas de hacer, contame acá. Lo voy a tener muy en cuenta.</p>
-        <textarea
-          class="comment-textarea"
-          id="place-comment"
-          placeholder="Escribí el lugar o la idea que tengas... ✍️"
-        ></textarea>
+        <textarea class="comment-textarea" id="place-comment" placeholder="Escribí el lugar o la idea que tengas... ✍️"></textarea>
         <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia  ✦</button>
       </div>
       <div class="comment-thanks" id="place-comment-thanks">
@@ -763,18 +772,12 @@ body{
       Marcá las que te llamen y si tenés alguna en mente<br>
       que no esté acá, la podés agregar abajo.
     </p>
-
     <div class="series-grid" id="series-grid"></div>
-
     <div class="comment-wrap">
       <div id="series-comment-form">
         <h3>¿Tenés alguna en mente?  📺</h3>
         <p>Si hay alguna serie que quieras sugerir o que tengas ganas de ver, contame acá. La voy a tener muy en cuenta.</p>
-        <textarea
-          class="comment-textarea"
-          id="series-comment"
-          placeholder="Escribí el nombre o contame de qué va... ✍️"
-        ></textarea>
+        <textarea class="comment-textarea" id="series-comment" placeholder="Escribí el nombre o contame de qué va... ✍️"></textarea>
         <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia  ✦</button>
       </div>
       <div class="comment-thanks" id="series-comment-thanks">
@@ -786,7 +789,6 @@ body{
         </p>
       </div>
     </div>
-
     <div class="divider" style="margin-top:3rem"></div>
   </section>
 
@@ -824,7 +826,6 @@ body{
     </button>
     <p class="confirm-hint" id="confirm-hint">Elegí al menos un lugar y una fecha para continuar</p>
   </section>
-
 </div>
 
 <div class="modal-overlay" id="modal">
@@ -899,7 +900,7 @@ document.addEventListener('keydown', e=>{
 });
 
 /* ═══════════════════════════════
-   PARTICLES
+   PARTICLES (Base)
 ═══════════════════════════════ */
 const canvas = document.getElementById('canvas');
 const ctx    = canvas.getContext('2d');
@@ -945,6 +946,7 @@ for(let i=0;i<45;i++) particles.push(new Particle());
    COUNTDOWN
 ═══════════════════════════════ */
 const TARGET = new Date('2026-06-06T22:00:00');
+let flowersActive = true; 
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function updateTimer(){
@@ -963,6 +965,7 @@ updateTimer();
 setInterval(updateTimer, 1000);
 
 function revealMain(){
+  flowersActive = false; // Apaga la animación de las flores al entrar
   const cs = document.getElementById('countdown-screen');
   const ms = document.getElementById('main-screen');
   cs.classList.add('fade-out');
@@ -1091,7 +1094,6 @@ places.forEach(place => {
     updateFavorites();
     saveState();
 
-    // ─── Mensaje temporal para "El Cine" ───
     if (id === 'cine' && selectedPlaces.includes('cine')) {
       let overlay = card.querySelector('.info-overlay');
       if(!overlay){
@@ -1100,16 +1102,8 @@ places.forEach(place => {
         overlay.innerHTML = `<span class="info-msg">Se puede reprogramar la fecha dependiendo de la película 😉</span>`;
         card.appendChild(overlay);
       }
-      
-      // Mostrar el cartelito con animación
-      setTimeout(() => {
-        overlay.classList.add('show');
-      }, 50);
-
-      // Ocultarlo después de 3.5 segundos (la opción queda seleccionada)
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 3500);
+      setTimeout(() => overlay.classList.add('show'), 50);
+      setTimeout(() => overlay.classList.remove('show'), 3500);
     }
   });
 });
@@ -1162,16 +1156,16 @@ function submitPlaceComment(){
    SERIES 
 ═══════════════════════════════ */
 const series = [
-  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',        img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
-  { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
-  { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
-  { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
-  { id:'s5',  name:'Lost',                     genre:'Misterio · Drama',    img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
-  { id:'s6',  name:'Stranger Things',          genre:'Sci-Fi · Terror',     img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
-  { id:'s7',  name:'Dr. House',                genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
-  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://images.justwatch.com/poster/242850423/s718/vikingos.jpg' },
-  { id:'s9',  name:'Dexter',                   genre:'Crime · Thriller',    img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
-  { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
+  { id:'s1',  name:'Peaky Blinders',       genre:'Crime · Drama',    img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
+  { id:'s2',  name:'Game of Thrones',      genre:'Fantasía · Drama', img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
+  { id:'s3',  name:"Grey's Anatomy",       genre:'Drama · Médico',   img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
+  { id:'s4',  name:'Los Anillos de Poder', genre:'Fantasía · Épica', img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
+  { id:'s5',  name:'Lost',                 genre:'Misterio · Drama', img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
+  { id:'s6',  name:'Stranger Things',      genre:'Sci-Fi · Terror',  img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
+  { id:'s7',  name:'Dr. House',            genre:'Drama · Médico',   img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
+  { id:'s8',  name:'Vikingos',             genre:'Historia · Acción',img:'https://images.justwatch.com/poster/242850423/s718/vikingos.jpg' },
+  { id:'s9',  name:'Dexter',               genre:'Crime · Thriller', img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
+  { id:'s10', name:'True Detective',       genre:'Crime · Misterio', img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
 
 const selectedSeries = []; 
@@ -1192,7 +1186,6 @@ series.forEach(s => {
     const isGreysAnatomy = (s.id === 's3');
     const idx = selectedSeries.indexOf(s.id);
 
-    // Selección estándar
     if(idx !== -1){
       selectedSeries.splice(idx, 1);
     } else {
@@ -1201,25 +1194,15 @@ series.forEach(s => {
     refreshSeriesNumbers();
     saveState();
 
-    // Lógica especial para Grey's Anatomy
     if(isGreysAnatomy && selectedSeries.includes('s3')){
       let overlay = card.querySelector('.nope-overlay');
       if(!overlay){
         overlay = document.createElement('div');
         overlay.className = 'nope-overlay';
-        overlay.innerHTML = `
-          <span class="nope-cross">✗</span>
-          <span class="nope-msg">justo esa no wa ♡</span>
-        `;
+        overlay.innerHTML = `<span class="nope-cross">✗</span><span class="nope-msg">justo esa no wa ♡</span>`;
         card.appendChild(overlay);
       }
-      
-      // Mostrar overlay con animación
-      setTimeout(() => {
-        overlay.classList.add('show');
-      }, 50);
-
-      // A los 2.5 segundos, destildar y ocultar el mensaje
+      setTimeout(() => overlay.classList.add('show'), 50);
       setTimeout(() => {
         const removeIdx = selectedSeries.indexOf('s3');
         if(removeIdx !== -1) {
@@ -1347,7 +1330,6 @@ function enviarDatos() {
   btn.textContent = 'Enviando plan... ⏳'; 
   btn.disabled = true;
 
-  // 1. Recopilamos la información
   const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
   const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
@@ -1357,7 +1339,6 @@ function enviarDatos() {
   const sugLugar = document.getElementById('place-comment').value.trim();
   const sugSerie = document.getElementById('series-comment').value.trim();
 
-  // 2. Preparamos el paquete de datos
   const payload = {
     destinos: listPlaces || 'Ninguno',
     sugerenciaLugar: sugLugar || 'Sin sugerencia',
@@ -1366,34 +1347,22 @@ function enviarDatos() {
     fechaElegida: ds || 'Sin fecha'
   };
 
-  // 3. Lo enviamos a tu Google Sheet
   const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
 
   fetch(URL_SCRIPT, {
     method: 'POST',
     mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   })
   .then(() => {
-    // Restauramos el botón
     btn.textContent = '✦   Confirmar mi plan   ✦';
     btn.disabled = false;
-    
-    // Mostramos el modal de éxito
     showModal();
-
-    // ═══ RESETEO DE SUGERENCIAS ═══
-    // 1. Vaciamos las cajas de texto
     document.getElementById('place-comment').value = '';
     document.getElementById('series-comment').value = '';
-    
-    // 2. Ocultamos el mensaje de agradecimiento y mostramos el formulario de nuevo
     document.getElementById('place-comment-form').style.display = 'block';
     document.getElementById('place-comment-thanks').style.display = 'none';
-    
     document.getElementById('series-comment-form').style.display = 'block';
     document.getElementById('series-comment-thanks').style.display = 'none';
   })
@@ -1410,20 +1379,16 @@ function enviarDatos() {
 function loadState(){
   const saved = localStorage.getItem('planEspecialState');
   if(!saved) return;
-  
   const data = JSON.parse(saved);
-  
   if(data.places && data.places.length > 0){
     data.places.forEach(id => selectedPlaces.push(id));
     refreshPlaceNumbers();
     updateFavorites();
   }
-  
   if(data.series && data.series.length > 0){
     data.series.forEach(id => selectedSeries.push(id));
     refreshSeriesNumbers();
   }
-  
   if(data.date){
     const d = new Date(data.date);
     calY = d.getFullYear();
@@ -1431,13 +1396,303 @@ function loadState(){
     pickDay(d.getDate());
   }
 }
-
-// Iniciar la carga al abrir la página
 loadState();
 
+/* ═══════════════════════════════
+   FLORES ANIMADAS (SOLO CONTADOR)
+═══════════════════════════════ */
+const cvF = document.getElementById('flower-canvas');
+const cxF = cvF.getContext('2d');
+let WF, HF;
+
+function resizeF(){
+  WF = cvF.width = window.innerWidth;
+  HF = cvF.height = window.innerHeight;
+}
+resizeF();
+window.addEventListener('resize', resizeF);
+
+const FL_SPOTS = [
+  [[.28,.30,2.2],[-.30,.42,1.9],[.15,.58,1.6],[-.22,.24,2.0],[.40,.50,1.4]],
+  [[.22,.38,2.0],[-.26,.28,1.8],[.34,.52,1.5],[-.14,.46,1.7],[.18,.20,1.5]],
+  [[.30,.25,1.9],[-.20,.48,2.1],[.12,.62,1.4],[-.36,.38,1.8],[.44,.44,1.3]],
+  [[.26,.34,2.3],[-.32,.22,1.7],[.20,.56,1.6],[-.18,.44,1.9],[.38,.48,1.5]],
+  [[.18,.40,2.0],[-.24,.36,2.2],[.32,.60,1.5],[-.12,.52,1.7],[.42,.28,1.4]],
+  [[.24,.28,1.8],[-.30,.50,2.0],[.16,.44,1.7],[-.20,.32,2.1],[.36,.56,1.3]],
+];
+
+const flowerArr = [
+  {rx:.08, ry:.88, sc:1.20, ph:0.7, lean:-0.03, variety:'r', bud:false},
+  {rx:.15, ry:.75, sc:0.85, ph:2.1, lean:0.05,  variety:'r', bud:true},
+  {rx:.02, ry:.95, sc:1.35, ph:0.0, lean: 0.07, variety:'p', bud:false},
+  {rx:.20, ry:.90, sc:1.05, ph:1.4, lean: 0.04, variety:'w', bud:false},
+  {rx:.10, ry:.65, sc:0.65, ph:3.2, lean: 0.12, variety:'w', bud:true },
+  {rx:.92, ry:.88, sc:1.20, ph:1.3, lean:-0.04, variety:'r', bud:false},
+  {rx:.85, ry:.75, sc:0.85, ph:0.9, lean:-0.08, variety:'r', bud:true },
+  {rx:.98, ry:.95, sc:1.35, ph:2.5, lean:-0.06, variety:'p', bud:false},
+  {rx:.80, ry:.90, sc:1.05, ph:1.8, lean: 0.05, variety:'w', bud:false},
+  {rx:.90, ry:.65, sc:0.65, ph:0.5, lean: 0.08, variety:'p', bud:true },
+  {rx:.35, ry:1.0, sc:1.00, ph:1.1, lean: 0.02, variety:'w', bud:false},
+  {rx:.65, ry:1.0, sc:1.05, ph:0.4, lean:-0.05, variety:'p', bud:false},
+  {rx:.50, ry:1.05,sc:1.15, ph:2.2, lean: 0.00, variety:'r', bud:false}
+];
+
+function petalColors(variety, isBack){
+  if(variety==='p'){
+    const dm=isBack?18:0;
+    return {
+      c0:[135-dm, 65-dm, 195], c1:[155-dm, 85-dm, 215],
+      c2:[115-dm, 55-dm, 175], c3:[105-dm, 48-dm, 165],
+      stripe:'rgba(200,170,240,.20)', spot:[75,30,140],
+    };
+  } else {
+    const dm=isBack?12:0;
+    return {
+      c0:[230-dm,130,165], c1:[245-dm,175,200],
+      c2:[255,240,248], c3:[255,248,252],
+      stripe:'rgba(240,170,195,.55)', spot:[215,120,150],
+    };
+  }
+}
+
+function drawPetal(ctx, len, wid, spots, col, al=1){
+  const {c0,c1,c2,c3,stripe,spot}=col;
+  const gd=ctx.createLinearGradient(0,9,0,-len);
+  gd.addColorStop(0, `rgba(${c0[0]},${c0[1]},${c0[2]},${al})`);
+  gd.addColorStop(.28,`rgba(${c1[0]},${c1[1]},${c1[2]},${al})`);
+  gd.addColorStop(.65,`rgba(${c2[0]},${c2[1]},${c2[2]},${al})`);
+  gd.addColorStop(1, `rgba(${c3[0]},${c3[1]},${c3[2]},${al*.9})`);
+  ctx.beginPath();
+  ctx.moveTo(0,9);
+  ctx.bezierCurveTo(wid*.55,-len*.08, wid*.95,-len*.38, wid*.65,-len*.76);
+  ctx.bezierCurveTo(wid*.42,-len*.92, wid*.18,-len*.99, 0,-len);
+  ctx.bezierCurveTo(-wid*.18,-len*.99,-wid*.42,-len*.92,-wid*.65,-len*.76);
+  ctx.bezierCurveTo(-wid*.95,-len*.38,-wid*.55,-len*.08,0,9);
+  ctx.fillStyle=gd; ctx.fill();
+  const eg=ctx.createLinearGradient(-wid,0,wid,0);
+  eg.addColorStop(0, 'rgba(255,255,255,0)');
+  eg.addColorStop(.15,'rgba(255,255,255,.12)');
+  eg.addColorStop(.85,'rgba(255,255,255,.12)');
+  eg.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle=eg; ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(0,7);
+  ctx.bezierCurveTo(wid*.1,-len*.28,wid*.08,-len*.62,0,-len*.94);
+  ctx.bezierCurveTo(-wid*.08,-len*.62,-wid*.1,-len*.28,0,7);
+  ctx.fillStyle=stripe; ctx.fill();
+  spots.forEach(([sx,sy,sr])=>{
+    ctx.beginPath();
+    ctx.ellipse(sx*wid,-sy*len,sr*1.0,sr*1.8,.35,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${spot[0]},${spot[1]},${spot[2]},.45)`;
+    ctx.fill();
+  });
+}
+
+function drawStamen(ctx,len,rot,variety){
+  ctx.save(); ctx.rotate(rot);
+  const fc=variety==='p'?'rgba(210,185,235,.55)':'rgba(255,220,230,.55)';
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.bezierCurveTo(len*.08,-len*.35,len*.04,-len*.7,0,-len);
+  ctx.strokeStyle=fc; ctx.lineWidth=1.1; ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0,-len,3.2,2.0,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(201,169,110,.92)'; ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0,-len,1.4,.9,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(235,205,140,.95)'; ctx.fill();
+  ctx.restore();
+}
+
+function drawCenter(ctx,sc){
+  const rr=sc*9;
+  const gd=ctx.createRadialGradient(0,0,0,0,0,rr);
+  gd.addColorStop(0,'rgba(235,205,115,.97)');
+  gd.addColorStop(.6,'rgba(200,162,78,.9)');
+  gd.addColorStop(1,'rgba(155,118,48,.75)');
+  ctx.beginPath(); ctx.arc(0,0,rr,0,Math.PI*2);
+  ctx.fillStyle=gd; ctx.fill();
+}
+
+function drawLily(ctx,fl,t){
+  const x=fl.rx*WF, y=fl.ry*HF, sc=fl.sc, ph=fl.ph, v=fl.variety;
+  const sway=Math.sin(t*.38+ph)*0.022+fl.lean;
+  const bob=Math.sin(t*.52+ph+1)*sc*1.5;
+  ctx.save();
+  ctx.translate(x,y+bob);
+  ctx.rotate(sway);
+  if(fl.bud){
+    const bl=sc*62, bw=sc*16;
+    const bc=v==='p'?[135,65,195]:[235,145,175];
+    const gd=ctx.createLinearGradient(0,0,0,-bl);
+    gd.addColorStop(0,`rgba(${bc[0]+35},${bc[1]+18},${bc[2]+25},.95)`);
+    gd.addColorStop(.55,`rgba(${bc[0]},${bc[1]},${bc[2]},.95)`);
+    gd.addColorStop(1,`rgba(${Math.max(bc[0]-20,0)},${Math.max(bc[1]-10,0)},${bc[2]+15},.85)`);
+    ctx.beginPath();
+    ctx.moveTo(0,4);
+    ctx.bezierCurveTo(bw,-bl*.2,bw*.85,-bl*.55,0,-bl);
+    ctx.bezierCurveTo(-bw*.85,-bl*.55,-bw,-bl*.2,0,4);
+    ctx.fillStyle=gd; ctx.fill();
+    [1,-1].forEach(s=>{
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(s*bw*.5,-bl*.3,s*bw*.4,-bl*.68,s*bw*1.4,-bl);
+      ctx.strokeStyle='rgba(50,90,35,.7)';
+      ctx.lineWidth=sc*1.5; ctx.stroke();
+    });
+    ctx.restore(); return;
+  }
+  const pl=sc*92, pw=sc*28;
+  for(let i=0;i<6;i++){
+    const isBack=i%2===1;
+    ctx.save();
+    ctx.rotate((i/6)*Math.PI*2);
+    if(isBack) ctx.scale(1,.82);
+    ctx.globalAlpha=isBack?.80:1;
+    drawPetal(ctx,pl*(isBack?.9:1),pw*(isBack?.88:1), FL_SPOTS[i%FL_SPOTS.length], petalColors(v,isBack));
+    ctx.restore();
+  }
+  ctx.globalAlpha=1;
+  for(let i=0;i<6;i++) drawStamen(ctx,sc*52,(i/6)*Math.PI*2+.3,v);
+  drawCenter(ctx,sc);
+  ctx.restore();
+}
+
+function drawRose(ctx,fl,t){
+  const x=fl.rx*WF,y=fl.ry*HF,sc=fl.sc,ph=fl.ph;
+  const sway=Math.sin(t*.38+ph)*0.022+fl.lean;
+  const bob=Math.sin(t*.52+ph+1)*sc*1.5;
+  ctx.save();
+  ctx.translate(x,y+bob);
+  ctx.rotate(sway);
+  if(fl.bud){
+    const bl=sc*42,bw=sc*16;
+    const gd=ctx.createLinearGradient(0,0,0,-bl);
+    gd.addColorStop(0,'rgba(215,230,205,1)');
+    gd.addColorStop(.6,'rgba(250,250,250,1)');
+    gd.addColorStop(1,'rgba(255,255,255,.95)');
+    ctx.beginPath();
+    ctx.moveTo(0,4);
+    ctx.bezierCurveTo(bw,-bl*.25,bw*.7,-bl*.7,0,-bl);
+    ctx.bezierCurveTo(-bw*.7,-bl*.7,-bw,-bl*.25,0,4);
+    ctx.fillStyle=gd;
+    ctx.fill();
+    ctx.restore();
+    return;
+  }
+  const layers=[
+    {n:7,r:0,len:14}, {n:10,r:12,len:20},
+    {n:14,r:25,len:28}, {n:18,r:40,len:36}
+  ];
+  layers.forEach(layer=>{
+    for(let i=0;i<layer.n;i++){
+      ctx.save();
+      ctx.rotate((Math.PI*2/layer.n)*i);
+      ctx.translate(0,-layer.r);
+      const len=layer.len*sc;
+      const wid=len*.55;
+      const gd=ctx.createLinearGradient(0,0,0,-len);
+      gd.addColorStop(0,'rgba(220,235,210,1)');
+      gd.addColorStop(.4,'rgba(245,248,243,1)');
+      gd.addColorStop(1,'rgba(255,255,255,1)');
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(wid,-len*.15,wid*1.1,-len*.7,0,-len);
+      ctx.bezierCurveTo(-wid*1.1,-len*.7,-wid,-len*.15,0,0);
+      ctx.fillStyle=gd;
+      ctx.fill();
+      ctx.restore();
+    }
+  });
+  ctx.restore();
+}
+
+function drawStem(ctx,fl,t){
+  const x=fl.rx*WF, y=fl.ry*HF, sc=fl.sc, ph=fl.ph;
+  const sway=Math.sin(t*.38+ph)*0.022+fl.lean;
+  const bob=Math.sin(t*.52+ph+1)*sc*1.5;
+  const stemH=sc*(fl.bud?115:158);
+  ctx.save();
+  ctx.translate(x,y+bob);
+  ctx.rotate(sway);
+  const gd=ctx.createLinearGradient(0,0,0,-stemH);
+  gd.addColorStop(0,'rgba(22,55,16,.9)');
+  gd.addColorStop(1,'rgba(55,100,40,.88)');
+  ctx.beginPath();
+  ctx.moveTo(0,5);
+  ctx.bezierCurveTo(sc*3.5,-stemH*.35,sc*2.5,-stemH*.68,0,-stemH);
+  ctx.strokeStyle=gd; ctx.lineWidth=sc*4.5; ctx.lineCap='round'; ctx.stroke();
+  [1,-1].forEach((s,li)=>{
+    const lp=.32+li*.24, lx=s*sc*38, ly=-stemH*lp, ll=sc*54, lw=sc*10;
+    const lg=ctx.createLinearGradient(0,ly,lx*1.4,ly-ll);
+    lg.addColorStop(0,'rgba(38,80,26,.85)');
+    lg.addColorStop(1,'rgba(58,102,40,.72)');
+    ctx.beginPath();
+    ctx.moveTo(0,ly);
+    ctx.bezierCurveTo(lx*.5,ly-ll*.2,lx*1.2,ly-ll*.55,lx*1.4,ly-ll);
+    ctx.bezierCurveTo(lx*1.1,ly-ll*.45,lx*.3,ly-ll*.1,0,ly);
+    ctx.fillStyle=lg; ctx.fill();
+  });
+  ctx.restore();
+}
+
+const fpetalsA=Array.from({length:26},(_,i)=>({
+  x:Math.random(), y:Math.random(), rot:Math.random()*Math.PI*2,
+  speedY:0.00016+Math.random()*0.00020, driftX:-0.00006+Math.random()*0.00012,
+  rotS:-0.007+Math.random()*0.014, sz:0.011+Math.random()*0.011,
+  ph:Math.random()*Math.PI*2, al:0.15+Math.random()*0.23,
+  isPink: i%2===0,
+}));
+
+function drawFP_A(ctx,fp,t){
+  const x=fp.x*WF, y=fp.y*HF;
+  const wobble=Math.sin(t*.85+fp.ph)*.14;
+  ctx.save();
+  ctx.translate(x,y); ctx.rotate(fp.rot+wobble);
+  const len=fp.sz*WF, wid=len*.4;
+  const gd=ctx.createLinearGradient(0,0,0,-len);
+  if(fp.isPink){
+    gd.addColorStop(0,`rgba(225,130,165,${fp.al})`);
+    gd.addColorStop(1,`rgba(255,240,248,${fp.al*.6})`);
+  } else {
+    gd.addColorStop(0,`rgba(155,80,210,${fp.al})`);
+    gd.addColorStop(1,`rgba(195,155,235,${fp.al*.5})`);
+  }
+  ctx.beginPath();
+  ctx.moveTo(0,2);
+  ctx.bezierCurveTo(wid*.7,-len*.15,wid*.85,-len*.55,wid*.5,-len*.88);
+  ctx.bezierCurveTo(wid*.2,-len*.98,0,-len,0,-len);
+  ctx.bezierCurveTo(-wid*.2,-len*.98,-wid*.5,-len*.88,-wid*.85,-len*.55);
+  ctx.bezierCurveTo(-wid*.85,-len*.15,0,2,0,2);
+  ctx.fillStyle=gd; ctx.fill();
+  ctx.restore();
+}
+
+let lastF=0;
+function loopF(ts){
+  if (!flowersActive) return;
+
+  const t=ts*.001; const dt=Math.min(t-lastF,.05); lastF=t;
+  fpetalsA.forEach(fp=>{
+    fp.y+=fp.speedY; fp.x+=fp.driftX+Math.sin(t*.6+fp.ph)*.00007; fp.rot+=fp.rotS;
+    if(fp.y>1.08){fp.y=-0.08;fp.x=Math.random();}
+    if(fp.x<-.05) fp.x=1.05; if(fp.x>1.05) fp.x=-.05;
+  });
+
+  cxF.clearRect(0,0,WF,HF);
+
+  fpetalsA.forEach(fp=>drawFP_A(cxF,fp,t));
+
+  const sorted=[...flowerArr].sort((a,b)=>a.ry-b.ry);
+  sorted.forEach(fl=>drawStem(cxF,fl,t));
+  sorted.forEach(fl=>{
+    if(fl.variety==='r') drawRose(cxF,fl,t);
+    else drawLily(cxF,fl,t);
+  });
+
+  requestAnimationFrame(loopF);
+}
+requestAnimationFrame(loopF);
 </script>
 <script>
-  // Mostrar botón dev solo si la URL tiene "?secreto"
   if (window.location.search.includes("?secreto")) {
     document.getElementById("skip-btn").style.display = "block";
   }
