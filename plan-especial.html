@@ -24,7 +24,9 @@
 html{scroll-behavior:smooth}
 body{
   font-family:'Cormorant Garamond',Georgia,serif;
-  background:var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
+  background-attachment: fixed;
   color:var(--cream);
   min-height:100vh;
   overflow-x:hidden;
@@ -38,7 +40,7 @@ body{
 #countdown-screen{
   position:fixed;inset:0;z-index:10;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
+  background:transparent;
   transition:opacity 1.4s ease, transform 1.4s ease;
 }
 #countdown-screen.fade-out{
@@ -333,77 +335,6 @@ body{
   transform:scale(0.6);
 }
 .serie-card.selected .serie-check{opacity:1;transform:scale(1)}
-
-/* ─── Animacion de rechazo (Grey's Anatomy) ─── */
-.nope-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(6,3,15,0.85);
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.nope-overlay.show {
-  opacity: 1;
-  pointer-events: all; /* Bloquea clics extra mientras se muestra */
-}
-.nope-cross {
-  font-size: 5rem;
-  color: var(--rose);
-  line-height: 1;
-  margin-bottom: 0.5rem;
-  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-}
-.nope-msg {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--cream);
-  font-style: italic;
-  text-align: center;
-  padding: 0 0.5rem;
-  opacity: 0;
-  white-space: nowrap; /* Fuerza a que nada baje de línea */
-}
-.nope-overlay.show .nope-msg {
-  animation: fadeUp 0.4s 0.2s forwards;
-}
-
-/* ─── Animacion de info (Cine) ─── */
-.info-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(6,3,15,0.88);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.info-overlay.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.info-msg {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem;
-  color: var(--cream);
-  font-style: italic;
-  text-align: center;
-  padding: 0 2rem;
-  opacity: 0;
-  line-height: 1.5;
-}
-.info-overlay.show .info-msg {
-  animation: fadeUp 0.4s 0.2s forwards;
-}
 
 /* ─── Comment Box ─── */
 .comment-wrap{
@@ -1078,7 +1009,6 @@ places.forEach(place => {
   document.getElementById(`dots-${place.id}`).addEventListener('click',e=>{
     if(e.target.classList.contains('dot')) goTo(+e.target.dataset.i);
   });
-  
   card.querySelector('.heart-btn').addEventListener('click', function(){
     const id = this.dataset.id;
     const idx = selectedPlaces.indexOf(id);
@@ -1090,27 +1020,6 @@ places.forEach(place => {
     refreshPlaceNumbers();
     updateFavorites();
     saveState();
-
-    // ─── Mensaje temporal para "El Cine" ───
-    if (id === 'cine' && selectedPlaces.includes('cine')) {
-      let overlay = card.querySelector('.info-overlay');
-      if(!overlay){
-        overlay = document.createElement('div');
-        overlay.className = 'info-overlay';
-        overlay.innerHTML = `<span class="info-msg">Se puede reprogramar la fecha dependiendo de la película 😉</span>`;
-        card.appendChild(overlay);
-      }
-      
-      // Mostrar el cartelito con animación
-      setTimeout(() => {
-        overlay.classList.add('show');
-      }, 50);
-
-      // Ocultarlo después de 3.5 segundos (la opción queda seleccionada)
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 3500);
-    }
   });
 });
 
@@ -1162,14 +1071,14 @@ function submitPlaceComment(){
    SERIES 
 ═══════════════════════════════ */
 const series = [
-  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
+  { id:'s1',  name:'Peaky Blinders',          genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
   { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
   { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
   { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
   { id:'s5',  name:'Lost',                     genre:'Misterio · Drama',    img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
   { id:'s6',  name:'Stranger Things',          genre:'Sci-Fi · Terror',     img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
   { id:'s7',  name:'Dr. House',                genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
-  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://images.justwatch.com/poster/242850423/s718/vikingos.jpg' },
+  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://image.tmdb.org/t/p/w342/bQLrHmUhHzELBMiE7NXY0fqxJ6n.jpg' },
   { id:'s9',  name:'Dexter',                   genre:'Crime · Thriller',    img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
   { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
@@ -1189,10 +1098,7 @@ series.forEach(s => {
     </div>
   `;
   card.addEventListener('click', ()=>{
-    const isGreysAnatomy = (s.id === 's3');
     const idx = selectedSeries.indexOf(s.id);
-
-    // Selección estándar
     if(idx !== -1){
       selectedSeries.splice(idx, 1);
     } else {
@@ -1200,36 +1106,6 @@ series.forEach(s => {
     }
     refreshSeriesNumbers();
     saveState();
-
-    // Lógica especial para Grey's Anatomy
-    if(isGreysAnatomy && selectedSeries.includes('s3')){
-      let overlay = card.querySelector('.nope-overlay');
-      if(!overlay){
-        overlay = document.createElement('div');
-        overlay.className = 'nope-overlay';
-        overlay.innerHTML = `
-          <span class="nope-cross">✗</span>
-          <span class="nope-msg">justo esa no wa ♡</span>
-        `;
-        card.appendChild(overlay);
-      }
-      
-      // Mostrar overlay con animación
-      setTimeout(() => {
-        overlay.classList.add('show');
-      }, 50);
-
-      // A los 2.5 segundos, destildar y ocultar el mensaje
-      setTimeout(() => {
-        const removeIdx = selectedSeries.indexOf('s3');
-        if(removeIdx !== -1) {
-          selectedSeries.splice(removeIdx, 1);
-          refreshSeriesNumbers();
-          saveState();
-        }
-        overlay.classList.remove('show');
-      }, 2500);
-    }
   });
   seriesGrid.appendChild(card);
 });
