@@ -7,585 +7,654 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:      #06030f;
-  --bg2:     #0f0819;
-  --card:    #160d24;
-  --card2:   #1e1030;
-  --gold:    #c9a96e;
-  --gold2:   #e8c98a;
-  --rose:    #d4627a;
-  --rose-lt: #e8a0b0;
-  --cream:   #f5e6d3;
-  --muted:   #8a6b7a;
-  --border:  rgba(201,169,110,0.2);
+  --bg:      #06030f;
+  --bg2:     #0f0819;
+  --card:    #160d24;
+  --card2:   #1e1030;
+  --gold:    #c9a96e;
+  --gold2:   #e8c98a;
+  --rose:    #d4627a;
+  --rose-lt: #e8a0b0;
+  --cream:   #f5e6d3;
+  --muted:   #8a6b7a;
+  --border:  rgba(201,169,110,0.2);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  background-color: var(--bg);
-  background-image: radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
-  background-attachment: fixed;
-  color:var(--cream);
-  min-height:100vh;
-  overflow-x:hidden;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--bg);
+  color:var(--cream);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
 #canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
 
 /* ═══════════════════════
-   COUNTDOWN SCREEN
+   COUNTDOWN SCREEN
 ═══════════════════════ */
 #countdown-screen{
-  position:fixed;inset:0;z-index:10;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  background:transparent;
-  transition:opacity 1.4s ease, transform 1.4s ease;
+  position:fixed;inset:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:radial-gradient(ellipse at 50% 60%, #1a0928 0%, #06030f 70%);
+  transition:opacity 1.4s ease, transform 1.4s ease;
 }
 #countdown-screen.fade-out{
-  opacity:0;transform:scale(1.06);pointer-events:none;
+  opacity:0;transform:scale(1.06);pointer-events:none;
 }
 .countdown-inner{
-  position:relative;z-index:1;
-  text-align:center;padding:2rem;
+  position:relative;z-index:1;
+  text-align:center;padding:2rem;
 }
 .tagline{
-  font-style:italic;font-size:1rem;
-  color:var(--rose-lt);letter-spacing:0.35em;text-transform:uppercase;
-  margin-bottom:2rem;
-  opacity:0;animation:fadeUp 1s 0.5s forwards;
+  font-style:italic;font-size:1rem;
+  color:var(--rose-lt);letter-spacing:0.35em;text-transform:uppercase;
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 1s 0.5s forwards;
 }
 .countdown-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(2.8rem,7vw,5.5rem);
-  font-weight:700;color:var(--cream);line-height:1.08;
-  margin-bottom:0.5rem;
-  opacity:0;animation:fadeUp 1s 0.8s forwards;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,7vw,5.5rem);
+  font-weight:700;color:var(--cream);line-height:1.08;
+  margin-bottom:0.5rem;
+  opacity:0;animation:fadeUp 1s 0.8s forwards;
 }
 .countdown-title em{color:var(--gold);font-style:italic}
 .countdown-sub{
-  font-size:1.1rem;color:var(--muted);margin-bottom:3.5rem;
-  font-style:italic;
-  opacity:0;animation:fadeUp 1s 1.1s forwards;
+  font-size:1.1rem;color:var(--muted);margin-bottom:3.5rem;
+  font-style:italic;
+  opacity:0;animation:fadeUp 1s 1.1s forwards;
 }
 .timer-grid{
-  display:flex;gap:clamp(0.5rem,3vw,1.5rem);
-  justify-content:center;align-items:center;
-  margin-bottom:3rem;
-  opacity:0;animation:fadeUp 1s 1.4s forwards;
+  display:flex;gap:clamp(0.5rem,3vw,1.5rem);
+  justify-content:center;align-items:center;
+  margin-bottom:3rem;
+  opacity:0;animation:fadeUp 1s 1.4s forwards;
 }
 .time-block{text-align:center}
 .time-number{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(3.5rem,10vw,7.5rem);
-  font-weight:700;color:var(--cream);
-  line-height:1;display:block;
-  background:linear-gradient(180deg,var(--cream) 30%,var(--muted) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  min-width:2ch;text-shadow:none;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3.5rem,10vw,7.5rem);
+  font-weight:700;color:var(--cream);
+  line-height:1;display:block;
+  background:linear-gradient(180deg,var(--cream) 30%,var(--muted) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  min-width:2ch;text-shadow:none;
 }
 .time-label{
-  font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;
-  color:var(--gold);margin-top:0.5rem;display:block;
+  font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-top:0.5rem;display:block;
 }
 .timer-sep{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(2rem,6vw,5rem);
-  color:var(--gold);opacity:0.4;
-  margin-bottom:1.5rem;
-  animation:blink 1.4s infinite;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,5rem);
+  color:var(--gold);opacity:0.4;
+  margin-bottom:1.5rem;
+  animation:blink 1.4s infinite;
 }
 .ornament-cd{
-  color:var(--gold);font-size:1.1rem;letter-spacing:1.2em;
-  opacity:0;animation:fadeUp 1s 1.7s forwards;
+  color:var(--gold);font-size:1.1rem;letter-spacing:1.2em;
+  opacity:0;animation:fadeUp 1s 1.7s forwards;
 }
 #skip-btn{
-  position:fixed;bottom:1.5rem;right:1.5rem;
-  background:transparent;border:1px solid var(--border);
-  color:var(--muted);font-family:'Cormorant Garamond',serif;
-  font-size:0.8rem;padding:0.4rem 0.9rem;border-radius:2rem;
-  cursor:pointer;opacity:0.3;transition:opacity 0.3s;z-index:20;
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:transparent;border:1px solid var(--border);
+  color:var(--muted);font-family:'Cormorant Garamond',serif;
+  font-size:0.8rem;padding:0.4rem 0.9rem;border-radius:2rem;
+  cursor:pointer;opacity:0.3;transition:opacity 0.3s;z-index:20;
 }
 #skip-btn:hover{opacity:1}
 
 /* ═══════════════════════
-   MAIN SCREEN
+   MAIN SCREEN
 ═══════════════════════ */
 #main-screen{opacity:0}
 #main-screen.visible{animation:fadeIn 1.6s ease forwards}
 
 .main-header{
-  text-align:center;padding:5rem 2rem 2rem;position:relative;
+  text-align:center;padding:5rem 2rem 2rem;position:relative;
 }
 .header-ornament{
-  color:var(--gold);font-size:0.9rem;
-  letter-spacing:0.5em;margin-bottom:1.2rem;display:block;
+  color:var(--gold);font-size:0.9rem;
+  letter-spacing:0.5em;margin-bottom:1.2rem;display:block;
 }
 .main-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(2.5rem,6vw,4.5rem);
-  font-weight:400;line-height:1.1;color:var(--cream);
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  font-weight:400;line-height:1.1;color:var(--cream);
 }
 .main-title em{color:var(--gold);font-style:italic}
 .main-subtitle{
-  margin-top:1rem;font-size:1.15rem;color:var(--muted);
-  font-style:italic;max-width:500px;margin-left:auto;margin-right:auto;
-  line-height:1.7;
+  margin-top:1rem;font-size:1.15rem;color:var(--muted);
+  font-style:italic;max-width:500px;margin-left:auto;margin-right:auto;
+  line-height:1.7;
 }
 .divider{
-  width:120px;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  margin:2rem auto;
+  width:120px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:2rem auto;
 }
 .section-label{
-  text-align:center;font-size:0.7rem;
-  letter-spacing:0.45em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:0.5rem;
+  text-align:center;font-size:0.7rem;
+  letter-spacing:0.45em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;
 }
 .section-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(1.8rem,4vw,2.8rem);
-  text-align:center;color:var(--cream);margin-bottom:0.75rem;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  text-align:center;color:var(--cream);margin-bottom:0.75rem;
 }
 .section-desc{
-  text-align:center;color:var(--muted);
-  font-style:italic;font-size:1.05rem;
-  max-width:480px;margin:0 auto 3rem;line-height:1.7;
+  text-align:center;color:var(--muted);
+  font-style:italic;font-size:1.05rem;
+  max-width:480px;margin:0 auto 3rem;line-height:1.7;
 }
 
 /* ─── Places ─── */
 #places-section{
-  padding:2rem 1.5rem 4rem;
-  max-width:1140px;margin:0 auto;
+  padding:2rem 1.5rem 4rem;
+  max-width:1140px;margin:0 auto;
 }
 .places-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-  gap:2rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:2rem;
 }
 .place-card{
-  background:var(--card);
-  border-radius:1.2rem;
-  overflow:hidden;
-  border:1px solid var(--border);
-  transition:transform 0.45s ease,box-shadow 0.45s ease;
-  position:relative;
+  background:var(--card);
+  border-radius:1.2rem;
+  overflow:hidden;
+  border:1px solid var(--border);
+  transition:transform 0.45s ease,box-shadow 0.45s ease;
+  position:relative;
 }
 .place-card:hover{
-  transform:translateY(-7px);
-  box-shadow:0 24px 64px rgba(0,0,0,0.55),0 0 0 1px rgba(201,169,110,0.3);
+  transform:translateY(-7px);
+  box-shadow:0 24px 64px rgba(0,0,0,0.55),0 0 0 1px rgba(201,169,110,0.3);
 }
 .place-card.selected{
-  border-color:var(--rose);
-  box-shadow:0 0 0 2px var(--rose),0 24px 64px rgba(212,98,122,0.2);
+  border-color:var(--rose);
+  box-shadow:0 0 0 2px var(--rose),0 24px 64px rgba(212,98,122,0.2);
 }
 .slider-wrap{
-  position:relative;aspect-ratio:4/3;overflow:hidden;
-  background:var(--bg2);
+  position:relative;aspect-ratio:4/3;overflow:hidden;
+  background:var(--bg2);
 }
 .slides{
-  display:flex;height:100%;
-  transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  display:flex;height:100%;
+  transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);
 }
 .slide{
-  min-width:100%;height:100%;
-  object-fit:cover;display:block;cursor:zoom-in;
+  min-width:100%;height:100%;
+  object-fit:cover;display:block;cursor:zoom-in;
 }
 .slider-btn{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(6,3,15,0.72);
-  border:1px solid var(--border);color:var(--gold);
-  width:2.2rem;height:2.2rem;border-radius:50%;
-  font-size:1rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:background 0.2s,transform 0.2s;z-index:2;
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(6,3,15,0.72);
+  border:1px solid var(--border);color:var(--gold);
+  width:2.2rem;height:2.2rem;border-radius:50%;
+  font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s,transform 0.2s;z-index:2;
 }
 .slider-btn:hover{background:rgba(201,169,110,0.2);transform:translateY(-50%) scale(1.1)}
 .slider-btn.prev{left:0.6rem}
 .slider-btn.next{right:0.6rem}
 .slider-dots{
-  position:absolute;bottom:0.7rem;left:0;right:0;
-  display:flex;justify-content:center;gap:0.4rem;
+  position:absolute;bottom:0.7rem;left:0;right:0;
+  display:flex;justify-content:center;gap:0.4rem;
 }
 .dot{
-  width:5px;height:5px;border-radius:50%;
-  background:rgba(245,230,211,0.3);
-  transition:background 0.3s,transform 0.3s;cursor:pointer;
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(245,230,211,0.3);
+  transition:background 0.3s,transform 0.3s;cursor:pointer;
 }
 .dot.active{background:var(--gold);transform:scale(1.35)}
 .card-body{padding:1.4rem 1.5rem 0.8rem}
 .card-tag{
-  font-size:0.68rem;letter-spacing:0.28em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;
+  font-size:0.68rem;letter-spacing:0.28em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;
 }
 .card-title{
-  font-family:'Playfair Display',serif;
-  font-size:1.45rem;font-weight:600;
-  color:var(--cream);margin-bottom:0.6rem;
+  font-family:'Playfair Display',serif;
+  font-size:1.45rem;font-weight:600;
+  color:var(--cream);margin-bottom:0.6rem;
 }
 .card-desc{
-  font-size:1rem;color:var(--muted);
-  line-height:1.65;font-style:italic;
+  font-size:1rem;color:var(--muted);
+  line-height:1.65;font-style:italic;
 }
 .heart-btn{
-  position:absolute;top:0.8rem;right:0.8rem;
-  background:rgba(6,3,15,0.72);
-  border:1px solid var(--border);
-  border-radius:50%;width:2.6rem;height:2.6rem;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:1.15rem;
-  transition:all 0.3s;z-index:3;
+  position:absolute;top:0.8rem;right:0.8rem;
+  background:rgba(6,3,15,0.72);
+  border:1px solid var(--border);
+  border-radius:50%;width:2.6rem;height:2.6rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.15rem;
+  transition:all 0.3s;z-index:3;
 }
 .heart-btn:hover{transform:scale(1.18);background:rgba(212,98,122,0.2)}
 .heart-btn.active{background:rgba(212,98,122,0.3);border-color:var(--rose)}
 .heart-btn.active{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;-webkit-text-fill-color:white;background:var(--rose);border-color:var(--rose);}
 .card-footer{
-  padding:0.7rem 1.5rem 1.2rem;
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:0.8rem;
+  padding:0.7rem 1.5rem 1.2rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:0.8rem;
 }
 .select-label{
-  font-size:0.88rem;color:var(--muted);font-style:italic;
-  transition:color 0.3s;
+  font-size:0.88rem;color:var(--muted);font-style:italic;
+  transition:color 0.3s;
 }
 .place-card.selected .select-label{color:var(--rose-lt)}
 
 /* ─── Favorites ─── */
 #favorites-section{
-  padding:3rem 1.5rem;max-width:700px;margin:0 auto;
+  padding:3rem 1.5rem;max-width:700px;margin:0 auto;
 }
 .selected-list{
-  display:flex;flex-wrap:wrap;gap:0.75rem;
-  justify-content:center;margin-top:1.5rem;min-height:3rem;
+  display:flex;flex-wrap:wrap;gap:0.75rem;
+  justify-content:center;margin-top:1.5rem;min-height:3rem;
 }
 .selected-tag{
-  background:rgba(212,98,122,0.14);
-  border:1px solid rgba(212,98,122,0.4);
-  border-radius:2rem;padding:0.45rem 1.2rem;
-  font-size:0.98rem;color:var(--rose-lt);
-  font-style:italic;
-  animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  background:rgba(212,98,122,0.14);
+  border:1px solid rgba(212,98,122,0.4);
+  border-radius:2rem;padding:0.45rem 1.2rem;
+  font-size:0.98rem;color:var(--rose-lt);
+  font-style:italic;
+  animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
 }
 .no-selection{
-  color:var(--muted);font-style:italic;
-  font-size:1rem;text-align:center;width:100%;
+  color:var(--muted);font-style:italic;
+  font-size:1rem;text-align:center;width:100%;
 }
 
 /* ─── Series Section ─── */
 #series-section{
-  padding:3rem 1.5rem 4rem;
-  max-width:1100px;margin:0 auto;
+  padding:3rem 1.5rem 4rem;
+  max-width:1100px;margin:0 auto;
 }
 .series-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
-  gap:1rem;
-  margin-bottom:3rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(145px,1fr));
+  gap:1rem;
+  margin-bottom:3rem;
 }
 .serie-card{
-  border-radius:0.8rem;
-  overflow:hidden;
-  cursor:pointer;
-  position:relative;
-  border:2px solid transparent;
-  aspect-ratio:2/3;
-  transition:transform 0.35s ease, border-color 0.3s, box-shadow 0.3s;
-  user-select:none;
-  background:var(--card2);
+  border-radius:0.8rem;
+  overflow:hidden;
+  cursor:pointer;
+  position:relative;
+  border:2px solid transparent;
+  aspect-ratio:2/3;
+  transition:transform 0.35s ease, border-color 0.3s, box-shadow 0.3s;
+  user-select:none;
+  background:var(--card2);
 }
 .serie-card:hover{
-  transform:translateY(-7px) scale(1.03);
-  box-shadow:0 20px 50px rgba(0,0,0,0.6);
+  transform:translateY(-7px) scale(1.03);
+  box-shadow:0 20px 50px rgba(0,0,0,0.6);
 }
 .serie-card.selected{
-  border-color:var(--rose);
-  box-shadow:0 0 0 2px var(--rose),0 16px 48px rgba(212,98,122,0.3);
+  border-color:var(--rose);
+  box-shadow:0 0 0 2px var(--rose),0 16px 48px rgba(212,98,122,0.3);
 }
 .serie-poster{
-  width:100%;height:100%;
-  object-fit:cover;display:block;
-  transition:transform 0.4s ease;
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform 0.4s ease;
 }
 .serie-card:hover .serie-poster{transform:scale(1.05)}
 .serie-overlay{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent 0%, rgba(6,3,15,0.6) 40%, rgba(6,3,15,0.97) 100%);
-  padding:2.5rem 0.8rem 0.8rem;
-  text-align:center;
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent 0%, rgba(6,3,15,0.6) 40%, rgba(6,3,15,0.97) 100%);
+  padding:2.5rem 0.8rem 0.8rem;
+  text-align:center;
 }
 .serie-name{
-  font-family:'Playfair Display',serif;
-  font-size:0.9rem;font-weight:600;
-  color:var(--cream);margin-bottom:0.25rem;
-  line-height:1.2;
+  font-family:'Playfair Display',serif;
+  font-size:0.9rem;font-weight:600;
+  color:var(--cream);margin-bottom:0.25rem;
+  line-height:1.2;
 }
 .serie-genre{
-  font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;
-  color:var(--gold);
+  font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);
 }
 .serie-check{
-  position:absolute;top:0.55rem;right:0.55rem;
-  background:var(--rose);color:white;
-  border-radius:50%;width:1.7rem;height:1.7rem;
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.85rem;
-  opacity:0;transition:opacity 0.25s, transform 0.25s;
-  transform:scale(0.6);
+  position:absolute;top:0.55rem;right:0.55rem;
+  background:var(--rose);color:white;
+  border-radius:50%;width:1.7rem;height:1.7rem;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;
+  opacity:0;transition:opacity 0.25s, transform 0.25s;
+  transform:scale(0.6);
 }
 .serie-card.selected .serie-check{opacity:1;transform:scale(1)}
 
+/* ─── Animacion de rechazo (Grey's Anatomy) ─── */
+.nope-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,3,15,0.85);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nope-overlay.show {
+  opacity: 1;
+  pointer-events: all; /* Bloquea clics extra mientras se muestra */
+}
+.nope-cross {
+  font-size: 5rem;
+  color: var(--rose);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.nope-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--cream);
+  font-style: italic;
+  text-align: center;
+  padding: 0 0.5rem;
+  opacity: 0;
+  white-space: nowrap; /* Fuerza a que nada baje de línea */
+}
+.nope-overlay.show .nope-msg {
+  animation: fadeUp 0.4s 0.2s forwards;
+}
+
+/* ─── Animacion de info (Cine) ─── */
+.info-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,3,15,0.88);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.info-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.info-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--cream);
+  font-style: italic;
+  text-align: center;
+  padding: 0 2rem;
+  opacity: 0;
+  line-height: 1.5;
+}
+.info-overlay.show .info-msg {
+  animation: fadeUp 0.4s 0.2s forwards;
+}
+
 /* ─── Comment Box ─── */
 .comment-wrap{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:1.2rem;
-  padding:2rem;
-  max-width:600px;
-  margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:1.2rem;
+  padding:2rem;
+  max-width:600px;
+  margin:0 auto;
 }
 .comment-wrap h3{
-  font-family:'Playfair Display',serif;
-  font-size:1.3rem;color:var(--cream);
-  margin-bottom:0.4rem;
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;color:var(--cream);
+  margin-bottom:0.4rem;
 }
 .comment-wrap p{
-  font-size:0.95rem;color:var(--muted);
-  font-style:italic;margin-bottom:1.2rem;
-  line-height:1.6;
+  font-size:0.95rem;color:var(--muted);
+  font-style:italic;margin-bottom:1.2rem;
+  line-height:1.6;
 }
 .comment-textarea{
-  width:100%;
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:0.75rem;
-  color:var(--cream);
-  font-family:'Cormorant Garamond',serif;
-  font-size:1rem;
-  padding:1rem;
-  resize:vertical;
-  min-height:100px;
-  outline:none;
-  transition:border-color 0.2s;
-  line-height:1.6;
+  width:100%;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:0.75rem;
+  color:var(--cream);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  padding:1rem;
+  resize:vertical;
+  min-height:100px;
+  outline:none;
+  transition:border-color 0.2s;
+  line-height:1.6;
 }
 .comment-textarea::placeholder{color:var(--muted);font-style:italic}
 .comment-textarea:focus{border-color:rgba(201,169,110,0.5)}
 .comment-submit{
-  margin-top:1rem;
-  background:linear-gradient(135deg,rgba(201,169,110,0.2),rgba(201,169,110,0.1));
-  border:1px solid var(--gold);
-  color:var(--gold);
-  padding:0.75rem 2rem;
-  border-radius:2rem;
-  font-family:'Playfair Display',serif;
-  font-size:1rem;
-  cursor:pointer;
-  transition:background 0.2s,transform 0.2s;
-  display:block;
-  margin-left:auto;
+  margin-top:1rem;
+  background:linear-gradient(135deg,rgba(201,169,110,0.2),rgba(201,169,110,0.1));
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:0.75rem 2rem;
+  border-radius:2rem;
+  font-family:'Playfair Display',serif;
+  font-size:1rem;
+  cursor:pointer;
+  transition:background 0.2s,transform 0.2s;
+  display:block;
+  margin-left:auto;
 }
 .comment-submit:hover{
-  background:rgba(201,169,110,0.25);
-  transform:translateY(-2px);
+  background:rgba(201,169,110,0.25);
+  transform:translateY(-2px);
 }
 .comment-thanks{
-  display:none;
-  text-align:center;
-  padding:1.5rem;
-  animation:fadeUp 0.6s forwards;
+  display:none;
+  text-align:center;
+  padding:1.5rem;
+  animation:fadeUp 0.6s forwards;
 }
 .comment-thanks .thanks-icon{font-size:2.2rem;display:block;margin-bottom:0.6rem}
 .comment-thanks p{
-  color:var(--rose-lt);font-style:italic;font-size:1.05rem;line-height:1.7;
-  margin:0;
+  color:var(--rose-lt);font-style:italic;font-size:1.05rem;line-height:1.7;
+  margin:0;
 }
 .comment-thanks strong{color:var(--gold);font-style:normal}
 
 /* ─── Calendar ─── */
 #calendar-section{
-  padding:3rem 1.5rem 2rem;
-  max-width:480px;margin:0 auto;
+  padding:3rem 1.5rem 2rem;
+  max-width:480px;margin:0 auto;
 }
 .calendar-wrap{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:1.2rem;overflow:hidden;
-  margin-top:2rem;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:1.2rem;overflow:hidden;
+  margin-top:2rem;
 }
 .cal-header{
-  background:linear-gradient(135deg,var(--card2),var(--bg2));
-  padding:1.2rem 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,var(--card2),var(--bg2));
+  padding:1.2rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
 }
 .cal-nav{
-  background:transparent;border:1px solid var(--border);
-  color:var(--gold);width:2.1rem;height:2.1rem;border-radius:50%;
-  cursor:pointer;font-size:1.1rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:background 0.2s;
+  background:transparent;border:1px solid var(--border);
+  color:var(--gold);width:2.1rem;height:2.1rem;border-radius:50%;
+  cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;
 }
 .cal-nav:hover{background:rgba(201,169,110,0.15)}
 .cal-month-year{
-  font-family:'Playfair Display',serif;
-  font-size:1.2rem;color:var(--cream);
+  font-family:'Playfair Display',serif;
+  font-size:1.2rem;color:var(--cream);
 }
 .cal-grid{padding:1rem 1.5rem 1.5rem}
 .cal-days-header{
-  display:grid;grid-template-columns:repeat(7,1fr);
-  margin-bottom:0.5rem;
+  display:grid;grid-template-columns:repeat(7,1fr);
+  margin-bottom:0.5rem;
 }
 .cal-day-name{
-  text-align:center;font-size:0.68rem;
-  letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--gold);padding:0.3rem 0;
+  text-align:center;font-size:0.68rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);padding:0.3rem 0;
 }
 .cal-days{
-  display:grid;grid-template-columns:repeat(7,1fr);gap:0.2rem;
+  display:grid;grid-template-columns:repeat(7,1fr);gap:0.2rem;
 }
 .cal-day{
-  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-  font-size:0.9rem;color:var(--cream);
-  border-radius:50%;cursor:pointer;
-  transition:background 0.2s,color 0.2s,border-color 0.2s;
-  border:1px solid transparent;
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;color:var(--cream);
+  border-radius:50%;cursor:pointer;
+  transition:background 0.2s,color 0.2s,border-color 0.2s;
+  border:1px solid transparent;
 }
 .cal-day:hover:not(.empty):not(.past){background:rgba(201,169,110,0.15)}
 .cal-day.empty{cursor:default}
 .cal-day.past{color:var(--muted);opacity:0.35;cursor:default}
 .cal-day.today{border-color:var(--gold);color:var(--gold)}
 .cal-day.selected-day{
-  background:var(--rose);color:white;
-  font-weight:600;border-color:var(--rose);
+  background:var(--rose);color:white;
+  font-weight:600;border-color:var(--rose);
 }
 .selected-date-display{
-  text-align:center;margin-top:1.2rem;
-  font-style:italic;color:var(--rose-lt);
-  font-size:1rem;min-height:1.5rem;
-  transition:opacity 0.3s;
+  text-align:center;margin-top:1.2rem;
+  font-style:italic;color:var(--rose-lt);
+  font-size:1rem;min-height:1.5rem;
+  transition:opacity 0.3s;
 }
 
 /* ─── Confirm ─── */
 #confirm-section{
-  padding:3rem 1.5rem 7rem;text-align:center;
+  padding:3rem 1.5rem 7rem;text-align:center;
 }
 .confirm-btn{
-  background:linear-gradient(135deg,var(--rose) 0%,#a83650 100%);
-  color:white;border:none;
-  padding:1.1rem 3.2rem;
-  font-family:'Playfair Display',serif;
-  font-size:1.2rem;font-weight:600;
-  border-radius:3rem;cursor:pointer;
-  transition:transform 0.3s,box-shadow 0.3s;
-  letter-spacing:0.06em;
-  box-shadow:0 8px 32px rgba(212,98,122,0.35);
+  background:linear-gradient(135deg,var(--rose) 0%,#a83650 100%);
+  color:white;border:none;
+  padding:1.1rem 3.2rem;
+  font-family:'Playfair Display',serif;
+  font-size:1.2rem;font-weight:600;
+  border-radius:3rem;cursor:pointer;
+  transition:transform 0.3s,box-shadow 0.3s;
+  letter-spacing:0.06em;
+  box-shadow:0 8px 32px rgba(212,98,122,0.35);
 }
 .confirm-btn:hover:not(:disabled){
-  transform:translateY(-4px) scale(1.02);
-  box-shadow:0 18px 52px rgba(212,98,122,0.52);
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 18px 52px rgba(212,98,122,0.52);
 }
 .confirm-btn:disabled{
-  opacity:0.38;cursor:not-allowed;transform:none;box-shadow:none;
+  opacity:0.38;cursor:not-allowed;transform:none;box-shadow:none;
 }
 .confirm-hint{
-  margin-top:1rem;font-size:0.9rem;
-  color:var(--muted);font-style:italic;
+  margin-top:1rem;font-size:0.9rem;
+  color:var(--muted);font-style:italic;
 }
 
 /* ─── Modal ─── */
 .modal-overlay{
-  position:fixed;inset:0;
-  background:rgba(6,3,15,0.88);z-index:100;
-  display:flex;align-items:center;justify-content:center;padding:2rem;
-  opacity:0;transition:opacity 0.4s;pointer-events:none;
+  position:fixed;inset:0;
+  background:rgba(6,3,15,0.88);z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;transition:opacity 0.4s;pointer-events:none;
 }
 .modal-overlay.show{opacity:1;pointer-events:all}
 .modal{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:1.8rem;padding:3rem 2.5rem;
-  max-width:500px;width:100%;text-align:center;
-  transform:scale(0.88);
-  transition:transform 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:1.8rem;padding:3rem 2.5rem;
+  max-width:500px;width:100%;text-align:center;
+  transform:scale(0.88);
+  transition:transform 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
 }
 .modal-overlay.show .modal{transform:scale(1)}
 .modal-icon{font-size:3rem;margin-bottom:1rem;display:block}
 .modal-title{
-  font-family:'Playfair Display',serif;
-  font-size:1.9rem;color:var(--cream);margin-bottom:0.75rem;
+  font-family:'Playfair Display',serif;
+  font-size:1.9rem;color:var(--cream);margin-bottom:0.75rem;
 }
 .modal-body{
-  color:var(--muted);font-style:italic;line-height:1.8;
-  margin-bottom:2rem;font-size:1.05rem;
+  color:var(--muted);font-style:italic;line-height:1.8;
+  margin-bottom:2rem;font-size:1.05rem;
 }
 .modal-body strong{color:var(--rose-lt);font-style:normal}
 .modal-close{
-  background:transparent;border:1px solid var(--border);
-  color:var(--gold);padding:0.75rem 2.2rem;
-  border-radius:2rem;font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;cursor:pointer;
-  transition:background 0.2s;
+  background:transparent;border:1px solid var(--border);
+  color:var(--gold);padding:0.75rem 2.2rem;
+  border-radius:2rem;font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;cursor:pointer;
+  transition:background 0.2s;
 }
 .modal-close:hover{background:rgba(201,169,110,0.1)}
 
 /* ─── Lightbox ─── */
 #lightbox{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,0.93);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity 0.3s;pointer-events:none;
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.93);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
 }
 #lightbox.show{opacity:1;pointer-events:all}
 #lightbox img{
-  max-width:90vw;max-height:85vh;
-  object-fit:contain;border-radius:0.5rem;
-  box-shadow:0 0 80px rgba(0,0,0,0.8);
-  transition:opacity 0.25s;
+  max-width:90vw;max-height:85vh;
+  object-fit:contain;border-radius:0.5rem;
+  box-shadow:0 0 80px rgba(0,0,0,0.8);
+  transition:opacity 0.25s;
 }
 .lb-btn{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.15);
-  color:var(--cream);width:3rem;height:3rem;border-radius:50%;
-  font-size:1.4rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:background 0.2s;
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--cream);width:3rem;height:3rem;border-radius:50%;
+  font-size:1.4rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;
 }
 .lb-btn:hover{background:rgba(255,255,255,0.18)}
 #lb-prev{left:1.5rem}
 #lb-next{right:1.5rem}
 #lb-close{
-  position:absolute;top:1.2rem;right:1.5rem;
-  background:transparent;border:none;
-  color:var(--muted);font-size:2rem;cursor:pointer;
-  line-height:1;transition:color 0.2s;
+  position:absolute;top:1.2rem;right:1.5rem;
+  background:transparent;border:none;
+  color:var(--muted);font-size:2rem;cursor:pointer;
+  line-height:1;transition:color 0.2s;
 }
 #lb-close:hover{color:var(--cream)}
 .lb-dots{
-  position:absolute;bottom:1.5rem;left:0;right:0;
-  display:flex;justify-content:center;gap:0.5rem;
+  position:absolute;bottom:1.5rem;left:0;right:0;
+  display:flex;justify-content:center;gap:0.5rem;
 }
 .lb-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:rgba(255,255,255,0.25);
-  transition:background 0.3s;cursor:pointer;
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  transition:background 0.3s;cursor:pointer;
 }
 .lb-dot.active{background:var(--gold)}
 
 /* ─── Animations ─── */
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(22px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
 }
 @keyframes fadeIn{
-  from{opacity:0}to{opacity:1}
+  from{opacity:0}to{opacity:1}
 }
 @keyframes blink{
-  0%,100%{opacity:0.3}50%{opacity:0.8}
+  0%,100%{opacity:0.3}50%{opacity:0.8}
 }
 @keyframes popIn{
-  from{opacity:0;transform:scale(0.65)}
-  to{opacity:1;transform:scale(1)}
+  from{opacity:0;transform:scale(0.65)}
+  to{opacity:1;transform:scale(1)}
 }
 
 ::-webkit-scrollbar{width:6px}
@@ -593,8 +662,8 @@ body{
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
 @media(max-width:500px){
-  .timer-sep{font-size:2rem}
-  .time-number{min-width:1.8ch}
+  .timer-sep{font-size:2rem}
+  .time-number{min-width:1.8ch}
 }
 </style>
 </head>
@@ -603,541 +672,596 @@ body{
 <canvas id="canvas"></canvas>
 
 <div id="countdown-screen">
-  <div class="countdown-inner">
-    <p class="tagline">✦  algo especial se acerca  ✦</p>
-    <h1 class="countdown-title">Un plan <em>un tanto</em><br>especial</h1>
-    <p class="countdown-sub">Queda poquito... la espera vale la pena.</p>
-    <div class="timer-grid">
-      <div class="time-block">
-        <span class="time-number" id="t-days">00</span>
-        <span class="time-label">días</span>
-      </div>
-      <div class="timer-sep">:</div>
-      <div class="time-block">
-        <span class="time-number" id="t-hours">00</span>
-        <span class="time-label">horas</span>
-      </div>
-      <div class="timer-sep">:</div>
-      <div class="time-block">
-        <span class="time-number" id="t-mins">00</span>
-        <span class="time-label">minutos</span>
-      </div>
-      <div class="timer-sep">:</div>
-      <div class="time-block">
-        <span class="time-number" id="t-secs">00</span>
-        <span class="time-label">segundos</span>
-      </div>
-    </div>
-    <p class="ornament-cd">✦    ✦    ✦</p>
-  </div>
+  <div class="countdown-inner">
+    <p class="tagline">✦  algo especial se acerca  ✦</p>
+    <h1 class="countdown-title">Un plan <em>un tanto</em><br>especial</h1>
+    <p class="countdown-sub">Queda poquito... la espera vale la pena.</p>
+    <div class="timer-grid">
+      <div class="time-block">
+        <span class="time-number" id="t-days">00</span>
+        <span class="time-label">días</span>
+      </div>
+      <div class="timer-sep">:</div>
+      <div class="time-block">
+        <span class="time-number" id="t-hours">00</span>
+        <span class="time-label">horas</span>
+      </div>
+      <div class="timer-sep">:</div>
+      <div class="time-block">
+        <span class="time-number" id="t-mins">00</span>
+        <span class="time-label">minutos</span>
+      </div>
+      <div class="timer-sep">:</div>
+      <div class="time-block">
+        <span class="time-number" id="t-secs">00</span>
+        <span class="time-label">segundos</span>
+      </div>
+    </div>
+    <p class="ornament-cd">✦    ✦    ✦</p>
+  </div>
 </div>
 
 <button id="skip-btn" onclick="revealMain()" style="display:none;">modo dev: ver página →</button>
 
 <div id="main-screen" style="display:none">
 
-  <header class="main-header">
-    <span class="header-ornament">✦   una sorpresa para vos   ✦</span>
-    <h1 class="main-title">Tu <em>plan perfecto</em><br>te espera</h1>
-    <p class="main-subtitle">
-      Explorá cada lugar, marcá los que más te gusten<br>
-      y elegí la fecha. El resto lo organizo yo. 💌
-    </p>
-    <div class="divider"></div>
-  </header>
+  <header class="main-header">
+    <span class="header-ornament">✦   una sorpresa para vos   ✦</span>
+    <h1 class="main-title">Tu <em>plan perfecto</em><br>te espera</h1>
+    <p class="main-subtitle">
+      Explorá cada lugar, marcá los que más te gusten<br>
+      y elegí la fecha. El resto lo organizo yo. 💌
+    </p>
+    <div class="divider"></div>
+  </header>
 
-  <section id="places-section">
-    <p class="section-label">los destinos</p>
-    <h2 class="section-title">¿Qué querés vivir?</h2>
-    <p class="section-desc">
-      Deslizá las fotos, marcá los que te llamen con el corazón.<br>
-      Podés elegir uno o combinar varios.
-    </p>
-    <div class="places-grid" id="places-grid"></div>
+  <section id="places-section">
+    <p class="section-label">los destinos</p>
+    <h2 class="section-title">¿Qué querés vivir?</h2>
+    <p class="section-desc">
+      Deslizá las fotos, marcá los que te llamen con el corazón.<br>
+      Podés elegir uno o combinar varios.
+    </p>
+    <div class="places-grid" id="places-grid"></div>
 
-    <div class="comment-wrap" style="margin-top: 3rem;">
-      <div id="place-comment-form">
-        <h3>¿Tenés algún lugar en mente?  ✨</h3>
-        <p>Si hay algún destino que quieras sugerir o un plan que tengas ganas de hacer, contame acá. Lo voy a tener muy en cuenta.</p>
-        <textarea
-          class="comment-textarea"
-          id="place-comment"
-          placeholder="Escribí el lugar o la idea que tengas... ✍️"
-        ></textarea>
-        <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia  ✦</button>
-      </div>
-      <div class="comment-thanks" id="place-comment-thanks">
-        <span class="thanks-icon">🌟</span>
-        <p>
-          <strong>¡Anotado con todo el amor!</strong><br>
-          Tu sugerencia de lugar va a ser tenida muy en cuenta.<br>
-          Lo agregamos a las opciones en breve  💌
-        </p>
-      </div>
-    </div>
-  </section>
+    <div class="comment-wrap" style="margin-top: 3rem;">
+      <div id="place-comment-form">
+        <h3>¿Tenés algún lugar en mente?  ✨</h3>
+        <p>Si hay algún destino que quieras sugerir o un plan que tengas ganas de hacer, contame acá. Lo voy a tener muy en cuenta.</p>
+        <textarea
+          class="comment-textarea"
+          id="place-comment"
+          placeholder="Escribí el lugar o la idea que tengas... ✍️"
+        ></textarea>
+        <button class="comment-submit" onclick="submitPlaceComment()">Enviar sugerencia  ✦</button>
+      </div>
+      <div class="comment-thanks" id="place-comment-thanks">
+        <span class="thanks-icon">🌟</span>
+        <p>
+          <strong>¡Anotado con todo el amor!</strong><br>
+          Tu sugerencia de lugar va a ser tenida muy en cuenta.<br>
+          Lo agregamos a las opciones en breve  💌
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <section id="favorites-section">
-    <div class="divider"></div>
-    <p class="section-label">tus elegidos</p>
-    <h2 class="section-title">Lo que más te gustó</h2>
-    <div class="selected-list" id="selected-list">
-      <p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>
-    </div>
-    <div class="divider"></div>
-  </section>
+  <section id="favorites-section">
+    <div class="divider"></div>
+    <p class="section-label">tus elegidos</p>
+    <h2 class="section-title">Lo que más te gustó</h2>
+    <div class="selected-list" id="selected-list">
+      <p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>
+    </div>
+    <div class="divider"></div>
+  </section>
 
-  <section id="series-section">
-    <p class="section-label">Para ver </p>
-    <h2 class="section-title">¿Qué serie arrancamos?</h2>
-    <p class="section-desc">
-      Marcá las que te llamen y si tenés alguna en mente<br>
-      que no esté acá, la podés agregar abajo.
-    </p>
+  <section id="series-section">
+    <p class="section-label">Para ver </p>
+    <h2 class="section-title">¿Qué serie arrancamos?</h2>
+    <p class="section-desc">
+      Marcá las que te llamen y si tenés alguna en mente<br>
+      que no esté acá, la podés agregar abajo.
+    </p>
 
-    <div class="series-grid" id="series-grid"></div>
+    <div class="series-grid" id="series-grid"></div>
 
-    <div class="comment-wrap">
-      <div id="series-comment-form">
-        <h3>¿Tenés alguna en mente?  📺</h3>
-        <p>Si hay alguna serie que quieras sugerir o que tengas ganas de ver, contame acá. La voy a tener muy en cuenta.</p>
-        <textarea
-          class="comment-textarea"
-          id="series-comment"
-          placeholder="Escribí el nombre o contame de qué va... ✍️"
-        ></textarea>
-        <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia  ✦</button>
-      </div>
-      <div class="comment-thanks" id="series-comment-thanks">
-        <span class="thanks-icon">🌟</span>
-        <p>
-          <strong>¡Anotado con todo el amor!</strong><br>
-          Tu sugerencia va a ser tenida muy en cuenta.<br>
-          La agregamos a la lista en breve  💌
-        </p>
-      </div>
-    </div>
+    <div class="comment-wrap">
+      <div id="series-comment-form">
+        <h3>¿Tenés alguna en mente?  📺</h3>
+        <p>Si hay alguna serie que quieras sugerir o que tengas ganas de ver, contame acá. La voy a tener muy en cuenta.</p>
+        <textarea
+          class="comment-textarea"
+          id="series-comment"
+          placeholder="Escribí el nombre o contame de qué va... ✍️"
+        ></textarea>
+        <button class="comment-submit" onclick="submitSeriesComment()">Enviar sugerencia  ✦</button>
+      </div>
+      <div class="comment-thanks" id="series-comment-thanks">
+        <span class="thanks-icon">🌟</span>
+        <p>
+          <strong>¡Anotado con todo el amor!</strong><br>
+          Tu sugerencia va a ser tenida muy en cuenta.<br>
+          La agregamos a la lista en breve  💌
+        </p>
+      </div>
+    </div>
 
-    <div class="divider" style="margin-top:3rem"></div>
-  </section>
+    <div class="divider" style="margin-top:3rem"></div>
+  </section>
 
-  <section id="calendar-section">
-    <p class="section-label">la fecha</p>
-    <h2 class="section-title">¿Cuándo salimos?</h2>
-    <p class="section-desc" style="max-width:320px">
-      Elegí el día que mejor te quede y lo hacemos realidad.
-    </p>
-    <div class="calendar-wrap">
-      <div class="cal-header">
-        <button class="cal-nav" id="cal-prev">‹</button>
-        <span class="cal-month-year" id="cal-title"></span>
-        <button class="cal-nav" id="cal-next">›</button>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-days-header">
-          <span class="cal-day-name">Do</span>
-          <span class="cal-day-name">Lu</span>
-          <span class="cal-day-name">Ma</span>
-          <span class="cal-day-name">Mi</span>
-          <span class="cal-day-name">Ju</span>
-          <span class="cal-day-name">Vi</span>
-          <span class="cal-day-name">Sa</span>
-        </div>
-        <div class="cal-days" id="cal-days"></div>
-      </div>
-    </div>
-    <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún  ♡</p>
-  </section>
+  <section id="calendar-section">
+    <p class="section-label">la fecha</p>
+    <h2 class="section-title">¿Cuándo salimos?</h2>
+    <p class="section-desc" style="max-width:320px">
+      Elegí el día que mejor te quede y lo hacemos realidad.
+    </p>
+    <div class="calendar-wrap">
+      <div class="cal-header">
+        <button class="cal-nav" id="cal-prev">‹</button>
+        <span class="cal-month-year" id="cal-title"></span>
+        <button class="cal-nav" id="cal-next">›</button>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-days-header">
+          <span class="cal-day-name">Do</span>
+          <span class="cal-day-name">Lu</span>
+          <span class="cal-day-name">Ma</span>
+          <span class="cal-day-name">Mi</span>
+          <span class="cal-day-name">Ju</span>
+          <span class="cal-day-name">Vi</span>
+          <span class="cal-day-name">Sa</span>
+        </div>
+        <div class="cal-days" id="cal-days"></div>
+      </div>
+    </div>
+    <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún  ♡</p>
+  </section>
 
-  <section id="confirm-section">
-    <button class="confirm-btn" id="confirm-btn" disabled onclick="enviarDatos()">
-      ✦   Confirmar mi plan   ✦
-    </button>
-    <p class="confirm-hint" id="confirm-hint">Elegí al menos un lugar y una fecha para continuar</p>
-  </section>
+  <section id="confirm-section">
+    <button class="confirm-btn" id="confirm-btn" disabled onclick="enviarDatos()">
+      ✦   Confirmar mi plan   ✦
+    </button>
+    <p class="confirm-hint" id="confirm-hint">Elegí al menos un lugar y una fecha para continuar</p>
+  </section>
 
 </div>
 
 <div class="modal-overlay" id="modal">
-  <div class="modal">
-    <span class="modal-icon">💌</span>
-    <h2 class="modal-title">¡Perfecto!</h2>
-    <p class="modal-body" id="modal-body"></p>
-    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Cerrar  ♡</button>
-  </div>
+  <div class="modal">
+    <span class="modal-icon">💌</span>
+    <h2 class="modal-title">¡Perfecto!</h2>
+    <p class="modal-body" id="modal-body"></p>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Cerrar  ♡</button>
+  </div>
 </div>
 
 <div id="lightbox">
-  <button id="lb-close" onclick="closeLightbox()">×</button>
-  <button class="lb-btn" id="lb-prev">‹</button>
-  <img id="lb-img" src="" alt="">
-  <button class="lb-btn" id="lb-next">›</button>
-  <div class="lb-dots" id="lb-dots"></div>
+  <button id="lb-close" onclick="closeLightbox()">×</button>
+  <button class="lb-btn" id="lb-prev">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-btn" id="lb-next">›</button>
+  <div class="lb-dots" id="lb-dots"></div>
 </div>
 
 <script>
 /* ═══════════════════════════════
-   LOCAL STORAGE - GUARDAR DATOS
+   LOCAL STORAGE - GUARDAR DATOS
 ═══════════════════════════════ */
 function saveState(){
-  localStorage.setItem('planEspecialState', JSON.stringify({
-    places: selectedPlaces,
-    series: selectedSeries,
-    date: selDate ? selDate.getTime() : null
-  }));
+  localStorage.setItem('planEspecialState', JSON.stringify({
+    places: selectedPlaces,
+    series: selectedSeries,
+    date: selDate ? selDate.getTime() : null
+  }));
 }
 
 /* ═══════════════════════════════
-   LIGHTBOX
+   LIGHTBOX
 ═══════════════════════════════ */
 let lbImages = [];
-let lbIndex  = 0;
+let lbIndex  = 0;
 
 function openLightbox(images, startIndex){
-  lbImages = images; lbIndex = startIndex;
-  renderLightbox();
-  document.getElementById('lightbox').classList.add('show');
-  document.body.style.overflow = 'hidden';
+  lbImages = images; lbIndex = startIndex;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
 }
 function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('show');
-  document.body.style.overflow = '';
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
 }
 function renderLightbox(){
-  const img  = document.getElementById('lb-img');
-  const dots = document.getElementById('lb-dots');
-  img.style.opacity = '0';
-  setTimeout(()=>{ img.src = lbImages[lbIndex]; img.style.opacity = '1'; }, 150);
-  dots.innerHTML = lbImages.map((_,i)=>
-    `<span class="lb-dot${i===lbIndex?' active':''}" onclick="lbGo(${i})"></span>`
-  ).join('');
+  const img  = document.getElementById('lb-img');
+  const dots = document.getElementById('lb-dots');
+  img.style.opacity = '0';
+  setTimeout(()=>{ img.src = lbImages[lbIndex]; img.style.opacity = '1'; }, 150);
+  dots.innerHTML = lbImages.map((_,i)=>
+    `<span class="lb-dot${i===lbIndex?' active':''}" onclick="lbGo(${i})"></span>`
+  ).join('');
 }
 function lbGo(n){
-  lbIndex = (n + lbImages.length) % lbImages.length;
-  renderLightbox();
+  lbIndex = (n + lbImages.length) % lbImages.length;
+  renderLightbox();
 }
 document.getElementById('lb-prev').addEventListener('click', ()=> lbGo(lbIndex-1));
 document.getElementById('lb-next').addEventListener('click', ()=> lbGo(lbIndex+1));
 document.getElementById('lightbox').addEventListener('click', function(e){
-  if(e.target === this) closeLightbox();
+  if(e.target === this) closeLightbox();
 });
 document.addEventListener('keydown', e=>{
-  const lb = document.getElementById('lightbox');
-  if(!lb.classList.contains('show')) return;
-  if(e.key==='ArrowRight') lbGo(lbIndex+1);
-  if(e.key==='ArrowLeft')  lbGo(lbIndex-1);
-  if(e.key==='Escape')     closeLightbox();
+  const lb = document.getElementById('lightbox');
+  if(!lb.classList.contains('show')) return;
+  if(e.key==='ArrowRight') lbGo(lbIndex+1);
+  if(e.key==='ArrowLeft')  lbGo(lbIndex-1);
+  if(e.key==='Escape')     closeLightbox();
 });
 
 /* ═══════════════════════════════
-   PARTICLES
+   PARTICLES
 ═══════════════════════════════ */
 const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
+const ctx    = canvas.getContext('2d');
 let W, H, particles = [];
 
 function resizeCanvas(){
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 function rnd(a,b){ return a + Math.random()*(b-a); }
 
 class Particle{
-  constructor(){ this.reset(true); }
-  reset(init=false){
-    this.x=rnd(0,W); this.y=init?rnd(0,H):-20;
-    this.size=rnd(3,9); this.speedY=rnd(0.25,0.85); this.speedX=rnd(-0.3,0.3);
-    this.opacity=rnd(0.08,0.45); this.rot=rnd(0,Math.PI*2); this.rotSpd=rnd(-0.018,0.018);
-    this.type=Math.random()>0.5?'petal':'star';
-  }
-  update(){ this.y+=this.speedY; this.x+=this.speedX; this.rot+=this.rotSpd; if(this.y>H+20)this.reset(); }
-  draw(){
-    ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.rot); ctx.globalAlpha=this.opacity;
-    if(this.type==='petal'){
-      ctx.fillStyle='#e8a0b0'; ctx.beginPath();
-      ctx.ellipse(0,0,this.size,this.size*1.9,0,0,Math.PI*2); ctx.fill();
-    } else {
-      ctx.fillStyle='#c9a96e'; ctx.font=`${this.size*2.2}px serif`;
-      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('✦',0,0);
-    }
-    ctx.restore();
-  }
+  constructor(){ this.reset(true); }
+  reset(init=false){
+    this.x=rnd(0,W); this.y=init?rnd(0,H):-20;
+    this.size=rnd(3,9); this.speedY=rnd(0.25,0.85); this.speedX=rnd(-0.3,0.3);
+    this.opacity=rnd(0.08,0.45); this.rot=rnd(0,Math.PI*2); this.rotSpd=rnd(-0.018,0.018);
+    this.type=Math.random()>0.5?'petal':'star';
+  }
+  update(){ this.y+=this.speedY; this.x+=this.speedX; this.rot+=this.rotSpd; if(this.y>H+20)this.reset(); }
+  draw(){
+    ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(this.rot); ctx.globalAlpha=this.opacity;
+    if(this.type==='petal'){
+      ctx.fillStyle='#e8a0b0'; ctx.beginPath();
+      ctx.ellipse(0,0,this.size,this.size*1.9,0,0,Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillStyle='#c9a96e'; ctx.font=`${this.size*2.2}px serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('✦',0,0);
+    }
+    ctx.restore();
+  }
 }
 for(let i=0;i<45;i++) particles.push(new Particle());
 (function loop(){
-  ctx.clearRect(0,0,W,H);
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(loop);
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{p.update();p.draw();});
+  requestAnimationFrame(loop);
 })();
 
 /* ═══════════════════════════════
-   COUNTDOWN
+   COUNTDOWN
 ═══════════════════════════════ */
 const TARGET = new Date('2026-06-13T22:00:00');
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function updateTimer(){
-  const diff = TARGET - new Date();
-  if(diff <= 0){ revealMain(); return; }
-  const d = Math.floor(diff/86400000);
-  const h = Math.floor((diff%86400000)/3600000);
-  const m = Math.floor((diff%3600000)/60000);
-  const s = Math.floor((diff%60000)/1000);
-  document.getElementById('t-days').textContent  = pad(d);
-  document.getElementById('t-hours').textContent = pad(h);
-  document.getElementById('t-mins').textContent  = pad(m);
-  document.getElementById('t-secs').textContent  = pad(s);
+  const diff = TARGET - new Date();
+  if(diff <= 0){ revealMain(); return; }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('t-days').textContent  = pad(d);
+  document.getElementById('t-hours').textContent = pad(h);
+  document.getElementById('t-mins').textContent  = pad(m);
+  document.getElementById('t-secs').textContent  = pad(s);
 }
 updateTimer();
 setInterval(updateTimer, 1000);
 
 function revealMain(){
-  const cs = document.getElementById('countdown-screen');
-  const ms = document.getElementById('main-screen');
-  cs.classList.add('fade-out');
-  ms.style.display = 'block';
-  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ ms.classList.add('visible'); }); });
-  setTimeout(()=>{
-    cs.style.display='none';
-    document.getElementById('skip-btn').style.display='none';
-  }, 1500);
+  const cs = document.getElementById('countdown-screen');
+  const ms = document.getElementById('main-screen');
+  cs.classList.add('fade-out');
+  ms.style.display = 'block';
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ ms.classList.add('visible'); }); });
+  setTimeout(()=>{
+    cs.style.display='none';
+    document.getElementById('skip-btn').style.display='none';
+  }, 1500);
 }
 
 /* ═══════════════════════════════
-   PLACES DATA
+   PLACES DATA
 ═══════════════════════════════ */
 const places = [
-  {
-    id:'museo', tag:'🏛️  Cultura', title:'El Museo',
-    desc:'Recorremos las salas juntos, nos perdemos entre cuadros y charlamos de todo. El arte de fondo, nosotros el centro.',
-    images:[
-      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAEVlG4qEUXHBuLGPj5TZ7PEErNgmcAdDr_3VcwdPmCD8Tl2YSXSX8RXypgoVlmGBzH-d8ZyT-Y0qm1XovgUct2ocUBf7N6iL0oGL42UIrBWMORmueNoBT96SH1txsIGl53fCP3fOQ=s1360-w1360-h1020-rw',
-      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAG-bjIopLCEzIocIP-IvaSO_7sHLtoZoOUm-ss5Xqv1xkfO5jqc_7zmCbduDduq68JMLiAP8Ls7PdYLRp4ME1j3f_cFtnIqZmrmOHt8hMVt94uq9R-wYPBigLdTk0eeZ6WN7iwA=s1360-w1360-h1020-rw',
-      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHkYd81B2WiFWxAnerAqvs5A1z1pjESsBvfmc1ilQDFXkX61_hLLjOP6nZgTUX2CO-d8vFdCauSjEuaFFeaFnKOLxvFIYSr-Nbdqy_algFwPDnpGVuIR3KkkxsfDw0vzWW-_sXErw=s1360-w1360-h1020-rw',
-      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAF78xofD7u9mVnozDQAcxjnO5cKO4LMuehin4kTkTcg_yl4gH3dGXDMVpvHoMW-Rkzgf_e2pAwnqGovdXYCA4bjLKTQ1-hf_VoadM8vyymAnrCjUNzXcbBounHjLKr26-8jIyzQXpIBIk0=s1360-w1360-h1020-rw',
-      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFB_3AuVaNQxrv1f7ySfzUOoClmtW3vAOcUv2k2jrHRzzNnrPHxW8qq8S9C0vvlq3OTPu_LkxcO6B4FMHsrCjkd3z1wkQexRocoHaNUw4g0vUiOc5dJSvFG7JmzfAHSs6noho90dQ=s1360-w1360-h1020-rw',
-    ]
-  },
-  {
-    id:'ceramica', tag:'🎨  Manos en la masa', title:'Merienda & Cerámica',
-    desc:'Manos en la arcilla, algo rico para merendar y mucho para reír mientras creamos algo único que nos llevamos.',
-    images:[
-      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-03.jpeg&w=640&q=75',
-      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-02.jpeg&w=640&q=75',
-      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fcarousel-01.jpeg&w=1080&q=75',
-      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fcarousel-04.jpg&w=1080&q=75'
-    ]
-  },
-  {
-    id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
-    desc:'Un lugar tranquilo para comer algo rico, relajarnos un rato y charlar de todo sin mirar el reloj.',
-    images:[
-      'https://elbodegondebenito.com/wp-content/uploads/2025/09/logo-Bodegon-Benito-Buenos-Aires-400px-RGB.jpg',
-      'https://federiconicolasalmada-bot.github.io/Explorando/milanga.webp',
-      'https://federiconicolasalmada-bot.github.io/Explorando/Pizza.webp',
-      'https://federiconicolasalmada-bot.github.io/Explorando/Hamburguesas.webp',
-      'https://federiconicolasalmada-bot.github.io/Explorando/shawarma.webp',
-      'https://www.greeneat.com.ar/img/local/unicenter.jpg',
-    ]
-  },
-  {
-    id:'jardin', tag:'🌿  Jardín Japonés', title:'Jardín Japonés',
-    desc:'Paseo sereno entre bonsáis, estanques y linternas. Ideal para relajarse y conversar en calma.',
-    images:[
-      'https://s7e6w6d2.delivery.rocketcdn.me/wp-content/uploads/2012/01/jardinjapones.jpg',
-      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/de/88/1d/caption.jpg?w=1000&h=-1&s=1',
-      'https://www.historiasenverde.com/wp-content/uploads/2019/08/sendero_cerezos.jpg',
-      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/de/88/1b/caption.jpg?w=1000&h=-1&s=1',
-      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/a2/bd/84/caption.jpg?w=1000&h=-1&s=1',
-      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/49/8f/cd/caption.jpg?w=1000&h=-1&s=1',
-    ]
-  },
-  {
-    id:'cine', tag:'🎬  Oscuridad cómplice', title:'El Cine',
-    desc:'Una peli que nos guste a los dos, pochoclos y compartidos esa magia de estar juntos.',
-    images:[
-      'https://www.lascosasquenoshacenfelices.com/wp-content/uploads/2025/12/Odisea-1.jpg',
-      'https://sacnkprodarcms.blob.core.windows.net/content/posters/HO00012196.jpg',
-      'https://sacnkprodarcms.blob.core.windows.net/content/posters/HO00012393.jpg',
-    ]
-  }
+  {
+    id:'museo', tag:'🏛️  Cultura', title:'El Museo',
+    desc:'Recorremos las salas juntos, nos perdemos entre cuadros y charlamos de todo. El arte de fondo, nosotros el centro.',
+    images:[
+      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAEVlG4qEUXHBuLGPj5TZ7PEErNgmcAdDr_3VcwdPmCD8Tl2YSXSX8RXypgoVlmGBzH-d8ZyT-Y0qm1XovgUct2ocUBf7N6iL0oGL42UIrBWMORmueNoBT96SH1txsIGl53fCP3fOQ=s1360-w1360-h1020-rw',
+      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAG-bjIopLCEzIocIP-IvaSO_7sHLtoZoOUm-ss5Xqv1xkfO5jqc_7zmCbduDduq68JMLiAP8Ls7PdYLRp4ME1j3f_cFtnIqZmrmOHt8hMVt94uq9R-wYPBigLdTk0eeZ6WN7iwA=s1360-w1360-h1020-rw',
+      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHkYd81B2WiFWxAnerAqvs5A1z1pjESsBvfmc1ilQDFXkX61_hLLjOP6nZgTUX2CO-d8vFdCauSjEuaFFeaFnKOLxvFIYSr-Nbdqy_algFwPDnpGVuIR3KkkxsfDw0vzWW-_sXErw=s1360-w1360-h1020-rw',
+      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAF78xofD7u9mVnozDQAcxjnO5cKO4LMuehin4kTkTcg_yl4gH3dGXDMVpvHoMW-Rkzgf_e2pAwnqGovdXYCA4bjLKTQ1-hf_VoadM8vyymAnrCjUNzXcbBounHjLKr26-8jIyzQXpIBIk0=s1360-w1360-h1020-rw',
+      'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFB_3AuVaNQxrv1f7ySfzUOoClmtW3vAOcUv2k2jrHRzzNnrPHxW8qq8S9C0vvlq3OTPu_LkxcO6B4FMHsrCjkd3z1wkQexRocoHaNUw4g0vUiOc5dJSvFG7JmzfAHSs6noho90dQ=s1360-w1360-h1020-rw',
+    ]
+  },
+  {
+    id:'ceramica', tag:'🎨  Manos en la masa', title:'Merienda & Cerámica',
+    desc:'Manos en la arcilla, algo rico para merendar y mucho para reír mientras creamos algo único que nos llevamos.',
+    images:[
+      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-03.jpeg&w=640&q=75',
+      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fgallery-02.jpeg&w=640&q=75',
+      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fcarousel-01.jpeg&w=1080&q=75',
+      'https://www.potteryartcafe.com.ar/_next/image?url=%2Fassets%2Fimages%2Fcarousel-04.jpg&w=1080&q=75'
+    ]
+  },
+  {
+    id:'cena', tag:'🍽️  Noche tranquila', title:'Cena y charla',
+    desc:'Un lugar tranquilo para comer algo rico, relajarnos un rato y charlar de todo sin mirar el reloj.',
+    images:[
+      'https://elbodegondebenito.com/wp-content/uploads/2025/09/logo-Bodegon-Benito-Buenos-Aires-400px-RGB.jpg',
+      'https://federiconicolasalmada-bot.github.io/Explorando/milanga.webp',
+      'https://federiconicolasalmada-bot.github.io/Explorando/Pizza.webp',
+      'https://federiconicolasalmada-bot.github.io/Explorando/Hamburguesas.webp',
+      'https://federiconicolasalmada-bot.github.io/Explorando/shawarma.webp',
+      'https://www.greeneat.com.ar/img/local/unicenter.jpg',
+    ]
+  },
+  {
+    id:'jardin', tag:'🌿  Jardín Japonés', title:'Jardín Japonés',
+    desc:'Paseo sereno entre bonsáis, estanques y linternas. Ideal para relajarse y conversar en calma.',
+    images:[
+      'https://s7e6w6d2.delivery.rocketcdn.me/wp-content/uploads/2012/01/jardinjapones.jpg',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/de/88/1d/caption.jpg?w=1000&h=-1&s=1',
+      'https://www.historiasenverde.com/wp-content/uploads/2019/08/sendero_cerezos.jpg',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/de/88/1b/caption.jpg?w=1000&h=-1&s=1',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/a2/bd/84/caption.jpg?w=1000&h=-1&s=1',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/49/8f/cd/caption.jpg?w=1000&h=-1&s=1',
+    ]
+  },
+  {
+    id:'cine', tag:'🎬  Oscuridad cómplice', title:'El Cine',
+    desc:'Una peli que nos guste a los dos, pochoclos y compartidos esa magia de estar juntos.',
+    images:[
+      'https://www.lascosasquenoshacenfelices.com/wp-content/uploads/2025/12/Odisea-1.jpg',
+      'https://sacnkprodarcms.blob.core.windows.net/content/posters/HO00012196.jpg',
+      'https://sacnkprodarcms.blob.core.windows.net/content/posters/HO00012393.jpg',
+    ]
+  }
 ];
 
-const selectedPlaces = []; 
+const selectedPlaces = []; 
 const grid = document.getElementById('places-grid');
 
 places.forEach(place => {
-  let cur = 0;
-  const total = place.images.length;
-  const card = document.createElement('div');
-  card.className = 'place-card';
-  card.id = `card-${place.id}`;
-  const imgs  = place.images.map((s,i)=>`<img class="slide" src="${s}" alt="${place.title}" loading="lazy">`).join('');
-  const dotsH = place.images.map((_,i)=>`<span class="dot${i===0?' active':''}" data-i="${i}"></span>`).join('');
-  card.innerHTML = `
-    <button class="heart-btn" data-id="${place.id}" title="Marcar favorito">♡</button>
-    <div class="slider-wrap">
-      <div class="slides" id="slides-${place.id}">${imgs}</div>
-      <button class="slider-btn prev">‹</button>
-      <button class="slider-btn next">›</button>
-      <div class="slider-dots" id="dots-${place.id}">${dotsH}</div>
-    </div>
-    <div class="card-body">
-      <p class="card-tag">${place.tag}</p>
-      <h3 class="card-title">${place.title}</h3>
-      <p class="card-desc">${place.desc}</p>
-    </div>
-    <div class="card-footer">
-      <span class="select-label" id="lbl-${place.id}">♡ Marcar como favorito</span>
-    </div>
-  `;
-  grid.appendChild(card);
+  let cur = 0;
+  const total = place.images.length;
+  const card = document.createElement('div');
+  card.className = 'place-card';
+  card.id = `card-${place.id}`;
+  const imgs  = place.images.map((s,i)=>`<img class="slide" src="${s}" alt="${place.title}" loading="lazy">`).join('');
+  const dotsH = place.images.map((_,i)=>`<span class="dot${i===0?' active':''}" data-i="${i}"></span>`).join('');
+  card.innerHTML = `
+    <button class="heart-btn" data-id="${place.id}" title="Marcar favorito">♡</button>
+    <div class="slider-wrap">
+      <div class="slides" id="slides-${place.id}">${imgs}</div>
+      <button class="slider-btn prev">‹</button>
+      <button class="slider-btn next">›</button>
+      <div class="slider-dots" id="dots-${place.id}">${dotsH}</div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">${place.tag}</p>
+      <h3 class="card-title">${place.title}</h3>
+      <p class="card-desc">${place.desc}</p>
+    </div>
+    <div class="card-footer">
+      <span class="select-label" id="lbl-${place.id}">♡ Marcar como favorito</span>
+    </div>
+  `;
+  grid.appendChild(card);
 
-  function goTo(n){
-    cur = (n+total)%total;
-    document.getElementById(`slides-${place.id}`).style.transform=`translateX(-${cur*100}%)`;
-    document.querySelectorAll(`#dots-${place.id} .dot`).forEach((d,i)=>d.classList.toggle('active',i===cur));
-  }
-  card.querySelector('.prev').addEventListener('click', e=>{e.stopPropagation();goTo(cur-1);});
-  card.querySelector('.next').addEventListener('click', e=>{e.stopPropagation();goTo(cur+1);});
-  card.querySelector('.slider-wrap').addEventListener('click', function(e){
-    if(e.target.classList.contains('slider-btn')||e.target.classList.contains('dot')||e.target.closest('.slider-btn')) return;
-    openLightbox(place.images, cur);
-  });
-  document.getElementById(`dots-${place.id}`).addEventListener('click',e=>{
-    if(e.target.classList.contains('dot')) goTo(+e.target.dataset.i);
-  });
-  card.querySelector('.heart-btn').addEventListener('click', function(){
-    const id = this.dataset.id;
-    const idx = selectedPlaces.indexOf(id);
-    if(idx !== -1){
-      selectedPlaces.splice(idx, 1);
-    } else {
-      selectedPlaces.push(id);
-    }
-    refreshPlaceNumbers();
-    updateFavorites();
-    saveState();
-  });
+  function goTo(n){
+    cur = (n+total)%total;
+    document.getElementById(`slides-${place.id}`).style.transform=`translateX(-${cur*100}%)`;
+    document.querySelectorAll(`#dots-${place.id} .dot`).forEach((d,i)=>d.classList.toggle('active',i===cur));
+  }
+  card.querySelector('.prev').addEventListener('click', e=>{e.stopPropagation();goTo(cur-1);});
+  card.querySelector('.next').addEventListener('click', e=>{e.stopPropagation();goTo(cur+1);});
+  card.querySelector('.slider-wrap').addEventListener('click', function(e){
+    if(e.target.classList.contains('slider-btn')||e.target.classList.contains('dot')||e.target.closest('.slider-btn')) return;
+    openLightbox(place.images, cur);
+  });
+  document.getElementById(`dots-${place.id}`).addEventListener('click',e=>{
+    if(e.target.classList.contains('dot')) goTo(+e.target.dataset.i);
+  });
+  
+  card.querySelector('.heart-btn').addEventListener('click', function(){
+    const id = this.dataset.id;
+    const idx = selectedPlaces.indexOf(id);
+    if(idx !== -1){
+      selectedPlaces.splice(idx, 1);
+    } else {
+      selectedPlaces.push(id);
+    }
+    refreshPlaceNumbers();
+    updateFavorites();
+    saveState();
+
+    // ─── Mensaje temporal para "El Cine" ───
+    if (id === 'cine' && selectedPlaces.includes('cine')) {
+      let overlay = card.querySelector('.info-overlay');
+      if(!overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'info-overlay';
+        overlay.innerHTML = `<span class="info-msg">Se puede reprogramar la fecha dependiendo de la película 😉</span>`;
+        card.appendChild(overlay);
+      }
+      
+      // Mostrar el cartelito con animación
+      setTimeout(() => {
+        overlay.classList.add('show');
+      }, 50);
+
+      // Ocultarlo después de 3.5 segundos (la opción queda seleccionada)
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 3500);
+    }
+  });
 });
 
 function refreshPlaceNumbers(){
-  places.forEach(p => {
-    const btn  = document.querySelector(`#card-${p.id} .heart-btn`);
-    const card = document.getElementById(`card-${p.id}`);
-    const lbl  = document.getElementById(`lbl-${p.id}`);
-    if(!btn) return;
-    const idx = selectedPlaces.indexOf(p.id);
-    if(idx === -1){
-      btn.textContent='♡'; btn.classList.remove('active');
-      card.classList.remove('selected');
-      lbl.textContent='♡ Marcar como favorito';
-    } else {
-      btn.textContent = idx + 1; btn.classList.add('active');
-      card.classList.add('selected');
-      lbl.textContent=`♥ Prioridad #${idx + 1}`;
-    }
-  });
+  places.forEach(p => {
+    const btn  = document.querySelector(`#card-${p.id} .heart-btn`);
+    const card = document.getElementById(`card-${p.id}`);
+    const lbl  = document.getElementById(`lbl-${p.id}`);
+    if(!btn) return;
+    const idx = selectedPlaces.indexOf(p.id);
+    if(idx === -1){
+      btn.textContent='♡'; btn.classList.remove('active');
+      card.classList.remove('selected');
+      lbl.textContent='♡ Marcar como favorito';
+    } else {
+      btn.textContent = idx + 1; btn.classList.add('active');
+      card.classList.add('selected');
+      lbl.textContent=`♥ Prioridad #${idx + 1}`;
+    }
+  });
 }
 
 function updateFavorites(){
-  const list = document.getElementById('selected-list');
-  list.innerHTML = '';
-  if(selectedPlaces.length===0){
-    list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
-  } else {
-    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine'};
-    selectedPlaces.forEach((id, i)=>{
-      const t=document.createElement('span');
-      t.className='selected-tag';
-      t.textContent=`${i+1}. ${names[id]}`;
-      list.appendChild(t);
-    });
-  }
-  checkConfirm();
+  const list = document.getElementById('selected-list');
+  list.innerHTML = '';
+  if(selectedPlaces.length===0){
+    list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
+  } else {
+    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine'};
+    selectedPlaces.forEach((id, i)=>{
+      const t=document.createElement('span');
+      t.className='selected-tag';
+      t.textContent=`${i+1}. ${names[id]}`;
+      list.appendChild(t);
+    });
+  }
+  checkConfirm();
 }
 
 function submitPlaceComment(){
-  const txt = document.getElementById('place-comment').value.trim();
-  if(!txt) return;
-  document.getElementById('place-comment-form').style.display = 'none';
-  const thanks = document.getElementById('place-comment-thanks');
-  thanks.style.display = 'block';
+  const txt = document.getElementById('place-comment').value.trim();
+  if(!txt) return;
+  document.getElementById('place-comment-form').style.display = 'none';
+  const thanks = document.getElementById('place-comment-thanks');
+  thanks.style.display = 'block';
 }
 
 /* ═══════════════════════════════
-   SERIES 
+   SERIES 
 ═══════════════════════════════ */
 const series = [
-  { id:'s1',  name:'Peaky Blinders',          genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
-  { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
-  { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
-  { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
-  { id:'s5',  name:'Lost',                     genre:'Misterio · Drama',    img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
-  { id:'s6',  name:'Stranger Things',          genre:'Sci-Fi · Terror',     img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
-  { id:'s7',  name:'Dr. House',                genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
-  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://image.tmdb.org/t/p/w342/bQLrHmUhHzELBMiE7NXY0fqxJ6n.jpg' },
-  { id:'s9',  name:'Dexter',                   genre:'Crime · Thriller',    img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
-  { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
+  { id:'s1',  name:'Peaky Blinders',         genre:'Crime · Drama',       img:'https://sm.ign.com/ign_es/cover/p/peaky-blin/peaky-blinders-movie_97e7.jpg' },
+  { id:'s2',  name:'Game of Thrones',          genre:'Fantasía · Drama',    img:'https://image.tmdb.org/t/p/w342/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg' },
+  { id:'s3',  name:"Grey's Anatomy",           genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg' },
+  { id:'s4',  name:'Los Anillos de Poder',     genre:'Fantasía · Épica',    img:'https://es.web.img3.acsta.net/pictures/22/10/04/16/26/1929878.jpg' },
+  { id:'s5',  name:'Lost',                     genre:'Misterio · Drama',    img:'https://image.tmdb.org/t/p/w342/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg' },
+  { id:'s6',  name:'Stranger Things',          genre:'Sci-Fi · Terror',     img:'https://image.tmdb.org/t/p/w342/49WJfeN0moxb9IPfGn8AIqMGskD.jpg' },
+  { id:'s7',  name:'Dr. House',                genre:'Drama · Médico',      img:'https://image.tmdb.org/t/p/w342/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg' },
+  { id:'s8',  name:'Vikingos',                 genre:'Historia · Acción',   img:'https://images.justwatch.com/poster/242850423/s718/vikingos.jpg' },
+  { id:'s9',  name:'Dexter',                   genre:'Crime · Thriller',    img:'https://m.media-amazon.com/images/I/91l-cUtXbxL._AC_UF894%2C1000_QL80_.jpg' },
+  { id:'s10', name:'True Detective',           genre:'Crime · Misterio',    img:'https://repasoenserie.wordpress.com/wp-content/uploads/2014/04/80b68-truedetectiveposter.jpg' },
 ];
 
-const selectedSeries = []; 
+const selectedSeries = []; 
 const seriesGrid = document.getElementById('series-grid');
 
 series.forEach(s => {
-  const card = document.createElement('div');
-  card.className = 'serie-card';
-  card.innerHTML = `
-    <span class="serie-check">♥</span>
-    <img class="serie-poster" src="${s.img}" alt="${s.name}" loading="lazy">
-    <div class="serie-overlay">
-      <p class="serie-name">${s.name}</p>
-      <p class="serie-genre">${s.genre}</p>
-    </div>
-  `;
-  card.addEventListener('click', ()=>{
-    const idx = selectedSeries.indexOf(s.id);
-    if(idx !== -1){
-      selectedSeries.splice(idx, 1);
-    } else {
-      selectedSeries.push(s.id);
-    }
-    refreshSeriesNumbers();
-    saveState();
-  });
-  seriesGrid.appendChild(card);
+  const card = document.createElement('div');
+  card.className = 'serie-card';
+  card.innerHTML = `
+    <span class="serie-check">♥</span>
+    <img class="serie-poster" src="${s.img}" alt="${s.name}" loading="lazy">
+    <div class="serie-overlay">
+      <p class="serie-name">${s.name}</p>
+      <p class="serie-genre">${s.genre}</p>
+    </div>
+  `;
+  card.addEventListener('click', ()=>{
+    const isGreysAnatomy = (s.id === 's3');
+    const idx = selectedSeries.indexOf(s.id);
+
+    // Selección estándar
+    if(idx !== -1){
+      selectedSeries.splice(idx, 1);
+    } else {
+      selectedSeries.push(s.id);
+    }
+    refreshSeriesNumbers();
+    saveState();
+
+    // Lógica especial para Grey's Anatomy
+    if(isGreysAnatomy && selectedSeries.includes('s3')){
+      let overlay = card.querySelector('.nope-overlay');
+      if(!overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'nope-overlay';
+        overlay.innerHTML = `
+          <span class="nope-cross">✗</span>
+          <span class="nope-msg">justo esa no wa ♡</span>
+        `;
+        card.appendChild(overlay);
+      }
+      
+      // Mostrar overlay con animación
+      setTimeout(() => {
+        overlay.classList.add('show');
+      }, 50);
+
+      // A los 2.5 segundos, destildar y ocultar el mensaje
+      setTimeout(() => {
+        const removeIdx = selectedSeries.indexOf('s3');
+        if(removeIdx !== -1) {
+          selectedSeries.splice(removeIdx, 1);
+          refreshSeriesNumbers();
+          saveState();
+        }
+        overlay.classList.remove('show');
+      }, 2500);
+    }
+  });
+  seriesGrid.appendChild(card);
 });
 
 function refreshSeriesNumbers(){
-  document.querySelectorAll('.serie-card').forEach((card, ci) => {
-    const sid = series[ci]?.id;
-    if(!sid) return;
-    const check = card.querySelector('.serie-check');
-    const idx = selectedSeries.indexOf(sid);
-    if(idx === -1){
-      card.classList.remove('selected');
-      check.textContent = '♥';
-      check.style.fontSize = '';
-    } else {
-      card.classList.add('selected');
-      check.textContent = idx + 1;
-      check.style.fontSize = '0.85rem';
-    }
-  });
+  document.querySelectorAll('.serie-card').forEach((card, ci) => {
+    const sid = series[ci]?.id;
+    if(!sid) return;
+    const check = card.querySelector('.serie-check');
+    const idx = selectedSeries.indexOf(sid);
+    if(idx === -1){
+      card.classList.remove('selected');
+      check.textContent = '♥';
+      check.style.fontSize = '';
+    } else {
+      card.classList.add('selected');
+      check.textContent = idx + 1;
+      check.style.fontSize = '0.85rem';
+    }
+  });
 }
 
 function submitSeriesComment(){
-  const txt = document.getElementById('series-comment').value.trim();
-  if(!txt) return;
-  document.getElementById('series-comment-form').style.display = 'none';
-  const thanks = document.getElementById('series-comment-thanks');
-  thanks.style.display = 'block';
+  const txt = document.getElementById('series-comment').value.trim();
+  if(!txt) return;
+  document.getElementById('series-comment-form').style.display = 'none';
+  const thanks = document.getElementById('series-comment-thanks');
+  thanks.style.display = 'block';
 }
 
 /* ═══════════════════════════════
-   CALENDAR
+   CALENDAR
 ═══════════════════════════════ */
 const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const today = new Date();
@@ -1146,166 +1270,166 @@ let calM = today.getMonth();
 let selDate = null;
 
 function renderCal(){
-  document.getElementById('cal-title').textContent=`${MONTHS[calM]} ${calY}`;
-  const g = document.getElementById('cal-days');
-  g.innerHTML='';
-  const firstDay = new Date(calY,calM,1).getDay();
-  const daysIn   = new Date(calY,calM+1,0).getDate();
-  const todayStr = new Date(today.getFullYear(),today.getMonth(),today.getDate()).getTime();
-  for(let i=0;i<firstDay;i++){
-    const e=document.createElement('div');e.className='cal-day empty';g.appendChild(e);
-  }
-  for(let d=1;d<=daysIn;d++){
-    const el=document.createElement('div');
-    el.className='cal-day';el.textContent=d;
-    const dt=new Date(calY,calM,d).getTime();
-    if(dt<todayStr){ el.classList.add('past'); }
-    else {
-      if(dt===todayStr) el.classList.add('today');
-      if(selDate && dt===selDate.getTime()) el.classList.add('selected-day');
-      el.addEventListener('click',()=>pickDay(d));
-    }
-    g.appendChild(el);
-  }
+  document.getElementById('cal-title').textContent=`${MONTHS[calM]} ${calY}`;
+  const g = document.getElementById('cal-days');
+  g.innerHTML='';
+  const firstDay = new Date(calY,calM,1).getDay();
+  const daysIn   = new Date(calY,calM+1,0).getDate();
+  const todayStr = new Date(today.getFullYear(),today.getMonth(),today.getDate()).getTime();
+  for(let i=0;i<firstDay;i++){
+    const e=document.createElement('div');e.className='cal-day empty';g.appendChild(e);
+  }
+  for(let d=1;d<=daysIn;d++){
+    const el=document.createElement('div');
+    el.className='cal-day';el.textContent=d;
+    const dt=new Date(calY,calM,d).getTime();
+    if(dt<todayStr){ el.classList.add('past'); }
+    else {
+      if(dt===todayStr) el.classList.add('today');
+      if(selDate && dt===selDate.getTime()) el.classList.add('selected-day');
+      el.addEventListener('click',()=>pickDay(d));
+    }
+    g.appendChild(el);
+  }
 }
 function pickDay(d){
-  selDate=new Date(calY,calM,d);
-  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const s=selDate.toLocaleDateString('es-AR',opts);
-  document.getElementById('selected-date-display').textContent=
-    '📅 '+s.charAt(0).toUpperCase()+s.slice(1);
-  renderCal(); 
-  checkConfirm();
-  saveState();
+  selDate=new Date(calY,calM,d);
+  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  const s=selDate.toLocaleDateString('es-AR',opts);
+  document.getElementById('selected-date-display').textContent=
+    '📅 '+s.charAt(0).toUpperCase()+s.slice(1);
+  renderCal(); 
+  checkConfirm();
+  saveState();
 }
 document.getElementById('cal-prev').addEventListener('click',()=>{
-  calM--;if(calM<0){calM=11;calY--;}renderCal();
+  calM--;if(calM<0){calM=11;calY--;}renderCal();
 });
 document.getElementById('cal-next').addEventListener('click',()=>{
-  calM++;if(calM>11){calM=0;calY++;}renderCal();
+  calM++;if(calM>11){calM=0;calY++;}renderCal();
 });
 renderCal();
 
 /* ═══════════════════════════════
-   CONFIRM
+   CONFIRM
 ═══════════════════════════════ */
 function checkConfirm(){
-  const btn  = document.getElementById('confirm-btn');
-  const hint = document.getElementById('confirm-hint');
-  const ok   = selectedPlaces.length>0 && selDate;
-  btn.disabled = !ok;
-  if(!ok){
-    if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
-    else if(selectedPlaces.length===0) hint.textContent='Elegí al menos un lugar para continuar';
-    else hint.textContent='Elegí una fecha para continuar';
-  } else {
-    hint.textContent='¡Todo listo! Confirmá tu plan 💌';
-  }
+  const btn  = document.getElementById('confirm-btn');
+  const hint = document.getElementById('confirm-hint');
+  const ok   = selectedPlaces.length>0 && selDate;
+  btn.disabled = !ok;
+  if(!ok){
+    if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
+    else if(selectedPlaces.length===0) hint.textContent='Elegí al menos un lugar para continuar';
+    else hint.textContent='Elegí una fecha para continuar';
+  } else {
+    hint.textContent='¡Todo listo! Confirmá tu plan 💌';
+  }
 }
 
 function showModal(){
-  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
-  const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
-  const opts={weekday:'long',day:'numeric',month:'long'};
-  const ds=selDate.toLocaleDateString('es-AR',opts);
-  const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
-  let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
-  document.getElementById('modal-body').innerHTML=
-    `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
-  document.getElementById('modal').classList.add('show');
+  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
+  const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
+  const opts={weekday:'long',day:'numeric',month:'long'};
+  const ds=selDate.toLocaleDateString('es-AR',opts);
+  const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
+  let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
+  document.getElementById('modal-body').innerHTML=
+    `Elegiste: <strong>${list}</strong>.${seriesLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>¡Empezamos a organizar todo! 🥂`;
+  document.getElementById('modal').classList.add('show');
 }
 
 /* ═══════════════════════════════
-   ENVIAR DATOS A GOOGLE SHEETS
+   ENVIAR DATOS A GOOGLE SHEETS
 ═══════════════════════════════ */
 function enviarDatos() {
-  const btn = document.getElementById('confirm-btn');
-  btn.textContent = 'Enviando plan... ⏳'; 
-  btn.disabled = true;
+  const btn = document.getElementById('confirm-btn');
+  btn.textContent = 'Enviando plan... ⏳'; 
+  btn.disabled = true;
 
-  // 1. Recopilamos la información
-  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
-  const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
-  const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
-  
-  const opts = {weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const ds = selDate ? selDate.toLocaleDateString('es-AR',opts) : '';
-  const sugLugar = document.getElementById('place-comment').value.trim();
-  const sugSerie = document.getElementById('series-comment').value.trim();
+  // 1. Recopilamos la información
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine'};
+  const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
+  const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
+  
+  const opts = {weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  const ds = selDate ? selDate.toLocaleDateString('es-AR',opts) : '';
+  const sugLugar = document.getElementById('place-comment').value.trim();
+  const sugSerie = document.getElementById('series-comment').value.trim();
 
-  // 2. Preparamos el paquete de datos
-  const payload = {
-    destinos: listPlaces || 'Ninguno',
-    sugerenciaLugar: sugLugar || 'Sin sugerencia',
-    series: listSeries || 'Ninguna',
-    sugerenciaSerie: sugSerie || 'Sin sugerencia',
-    fechaElegida: ds || 'Sin fecha'
-  };
+  // 2. Preparamos el paquete de datos
+  const payload = {
+    destinos: listPlaces || 'Ninguno',
+    sugerenciaLugar: sugLugar || 'Sin sugerencia',
+    series: listSeries || 'Ninguna',
+    sugerenciaSerie: sugSerie || 'Sin sugerencia',
+    fechaElegida: ds || 'Sin fecha'
+  };
 
-  // 3. Lo enviamos a tu Google Sheet
-  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
+  // 3. Lo enviamos a tu Google Sheet
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
 
-  fetch(URL_SCRIPT, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    // Restauramos el botón
-    btn.textContent = '✦   Confirmar mi plan   ✦';
-    btn.disabled = false;
-    
-    // Mostramos el modal de éxito
-    showModal();
+  fetch(URL_SCRIPT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    // Restauramos el botón
+    btn.textContent = '✦   Confirmar mi plan   ✦';
+    btn.disabled = false;
+    
+    // Mostramos el modal de éxito
+    showModal();
 
-    // ═══ RESETEO DE SUGERENCIAS ═══
-    // 1. Vaciamos las cajas de texto
-    document.getElementById('place-comment').value = '';
-    document.getElementById('series-comment').value = '';
-    
-    // 2. Ocultamos el mensaje de agradecimiento y mostramos el formulario de nuevo
-    document.getElementById('place-comment-form').style.display = 'block';
-    document.getElementById('place-comment-thanks').style.display = 'none';
-    
-    document.getElementById('series-comment-form').style.display = 'block';
-    document.getElementById('series-comment-thanks').style.display = 'none';
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    btn.textContent = 'Error, intentá de nuevo';
-    btn.disabled = false;
-  });
+    // ═══ RESETEO DE SUGERENCIAS ═══
+    // 1. Vaciamos las cajas de texto
+    document.getElementById('place-comment').value = '';
+    document.getElementById('series-comment').value = '';
+    
+    // 2. Ocultamos el mensaje de agradecimiento y mostramos el formulario de nuevo
+    document.getElementById('place-comment-form').style.display = 'block';
+    document.getElementById('place-comment-thanks').style.display = 'none';
+    
+    document.getElementById('series-comment-form').style.display = 'block';
+    document.getElementById('series-comment-thanks').style.display = 'none';
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    btn.textContent = 'Error, intentá de nuevo';
+    btn.disabled = false;
+  });
 }
 
 /* ═══════════════════════════════
-   LOCAL STORAGE - CARGAR DATOS
+   LOCAL STORAGE - CARGAR DATOS
 ═══════════════════════════════ */
 function loadState(){
-  const saved = localStorage.getItem('planEspecialState');
-  if(!saved) return;
-  
-  const data = JSON.parse(saved);
-  
-  if(data.places && data.places.length > 0){
-    data.places.forEach(id => selectedPlaces.push(id));
-    refreshPlaceNumbers();
-    updateFavorites();
-  }
-  
-  if(data.series && data.series.length > 0){
-    data.series.forEach(id => selectedSeries.push(id));
-    refreshSeriesNumbers();
-  }
-  
-  if(data.date){
-    const d = new Date(data.date);
-    calY = d.getFullYear();
-    calM = d.getMonth();
-    pickDay(d.getDate());
-  }
+  const saved = localStorage.getItem('planEspecialState');
+  if(!saved) return;
+  
+  const data = JSON.parse(saved);
+  
+  if(data.places && data.places.length > 0){
+    data.places.forEach(id => selectedPlaces.push(id));
+    refreshPlaceNumbers();
+    updateFavorites();
+  }
+  
+  if(data.series && data.series.length > 0){
+    data.series.forEach(id => selectedSeries.push(id));
+    refreshSeriesNumbers();
+  }
+  
+  if(data.date){
+    const d = new Date(data.date);
+    calY = d.getFullYear();
+    calM = d.getMonth();
+    pickDay(d.getDate());
+  }
 }
 
 // Iniciar la carga al abrir la página
@@ -1313,10 +1437,10 @@ loadState();
 
 </script>
 <script>
-  // Mostrar botón dev solo si la URL tiene "?secreto"
-  if (window.location.search.includes("?secreto")) {
-    document.getElementById("skip-btn").style.display = "block";
-  }
+  // Mostrar botón dev solo si la URL tiene "?secreto"
+  if (window.location.search.includes("?secreto")) {
+    document.getElementById("skip-btn").style.display = "block";
+  }
 </script>
 </body>
-</html>
+</html> 
