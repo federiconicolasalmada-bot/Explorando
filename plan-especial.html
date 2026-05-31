@@ -1422,30 +1422,29 @@ const FL_SPOTS = [
 ];
 
 const flowerArr = [
-  // === LADO IZQUIERDO ===
-  // Arriba izquierda
-  {rx:.10, ry:.35, sc:0.85, ph:0.7, lean:-0.05, variety:'r', bud:false},
-  {rx:.18, ry:.45, sc:0.65, ph:2.1, lean:0.10,  variety:'p', bud:true},
-  // Medio izquierda
-  {rx:.05, ry:.60, sc:1.10, ph:0.0, lean: 0.07, variety:'w', bud:false},
-  // Abajo izquierda
-  {rx:.15, ry:.85, sc:0.95, ph:1.4, lean: 0.02, variety:'r', bud:false},
-  {rx:.05, ry:.95, sc:1.20, ph:3.2, lean: 0.05, variety:'p', bud:false },
+  // === POR ENCIMA DEL TEXTO (Nuevas ubicaciones y lirios) ===
+  {rx:.32, ry:.12, sc:0.85, ph:0.5, lean: 0.12, variety:'p', bud:false}, // Lirio morado nuevo (arriba izq)
+  {rx:.68, ry:.15, sc:0.80, ph:1.2, lean:-0.08, variety:'w', bud:false}, // Lirio blanco nuevo (arriba der)
+  {rx:.50, ry:.06, sc:0.65, ph:0.8, lean: 0.05, variety:'r', bud:true},  // Capullo de rosa cerrando el arco central
 
-  // === LADO DERECHO ===
-  // Arriba derecha
-  {rx:.90, ry:.30, sc:0.80, ph:1.3, lean: 0.05, variety:'w', bud:false},
-  {rx:.82, ry:.40, sc:0.60, ph:0.9, lean:-0.10, variety:'r', bud:true },
-  // Medio derecha
-  {rx:.95, ry:.65, sc:1.15, ph:2.5, lean:-0.06, variety:'r', bud:false},
-  // Abajo derecha
-  {rx:.85, ry:.80, sc:0.90, ph:1.8, lean:-0.02, variety:'w', bud:false},
-  {rx:.93, ry:.92, sc:1.25, ph:0.5, lean:-0.08, variety:'p', bud:false },
+  // === LADO IZQUIERDO (Más pegadas al texto) ===
+  {rx:.20, ry:.32, sc:0.80, ph:0.7, lean:-0.05, variety:'r', bud:false},
+  {rx:.25, ry:.50, sc:1.05, ph:0.0, lean: 0.07, variety:'w', bud:false}, // Lirio muy pegado al texto
+  {rx:.14, ry:.42, sc:0.70, ph:2.1, lean: 0.10, variety:'p', bud:true},
+  {rx:.18, ry:.75, sc:0.95, ph:1.4, lean: 0.02, variety:'r', bud:false},
+  {rx:.10, ry:.90, sc:1.20, ph:3.2, lean: 0.05, variety:'p', bud:false},
 
-  // === CENTRO INFERIOR (Toque sutil para unir) ===
-  {rx:.35, ry:0.98, sc:0.85, ph:1.1, lean: 0.04, variety:'p', bud:true},
-  {rx:.65, ry:0.95, sc:0.90, ph:0.4, lean:-0.05, variety:'w', bud:false},
-  {rx:.50, ry:1.05, sc:1.10, ph:2.2, lean: 0.00, variety:'r', bud:false}
+  // === LADO DERECHO (Más pegadas al texto) ===
+  {rx:.80, ry:.35, sc:0.75, ph:1.3, lean: 0.05, variety:'w', bud:false},
+  {rx:.75, ry:.58, sc:1.10, ph:2.5, lean:-0.06, variety:'r', bud:false}, // Rosa muy pegada al texto
+  {rx:.88, ry:.46, sc:0.65, ph:0.9, lean:-0.10, variety:'r', bud:true },
+  {rx:.82, ry:.78, sc:0.90, ph:1.8, lean:-0.02, variety:'w', bud:false},
+  {rx:.90, ry:.92, sc:1.20, ph:0.5, lean:-0.08, variety:'p', bud:false},
+
+  // === CENTRO INFERIOR (Cerrando el marco por abajo) ===
+  {rx:.38, ry:.92, sc:0.85, ph:1.1, lean: 0.04, variety:'p', bud:true},
+  {rx:.62, ry:.90, sc:0.90, ph:0.4, lean:-0.05, variety:'w', bud:false},
+  {rx:.50, ry:1.02, sc:1.10, ph:2.2, lean: 0.00, variety:'r', bud:false}
 ];
 
 function petalColors(variety, isBack){
