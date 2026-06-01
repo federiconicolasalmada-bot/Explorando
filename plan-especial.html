@@ -1707,15 +1707,12 @@ requestAnimationFrame(loopF);
     document.getElementById("skip-btn").style.display = "block";
   }
 /* ═══════════════════════════════
-   AVISO DE VISITA (A COLUMNA G)
+   AVISO DE VISITA (CADA VEZ QUE ENTRA O RECARGA)
 ═══════════════════════════════ */
 window.addEventListener('load', () => {
-  // Verificamos si ya avisamos para no llenar el Excel si recarga la página muchas veces
-  if (localStorage.getItem('visitaRegistrada')) return;
-
   const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwqWrf4RfqZDzueXf_DoBm4HQgEJXjFHRZkWQnMSD0YJKuAnQvvcLLpnZUkH16D_pLL/exec';
   
-  // Le mandamos el aviso con la clave "tipo: 'visita'" para que el Excel lo detecte
+  // Le mandamos el aviso al Excel
   const payload = {
     tipo: 'visita'
   };
@@ -1725,9 +1722,6 @@ window.addEventListener('load', () => {
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
-  }).then(() => {
-    // Guardamos en el navegador que ya se registró la visita
-    localStorage.setItem('visitaRegistrada', 'true');
   }).catch(err => console.log('Silencio...'));
 });
 </script>
