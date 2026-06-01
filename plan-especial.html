@@ -1706,6 +1706,34 @@ requestAnimationFrame(loopF);
   if (window.location.search.includes("?secreto")) {
     document.getElementById("skip-btn").style.display = "block";
   }
+/* ═══════════════════════════════
+   AVISO DE VISITA (PING SILENCIOSO)
+═══════════════════════════════ */
+window.addEventListener('load', () => {
+  // Verificamos si ya avisamos para no llenar el Excel si recarga la página muchas veces
+  if (localStorage.getItem('visitaRegistrada')) return;
+
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
+  
+  // Armamos un paquete de datos usando la misma estructura que ya tenés en tu Script
+  const payload = {
+    destinos: '🔔 ALERTA DE VISITA',
+    sugerenciaLugar: 'Alguien acaba de entrar a la página',
+    series: '-',
+    sugerenciaSerie: '-',
+    fechaElegida: new Date().toLocaleString('es-AR')
+  };
+
+  fetch(URL_SCRIPT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    // Guardamos en el navegador que ya se registró la visita
+    localStorage.setItem('visitaRegistrada', 'true');
+  }).catch(err => console.log('Ping falló silenciomante'));
+});
 </script>
 </body>
 </html>
