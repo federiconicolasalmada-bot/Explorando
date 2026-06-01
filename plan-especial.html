@@ -1347,7 +1347,7 @@ function enviarDatos() {
     fechaElegida: ds || 'Sin fecha'
   };
 
-  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwqWrf4RfqZDzueXf_DoBm4HQgEJXjFHRZkWQnMSD0YJKuAnQvvcLLpnZUkH16D_pLL/exec';
 
   fetch(URL_SCRIPT, {
     method: 'POST',
@@ -1707,21 +1707,17 @@ requestAnimationFrame(loopF);
     document.getElementById("skip-btn").style.display = "block";
   }
 /* ═══════════════════════════════
-   AVISO DE VISITA (PING SILENCIOSO)
+   AVISO DE VISITA (A COLUMNA G)
 ═══════════════════════════════ */
 window.addEventListener('load', () => {
   // Verificamos si ya avisamos para no llenar el Excel si recarga la página muchas veces
   if (localStorage.getItem('visitaRegistrada')) return;
 
-  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbw7XJ4BM4PT72d-Zc8-8Py_ytz0qemFU4NfF4VYSx5jH4j88OWoev0JcRrSpKmLfeVD/exec';
+  const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwqWrf4RfqZDzueXf_DoBm4HQgEJXjFHRZkWQnMSD0YJKuAnQvvcLLpnZUkH16D_pLL/exec';
   
-  // Armamos un paquete de datos usando la misma estructura que ya tenés en tu Script
+  // Le mandamos el aviso con la clave "tipo: 'visita'" para que el Excel lo detecte
   const payload = {
-    destinos: '🔔 ALERTA DE VISITA',
-    sugerenciaLugar: 'Alguien acaba de entrar a la página',
-    series: '-',
-    sugerenciaSerie: '-',
-    fechaElegida: new Date().toLocaleString('es-AR')
+    tipo: 'visita'
   };
 
   fetch(URL_SCRIPT, {
@@ -1732,7 +1728,7 @@ window.addEventListener('load', () => {
   }).then(() => {
     // Guardamos en el navegador que ya se registró la visita
     localStorage.setItem('visitaRegistrada', 'true');
-  }).catch(err => console.log('Ping falló silenciomante'));
+  }).catch(err => console.log('Silencio...'));
 });
 </script>
 </body>
