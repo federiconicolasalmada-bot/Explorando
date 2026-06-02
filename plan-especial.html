@@ -1329,7 +1329,7 @@ function checkConfirm(){
 }
 
 function showModal(){
-  onst names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid'};
+  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   const opts={weekday:'long',day:'numeric',month:'long'};
   const ds=selDate.toLocaleDateString('es-AR',opts);
