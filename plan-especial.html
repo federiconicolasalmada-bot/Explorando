@@ -40,7 +40,21 @@ body{
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1; /* Detrás de todo el contenido, encima de las estrellas */
+  z-index: 1; 
+}
+
+/* ─── FUEGOS ARTIFICIALES ─── */
+#fw-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 95; /* Detrás del modal (100) pero delante de todo lo demás */
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 /* ═══════════════════════
@@ -128,13 +142,13 @@ body{
 #main-screen{
   opacity:0; 
   position: relative; 
-  z-index: 10; /* Por encima de las flores */
+  z-index: 10; 
 }
 #main-screen.visible{animation:fadeIn 1.6s ease forwards}
 
 .main-header{
   text-align:center;padding:5rem 1.5rem 2rem;position:relative;
-  text-shadow: 0 4px 15px rgba(6,3,15,0.9); /* Sombra para que se lea perfecto sobre las flores */
+  text-shadow: 0 4px 15px rgba(6,3,15,0.9);
 }
 .header-ornament{
   color:var(--gold);font-size:0.8rem;
@@ -241,7 +255,7 @@ body{
 .dot.active{background:var(--gold);transform:scale(1.35)}
 .card-body{
   padding:1.4rem 1.2rem 0.8rem;
-  flex-grow: 1; /* Asegura que las tarjetas tengan la misma altura si el texto difiere */
+  flex-grow: 1; 
 }
 .card-tag{
   font-size:0.65rem;letter-spacing:0.2em;
@@ -403,38 +417,6 @@ body{
   animation: fadeUp 0.4s 0.2s forwards;
 }
 
-/* ─── Animacion de info (Cine) ─── */
-.info-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(6,3,15,0.88);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.info-overlay.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.info-msg {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--cream);
-  font-style: italic;
-  text-align: center;
-  padding: 0 1rem;
-  opacity: 0;
-  line-height: 1.4;
-}
-.info-overlay.show .info-msg {
-  animation: fadeUp 0.4s 0.2s forwards;
-}
-
 /* ─── Comment Box (y Schedule Box) ─── */
 .comment-wrap{
   background:var(--card);
@@ -535,11 +517,10 @@ body{
   background: var(--card);
   color: var(--cream);
 }
-/* Modificaciones específicas para que el reloj encaje perfecto en el selector */
 input[type="time"].schedule-select {
   background-image: none;
   text-align: center;
-  color-scheme: dark; /* Hace que el popup del celular se vea oscuro/elegante */
+  color-scheme: dark; 
   padding-right: 1rem; 
 }
 input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
@@ -753,8 +734,9 @@ input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
 
 <canvas id="canvas"></canvas>
 
-<!-- EL CANVAS DE FLORES VIVE FUERA DEL CONTADOR Y DETRÁS DE TODO -->
 <canvas id="flower-canvas"></canvas>
+
+<canvas id="fw-canvas"></canvas>
 
 <div id="countdown-screen">
   <div class="countdown-inner">
@@ -862,7 +844,6 @@ input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
       </div>
     </div>
 
-    <!-- BLOQUE DE HORARIOS PARA LAS SERIES -->
     <div class="comment-wrap" id="schedule-section">
       <h3>¿Que día querés programar para verla? 🍿</h3>
       <p>Elegí qué día/s y a qué hora te queda más cómodo para que lo dejemos fijo.</p>
@@ -879,7 +860,6 @@ input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
           <option value="Fines de semana">Fines de semana</option>
           <option value="Cualquier día">Cualquier día</option>
         </select>
-        <!-- NUEVO RELOJ EXCLUSIVO PARA LAS SERIES -->
         <input type="time" id="schedule-time" class="schedule-select" onchange="saveState()">
       </div>
       <p class="schedule-disclaimer">
@@ -933,7 +913,7 @@ input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
     <span class="modal-icon">💌</span>
     <h2 class="modal-title">¡Perfecto!</h2>
     <p class="modal-body" id="modal-body"></p>
-    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">Cerrar  ♡</button>
+    <button class="modal-close" onclick="closeModal()">Cerrar  ♡</button>
   </div>
 </div>
 
@@ -1410,7 +1390,6 @@ function renderCal(){
     g.appendChild(el);
   }
 }
-
 function pickDay(d){
   selDate=new Date(calY,calM,d);
   const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
@@ -1421,7 +1400,6 @@ function pickDay(d){
   checkConfirm();
   saveState();
 }
-
 document.getElementById('cal-prev').addEventListener('click',()=>{
   calM--;if(calM<0){calM=11;calY--;}renderCal();
 });
@@ -1437,7 +1415,6 @@ function checkConfirm(){
   const btn  = document.getElementById('confirm-btn');
   const hint = document.getElementById('confirm-hint');
   const ok   = selectedPlaces.length>0 && selDate;
-  
   btn.disabled = !ok;
   if(!ok){
     if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
@@ -1473,12 +1450,20 @@ function showModal(){
     `¡Empiezo a organizar todo! 🥂<br>` +
     `Vos solo ponete igual de linda como siempre.<br><br>` +
     `<span style="font-size: 0.95rem; line-height: 1.5; display: block; text-align: left; padding-top: 1rem; border-top: 1px solid var(--border);">` +
-    `Se me ocurrió que este pal podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y hecho especialmente para vos.<br><br>` +
+    `Se me ocurrió que el plan-especial podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y hecho especialmente para vos.<br><br>` +
     `Espero de verdad que te haya gustado todo. Al final, esa es siempre mi intención: sacarte una sonrisa, alegrarte aunque sea un ratito y tratar de encontrar maneras diferentes de demostrarte el cariño que te tengo. Me gusta pensar cosas nuevas para vos porque siento que las personas que valen la pena merecen detalles que también sean distintos.<br><br>` +
     `Más allá de cómo salga cada idea, lo importante para mí es que sepas que todo lo hago con mucho cariño y con la esperanza de que te haga sentir especial, porque realmente lo sos.` +
     `</span>`;
     
   document.getElementById('modal').classList.add('show');
+  
+  // ENCENDEMOS LOS FUEGOS ARTIFICIALES
+  startFireworks();
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  stopFireworks();
 }
 
 /* ═══════════════════════════════
@@ -1594,7 +1579,6 @@ const FL_SPOTS = [
   [[.24,.28,1.8],[-.30,.50,2.0],[.16,.44,1.7],[-.20,.32,2.1],[.36,.56,1.3]],
 ];
 
-// Arreglo maestro de LIRIOS esparcidos
 const mainFlowerArr = [
   // Pantalla 1
   {rx: 0.10, ry: 0.15, sc: 0.90, ph: 0.1, lean: 0.05, variety: 'w', bud: false},
@@ -1754,7 +1738,7 @@ const mainFlowerArr = [
   {rx: 0.05, ry: 19.15, sc: 0.80, ph: 2.5, lean: 0.08, variety: 'p', bud: false},
   {rx: 0.95, ry: 19.30, sc: 1.05, ph: 1.0, lean: -0.06, variety: 'w', bud: true},
 
-  // Pantalla 15 (Final súper seguro para celulares)
+  // Pantalla 15
   {rx: 0.12, ry: 19.45, sc: 0.90, ph: 1.5, lean: 0.05, variety: 'w', bud: false},
   {rx: 0.88, ry: 19.60, sc: 0.95, ph: 0.4, lean: -0.09, variety: 'p', bud: false},
   {rx: 0.25, ry: 19.75, sc: 1.10, ph: 2.2, lean: 0.11, variety: 'p', bud: true},
@@ -1774,7 +1758,6 @@ function petalColors(variety, isBack){
       stripe:'rgba(200,170,240,.20)', spot:[75,30,140],
     };
   } else {
-    // Estas conforman el lirio blanco/rosado original ('w')
     const dm=isBack?12:0;
     return {
       c0:[230-dm,130,165], c1:[245-dm,175,200],
@@ -1848,7 +1831,6 @@ function drawLily(ctx,fl,t, scrollY){
   const sway=Math.sin(t*.38+ph)*0.022+fl.lean;
   const bob=Math.sin(t*.52+ph+1)*sc*1.5;
   
-  // Optimización: No dibujar si está muy fuera de la pantalla
   if(y < -250 || y > HF + 250) return;
 
   ctx.save();
@@ -1969,9 +1951,7 @@ function loopF(ts){
   cxF.clearRect(0,0,WF,HF);
   fpetalsA.forEach(fp=>drawFP_A(cxF,fp,t));
 
-  // Las flores se moverán junto con el scroll de la página
   const scrollY = window.scrollY || 0;
-
   const sorted=[...mainFlowerArr].sort((a,b)=>a.ry-b.ry);
   sorted.forEach(fl=>drawStem(cxF,fl,t, scrollY));
   sorted.forEach(fl=>drawLily(cxF,fl,t, scrollY));
@@ -1979,6 +1959,164 @@ function loopF(ts){
   requestAnimationFrame(loopF);
 }
 requestAnimationFrame(loopF);
+
+/* ═══════════════════════════════
+   LÓGICA FUEGOS ARTIFICIALES
+═══════════════════════════════ */
+// 👇 ACÁ TENÉS QUE PEGAR TU LINK RAW DEL MP3 👇
+const explosionSound = new Audio('ACÁ_PEGÁ_TU_LINK_RAW_DE_GITHUB.mp3'); 
+explosionSound.volume = 0.4; 
+
+let fireworksActive = false;
+let fwCanvas, fwCtx, fwCw, fwCh;
+let fwFireworks = [];
+let fwParticles = [];
+const fwColors = ['#c9a96e', '#e8c98a', '#d4627a', '#e8a0b0', '#f5e6d3'];
+
+function playMp3Explosion() {
+  const soundClone = explosionSound.cloneNode();
+  soundClone.volume = 0.4;
+  soundClone.play().catch(e => console.log("Audio play error", e));
+}
+
+class FwFirework {
+  constructor() {
+    this.x = Math.random() * (fwCw - 100) + 50; 
+    this.y = fwCh;
+    this.sx = Math.random() * 2 - 1;
+    this.sy = Math.random() * -3 - 4; 
+    this.size = 2;
+    this.color = fwColors[Math.floor(Math.random() * fwColors.length)];
+    this.targetY = Math.random() * (fwCh / 2) + fwCh / 8;
+    this.exploded = false;
+    this.isHeart = Math.random() < 0.45;
+  }
+  update() {
+    this.x += this.sx;
+    this.y += this.sy;
+    if (this.y <= this.targetY) {
+      this.exploded = true;
+      playMp3Explosion();
+      if (this.isHeart) createFwHeartParticles(this.x, this.y, this.color);
+      else createFwParticles(this.x, this.y, this.color);
+    }
+  }
+  draw() {
+    fwCtx.fillStyle = this.color;
+    fwCtx.beginPath();
+    fwCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    fwCtx.fill();
+  }
+}
+
+class FwParticle {
+  constructor(x, y, color, vx, vy) {
+    this.x = x;
+    this.y = y;
+    if (vx !== undefined && vy !== undefined) {
+      this.vx = vx;
+      this.vy = vy;
+    } else {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 3 + 0.5; 
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+    }
+    this.friction = 0.95;
+    this.gravity = 0.015; 
+    this.alpha = 1;
+    this.decay = Math.random() * 0.005 + 0.005; 
+    this.color = color;
+  }
+  update() {
+    this.vx *= this.friction;
+    this.vy *= this.friction;
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= this.decay;
+  }
+  draw() {
+    fwCtx.save();
+    fwCtx.globalAlpha = this.alpha;
+    fwCtx.fillStyle = this.color;
+    fwCtx.beginPath();
+    fwCtx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+    fwCtx.fill();
+    fwCtx.restore();
+  }
+}
+
+function createFwParticles(x, y, color) {
+  let count = 40 + Math.random() * 30;
+  for (let i = 0; i < count; i++) fwParticles.push(new FwParticle(x, y, color));
+}
+
+function createFwHeartParticles(x, y, color) {
+  let count = 60;
+  for (let i = 0; i < count; i++) {
+    let t = (Math.PI * 2 * i) / count;
+    let hx = 16 * Math.pow(Math.sin(t), 3);
+    let hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+    let scale = 0.15; 
+    fwParticles.push(new FwParticle(x, y, color, hx * scale, hy * scale));
+  }
+}
+
+function loopFireworks() {
+  if (!fireworksActive) return;
+
+  fwCtx.globalCompositeOperation = 'destination-out';
+  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+  fwCtx.fillRect(0, 0, fwCw, fwCh);
+  fwCtx.globalCompositeOperation = 'lighter';
+
+  if (Math.random() < 0.03) {
+    fwFireworks.push(new FwFirework());
+  }
+
+  for (let i = fwFireworks.length - 1; i >= 0; i--) {
+    fwFireworks[i].update();
+    fwFireworks[i].draw();
+    if (fwFireworks[i].exploded) fwFireworks.splice(i, 1);
+  }
+
+  for (let i = fwParticles.length - 1; i >= 0; i--) {
+    fwParticles[i].update();
+    fwParticles[i].draw();
+    if (fwParticles[i].alpha <= 0) fwParticles.splice(i, 1);
+  }
+
+  requestAnimationFrame(loopFireworks);
+}
+
+function startFireworks() {
+  fwCanvas = document.getElementById('fw-canvas');
+  fwCtx = fwCanvas.getContext('2d');
+  fwCanvas.style.display = 'block';
+  
+  // Pequeño timeout para dar efecto fade-in
+  setTimeout(() => { fwCanvas.style.opacity = '1'; }, 50);
+
+  fwCw = window.innerWidth;
+  fwCh = window.innerHeight;
+  fwCanvas.width = fwCw;
+  fwCanvas.height = fwCh;
+  fireworksActive = true;
+  fwFireworks = [];
+  fwParticles = [];
+  loopFireworks();
+}
+
+function stopFireworks() {
+  fireworksActive = false;
+  const canvasElement = document.getElementById('fw-canvas');
+  canvasElement.style.opacity = '0';
+  setTimeout(() => {
+    canvasElement.style.display = 'none';
+  }, 500);
+}
+
 </script>
 <script>
   if (window.location.search.includes("?secreto")) {
