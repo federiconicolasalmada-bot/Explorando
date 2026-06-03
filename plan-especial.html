@@ -535,6 +535,17 @@ body{
   background: var(--card);
   color: var(--cream);
 }
+/* Modificaciones específicas para que el reloj encaje perfecto en el selector */
+input[type="time"].schedule-select {
+  background-image: none;
+  text-align: center;
+  color-scheme: dark; /* Hace que el popup del celular se vea oscuro/elegante */
+  padding-right: 1rem; 
+}
+input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(75%) sepia(30%) saturate(400%) hue-rotate(350deg) brightness(90%) contrast(90%);
+}
 .schedule-disclaimer {
   font-size: 0.85rem;
   color: var(--rose-lt);
@@ -542,42 +553,6 @@ body{
   text-align: center;
   margin-top: 0.5rem;
   line-height: 1.4;
-}
-
-/* ─── Time Picker (Reloj) ─── */
-.time-picker-wrap {
-  text-align: center;
-  margin-top: 1.5rem;
-  animation: fadeIn 0.5s ease;
-}
-.time-picker-wrap label {
-  display: block;
-  color: var(--rose-lt);
-  font-style: italic;
-  font-size: 0.95rem;
-  margin-bottom: 0.6rem;
-}
-.time-input {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  color: var(--cream);
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  padding: 0.6rem 1.5rem;
-  border-radius: 2rem;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  text-align: center;
-  color-scheme: dark; /* Adapta el popup del reloj al modo oscuro */
-}
-.time-input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 10px rgba(201,169,110,0.2);
-}
-.time-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(75%) sepia(30%) saturate(400%) hue-rotate(350deg) brightness(90%) contrast(90%);
 }
 
 /* ─── Calendar ─── */
@@ -887,9 +862,10 @@ body{
       </div>
     </div>
 
+    <!-- BLOQUE DE HORARIOS PARA LAS SERIES -->
     <div class="comment-wrap" id="schedule-section">
-      <h3>¿Que dia queres programar para verla? 🍿</h3>
-      <p>Elegí qué día/s y en qué momento te quede más cómodo para que lo dejemos fijo.</p>
+      <h3>¿Que día querés programar para verla? 🍿</h3>
+      <p>Elegí qué día/s y a qué hora te queda más cómodo para que lo dejemos fijo.</p>
       <div class="schedule-group">
         <select class="schedule-select" id="schedule-day" onchange="saveState()">
           <option value="" disabled selected>Elegí un día...</option>
@@ -903,14 +879,8 @@ body{
           <option value="Fines de semana">Fines de semana</option>
           <option value="Cualquier día">Cualquier día</option>
         </select>
-        <select class="schedule-select" id="schedule-time" onchange="saveState()">
-          <option value="" disabled selected>Elegí un horario...</option>
-          <option value="Por la mañana">Por la mañana</option>
-          <option value="Al mediodía">Al mediodía / Almuerzo</option>
-          <option value="A la tarde">A la tarde</option>
-          <option value="A la noche">A la noche / Cena</option>
-          <option value="Madrugada">Madrugada</option>
-        </select>
+        <!-- NUEVO RELOJ EXCLUSIVO PARA LAS SERIES -->
+        <input type="time" id="schedule-time" class="schedule-select" onchange="saveState()">
       </div>
       <p class="schedule-disclaimer">
         * Se va a intentar respetar siempre, pero obvio que se puede reprogramar si alguno no puede ♡
@@ -947,12 +917,6 @@ body{
     </div>
     
     <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún  ♡</p>
-    
-    <!-- NUEVO: RELOJ PARA LA HORA DEL ENCUENTRO -->
-    <div class="time-picker-wrap" id="time-picker-wrap" style="display: none;">
-      <label for="plan-time">¿A qué hora nos encontramos?</label>
-      <input type="time" id="plan-time" class="time-input" onchange="updatePlanTime()">
-    </div>
 
   </section>
 
@@ -990,7 +954,6 @@ function saveState(){
     places: selectedPlaces,
     series: selectedSeries,
     date: selDate ? selDate.getTime() : null,
-    planTime: document.getElementById('plan-time').value,
     scheduleDay: document.getElementById('schedule-day').value,
     scheduleTime: document.getElementById('schedule-time').value
   }));
@@ -1450,29 +1413,13 @@ function renderCal(){
 
 function pickDay(d){
   selDate=new Date(calY,calM,d);
-  document.getElementById('time-picker-wrap').style.display = 'block';
-  updateDateDisplay();
+  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  const s=selDate.toLocaleDateString('es-AR',opts);
+  document.getElementById('selected-date-display').textContent=
+    '📅 '+s.charAt(0).toUpperCase()+s.slice(1);
   renderCal(); 
   checkConfirm();
   saveState();
-}
-
-function updatePlanTime() {
-  updateDateDisplay();
-  checkConfirm();
-  saveState();
-}
-
-function updateDateDisplay(){
-  if(!selDate) return;
-  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const s=selDate.toLocaleDateString('es-AR',opts);
-  let text = '📅 ' + s.charAt(0).toUpperCase()+s.slice(1);
-  const timeVal = document.getElementById('plan-time').value;
-  if(timeVal) {
-    text += ` a las ${timeVal} hs`;
-  }
-  document.getElementById('selected-date-display').textContent = text;
 }
 
 document.getElementById('cal-prev').addEventListener('click',()=>{
@@ -1489,15 +1436,13 @@ renderCal();
 function checkConfirm(){
   const btn  = document.getElementById('confirm-btn');
   const hint = document.getElementById('confirm-hint');
-  const timeVal = document.getElementById('plan-time').value;
-  const ok   = selectedPlaces.length>0 && selDate && timeVal;
+  const ok   = selectedPlaces.length>0 && selDate;
   
   btn.disabled = !ok;
   if(!ok){
     if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
     else if(selectedPlaces.length===0) hint.textContent='Elegí al menos un lugar para continuar';
-    else if(!selDate) hint.textContent='Elegí una fecha para continuar';
-    else if(!timeVal) hint.textContent='Marcá la hora del encuentro en el reloj ♡';
+    else hint.textContent='Elegí una fecha para continuar';
   } else {
     hint.textContent='¡Todo listo! Confirmá tu plan 💌';
   }
@@ -1506,11 +1451,10 @@ function checkConfirm(){
 function showModal(){
   const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
+  
   const opts={weekday:'long',day:'numeric',month:'long'};
   const ds=selDate.toLocaleDateString('es-AR',opts);
-  
-  const timeVal = document.getElementById('plan-time').value;
-  const dateStringFinal = ds.charAt(0).toUpperCase() + ds.slice(1) + (timeVal ? ` a las ${timeVal} hs` : '');
+  const dateStringFinal = ds.charAt(0).toUpperCase() + ds.slice(1);
 
   const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
   let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
@@ -1520,7 +1464,7 @@ function showModal(){
   let scheduleLine = '';
   if(schedDay || schedTime) {
     let dayText = schedDay ? schedDay : 'Algún día';
-    let timeText = schedTime ? schedTime.toLowerCase() : 'en algún momento';
+    let timeText = schedTime ? `a las ${schedTime} hs` : 'en algún momento';
     scheduleLine = `<br>Horario series: <strong>${dayText} ${timeText}</strong>.`;
   }
 
@@ -1550,8 +1494,7 @@ function enviarDatos() {
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
   const opts = {weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const timeVal = document.getElementById('plan-time').value;
-  const ds = selDate ? (selDate.toLocaleDateString('es-AR',opts) + (timeVal ? ` a las ${timeVal} hs` : '')) : '';
+  const ds = selDate ? selDate.toLocaleDateString('es-AR',opts) : '';
   
   const sugLugar = document.getElementById('place-comment').value.trim();
   const sugSerie = document.getElementById('series-comment').value.trim();
@@ -1560,7 +1503,7 @@ function enviarDatos() {
   const schedTime = document.getElementById('schedule-time').value;
   let horarioSeries = "Sin horario definido";
   if(schedDay || schedTime) {
-    horarioSeries = `${schedDay || 'Algún día'} ${schedTime ? schedTime.toLowerCase() : ''}`.trim();
+    horarioSeries = `${schedDay || 'Algún día'} ${schedTime ? 'a las ' + schedTime + ' hs' : ''}`.trim();
   }
 
   const payload = {
@@ -1617,7 +1560,6 @@ function loadState(){
     data.series.forEach(id => selectedSeries.push(id));
     refreshSeriesNumbers();
   }
-  if(data.planTime) document.getElementById('plan-time').value = data.planTime;
   if(data.date){
     const d = new Date(data.date);
     calY = d.getFullYear();
@@ -1832,6 +1774,7 @@ function petalColors(variety, isBack){
       stripe:'rgba(200,170,240,.20)', spot:[75,30,140],
     };
   } else {
+    // Estas conforman el lirio blanco/rosado original ('w')
     const dm=isBack?12:0;
     return {
       c0:[230-dm,130,165], c1:[245-dm,175,200],
