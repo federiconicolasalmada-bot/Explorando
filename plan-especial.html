@@ -1967,35 +1967,19 @@ requestAnimationFrame(loopF);
   if (window.location.search.includes("?secreto")) {
     document.getElementById("skip-btn").style.display = "block";
   }
-  /* ═══════════════════════════════
+/* ═══════════════════════════════
    LÓGICA FUEGOS ARTIFICIALES
 ═══════════════════════════════ */
 // 👇 ACÁ TENÉS QUE PEGAR TU LINK RAW DEL MP3 👇
-const explosionSound = new Audio('Fuegos-artificiales.mp3'); 
-explosionSound.volume = 0.15; // VOLUMEN MUCHO MÁS BAJO
+const explosionSound = new Audio('ACÁ_PEGÁ_TU_LINK_RAW_DE_GITHUB.mp3'); 
+explosionSound.volume = 0.15; // VOLUMEN (podés subirlo o bajarlo)
+explosionSound.loop = true;   // 👈 ESTO HACE QUE EL AUDIO VUELVA A EMPEZAR SOLO
 
 let fireworksActive = false;
 let fwCanvas, fwCtx, fwCw, fwCh;
 let fwFireworks = [];
 let fwParticles = [];
 const fwColors = ['#c9a96e', '#e8c98a', '#d4627a', '#e8a0b0', '#f5e6d3'];
-
-// Lista para tener control de los audios que están sonando
-let activeSounds = [];
-
-function playMp3Explosion() {
-  const soundClone = explosionSound.cloneNode();
-  soundClone.volume = 0.15; // VOLUMEN MUCHO MÁS BAJO
-  soundClone.play().catch(e => console.log("Audio play error", e));
-  
-  // Lo agregamos a la lista de sonidos activos
-  activeSounds.push(soundClone);
-  
-  // Cuando termina de sonar solito, lo sacamos de la lista
-  soundClone.onended = () => {
-    activeSounds = activeSounds.filter(s => s !== soundClone);
-  };
-}
 
 class FwFirework {
   constructor() {
@@ -2014,7 +1998,7 @@ class FwFirework {
     this.y += this.sy;
     if (this.y <= this.targetY) {
       this.exploded = true;
-      playMp3Explosion();
+      // Ya no disparamos el audio por cada explosión individual
       if (this.isHeart) createFwHeartParticles(this.x, this.y, this.color);
       else createFwParticles(this.x, this.y, this.color);
     }
@@ -2122,18 +2106,20 @@ function startFireworks() {
   fireworksActive = true;
   fwFireworks = [];
   fwParticles = [];
+  
+  // REPRODUCIMOS EL AUDIO EN BUCLE (Arranca al abrir el cartel)
+  explosionSound.currentTime = 0;
+  explosionSound.play().catch(e => console.log("Audio play error", e));
+
   loopFireworks();
 }
 
 function stopFireworks() {
   fireworksActive = false;
   
-  // FRENAMOS LOS AUDIOS DE GOLPE
-  activeSounds.forEach(sound => {
-    sound.pause();
-    sound.currentTime = 0;
-  });
-  activeSounds = []; // Limpiamos la lista
+  // FRENAMOS EL AUDIO DE GOLPE AL CERRAR EL CARTEL
+  explosionSound.pause();
+  explosionSound.currentTime = 0;
 
   const canvasElement = document.getElementById('fw-canvas');
   canvasElement.style.opacity = '0';
