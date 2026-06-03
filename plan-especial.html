@@ -1148,7 +1148,16 @@ const places = [
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHIMvdfgK4rIQiGp08SF4Xq1fweCcaVH6e-et1QcdvjtT-wjZKl11G3qBe3eWJdHDS3vPuaXdHjEa3153_J1wMdWbU7ZnvfBWnuGGCBgMDE3bZX5Sjvx4KnfYmBsF9qIfMihdSBUg=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHwaun4f_qo8TSQ0eZGK9-gAQU8xg9vf-FnAiLeLuITDNaKn2Ah3DCcES2bmTYdzIrn34xG6GjvUi7kJ8jxaBlXfm4TP37DSNI2WXavDf7Ra1QS_IsD60rX8YySeA0yRsBCNRUG=s1080-w1080-h810-rw'
     ]
-  }
+  },
+  {
+    id:'patinaje', tag:'⛸️  Aventura', title:'Patinaje sobre hielo',
+    desc:'Un rato para intentar no caernos, reírnos de los tropezones y abrigarnos bien para la ocasión.',
+    images:[
+      'https://images.unsplash.com/photo-1516280030429-27679b3dc9ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1549429188-7e5d233e70d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1606886470377-cecb79d01b17?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    ]
+  } 
 ];
 
 const selectedPlaces = []; 
@@ -1247,7 +1256,7 @@ function updateFavorites(){
   if(selectedPlaces.length===0){
     list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
   } else {
-    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo'};
+    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje'};
     selectedPlaces.forEach((id, i)=>{
       const t=document.createElement('span');
       t.className='selected-tag';
@@ -1425,7 +1434,7 @@ function checkConfirm(){
 }
 
 function showModal(){
-  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid'};
+  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   const opts={weekday:'long',day:'numeric',month:'long'};
   const ds=selDate.toLocaleDateString('es-AR',opts);
@@ -1463,7 +1472,7 @@ function enviarDatos() {
   btn.textContent = 'Enviando plan... ⏳'; 
   btn.disabled = true;
 
-  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid'};
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo'};
   const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
