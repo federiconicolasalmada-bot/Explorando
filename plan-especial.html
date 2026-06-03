@@ -544,6 +544,42 @@ body{
   line-height: 1.4;
 }
 
+/* ─── Time Picker (Reloj) ─── */
+.time-picker-wrap {
+  text-align: center;
+  margin-top: 1.5rem;
+  animation: fadeIn 0.5s ease;
+}
+.time-picker-wrap label {
+  display: block;
+  color: var(--rose-lt);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+.time-input {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  text-align: center;
+  color-scheme: dark; /* Adapta el popup del reloj al modo oscuro */
+}
+.time-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(201,169,110,0.2);
+}
+.time-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(75%) sepia(30%) saturate(400%) hue-rotate(350deg) brightness(90%) contrast(90%);
+}
+
 /* ─── Calendar ─── */
 #calendar-section{
   padding:2rem 1rem;
@@ -649,6 +685,8 @@ body{
   max-width:450px;width:100%;text-align:center;
   transform:scale(0.88);
   transition:transform 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .modal-overlay.show .modal{transform:scale(1)}
 .modal-icon{font-size:2.5rem;margin-bottom:0.8rem;display:block}
@@ -740,6 +778,7 @@ body{
 
 <canvas id="canvas"></canvas>
 
+<!-- EL CANVAS DE FLORES VIVE FUERA DEL CONTADOR Y DETRÁS DE TODO -->
 <canvas id="flower-canvas"></canvas>
 
 <div id="countdown-screen">
@@ -906,7 +945,15 @@ body{
         <div class="cal-days" id="cal-days"></div>
       </div>
     </div>
+    
     <p class="selected-date-display" id="selected-date-display">Ninguna fecha elegida aún  ♡</p>
+    
+    <!-- NUEVO: RELOJ PARA LA HORA DEL ENCUENTRO -->
+    <div class="time-picker-wrap" id="time-picker-wrap" style="display: none;">
+      <label for="plan-time">¿A qué hora nos encontramos?</label>
+      <input type="time" id="plan-time" class="time-input" onchange="updatePlanTime()">
+    </div>
+
   </section>
 
   <section id="confirm-section">
@@ -943,6 +990,7 @@ function saveState(){
     places: selectedPlaces,
     series: selectedSeries,
     date: selDate ? selDate.getTime() : null,
+    planTime: document.getElementById('plan-time').value,
     scheduleDay: document.getElementById('schedule-day').value,
     scheduleTime: document.getElementById('schedule-time').value
   }));
@@ -1151,14 +1199,14 @@ const places = [
   },
   {
     id:'patinaje', tag:'⛸️  Aventura', title:'Patinaje sobre hielo',
-    desc:'Un rato para hacer el intento no caernos y reírnos de los tropezones.',
+    desc:'Un rato para intentar no caernos, reírnos de los tropezones y abrigarnos bien para la ocasión.',
     images:[
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHvFnekDQIweMstkv-M49nba_OtUknj-CzDJcwdPw9AR-o3ISOEjNXbbP4k5u2TmyZGK13rWI72HW09BXm0qDq0d6XRcB53J7Z_260AA2UpUu4bEApd_Ez-L3H-Lvu4qTj6jJyDL4dlcYA=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAH2DZbqWspSQCLws9BuIyLHhrrZGnX45rr3GPgm8pVu3Jl_TjnrVe-qcYTxYSydRLlcsfQb9RRJQtwnw1yujOCZUGSn3kj7qRJFsDV2mCuPjk4QXmmxy3Q917mBZToZWC5-WK7FtA=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHdKURxBm9pvcGE5d307SuK-TrEhYm591EdBL57IUtoudlvPlSVPJvP67-f8dzaqE8vU81-D1zcG9FmHyzP9HZ51snSv4x657K0s2jmOG89q6H_b3omHLY_LvcQKUHZEf_GGOAp=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGmEfeESAgOtvvD2Fb1xclZsJDu4LSy0SEhM5-s8cQqcwS-HLQ_B6CSJzGQ8my5C9pJOaNBH4pGWLQ2ZQt9lqOkEX6CXhNOW0htmLiyXXHqacNUzg_wCJJfxW5XtsxLUG2NXMLr=s680-w680-h510-rw'
     ]
-  } 
+  }
 ];
 
 const selectedPlaces = []; 
@@ -1399,16 +1447,34 @@ function renderCal(){
     g.appendChild(el);
   }
 }
+
 function pickDay(d){
   selDate=new Date(calY,calM,d);
-  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const s=selDate.toLocaleDateString('es-AR',opts);
-  document.getElementById('selected-date-display').textContent=
-    '📅 '+s.charAt(0).toUpperCase()+s.slice(1);
+  document.getElementById('time-picker-wrap').style.display = 'block';
+  updateDateDisplay();
   renderCal(); 
   checkConfirm();
   saveState();
 }
+
+function updatePlanTime() {
+  updateDateDisplay();
+  checkConfirm();
+  saveState();
+}
+
+function updateDateDisplay(){
+  if(!selDate) return;
+  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  const s=selDate.toLocaleDateString('es-AR',opts);
+  let text = '📅 ' + s.charAt(0).toUpperCase()+s.slice(1);
+  const timeVal = document.getElementById('plan-time').value;
+  if(timeVal) {
+    text += ` a las ${timeVal} hs`;
+  }
+  document.getElementById('selected-date-display').textContent = text;
+}
+
 document.getElementById('cal-prev').addEventListener('click',()=>{
   calM--;if(calM<0){calM=11;calY--;}renderCal();
 });
@@ -1423,12 +1489,15 @@ renderCal();
 function checkConfirm(){
   const btn  = document.getElementById('confirm-btn');
   const hint = document.getElementById('confirm-hint');
-  const ok   = selectedPlaces.length>0 && selDate;
+  const timeVal = document.getElementById('plan-time').value;
+  const ok   = selectedPlaces.length>0 && selDate && timeVal;
+  
   btn.disabled = !ok;
   if(!ok){
     if(selectedPlaces.length===0 && !selDate) hint.textContent='Elegí al menos un lugar y una fecha para continuar';
     else if(selectedPlaces.length===0) hint.textContent='Elegí al menos un lugar para continuar';
-    else hint.textContent='Elegí una fecha para continuar';
+    else if(!selDate) hint.textContent='Elegí una fecha para continuar';
+    else if(!timeVal) hint.textContent='Marcá la hora del encuentro en el reloj ♡';
   } else {
     hint.textContent='¡Todo listo! Confirmá tu plan 💌';
   }
@@ -1439,10 +1508,13 @@ function showModal(){
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   const opts={weekday:'long',day:'numeric',month:'long'};
   const ds=selDate.toLocaleDateString('es-AR',opts);
+  
+  const timeVal = document.getElementById('plan-time').value;
+  const dateStringFinal = ds.charAt(0).toUpperCase() + ds.slice(1) + (timeVal ? ` a las ${timeVal} hs` : '');
+
   const seriesNames=selectedSeries.map((id,i)=>`${i+1}. ${series.find(s=>s.id===id)?.name}`).filter(Boolean).join(', ');
   let seriesLine = seriesNames ? `<br>Series: <strong>${seriesNames}</strong>.` : '';
   
-  // Rescatar los valores del horario seleccionado
   const schedDay = document.getElementById('schedule-day').value;
   const schedTime = document.getElementById('schedule-time').value;
   let scheduleLine = '';
@@ -1453,12 +1525,12 @@ function showModal(){
   }
 
   document.getElementById('modal-body').innerHTML =
-    `Elegiste: <strong>${list}</strong>.${seriesLine}${scheduleLine}<br>Fecha: <strong>${ds.charAt(0).toUpperCase()+ds.slice(1)}</strong>.<br><br>` +
+    `Elegiste: <strong>${list}</strong>.${seriesLine}${scheduleLine}<br>Fecha: <strong>${dateStringFinal}</strong>.<br><br>` +
     `¡Empiezo a organizar todo! 🥂<br>` +
     `Vos solo ponete igual de linda como siempre.<br><br>` +
     `<span style="font-size: 0.95rem; line-height: 1.5; display: block; text-align: left; padding-top: 1rem; border-top: 1px solid var(--border);">` +
-    `Se me ocurrió que esta podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y hecho especialmente para vos.<br><br>` +
-    `Espero de verdad que te haya gustado todo. Al final, esa es siempre la intención: sacarte una sonrisa, alegrarte aunque sea un ratito y tratar de encontrar maneras diferentes de demostrarte el cariño que te tengo. Me gusta pensar cosas nuevas para vos porque siento que las personas que valen la pena merecen detalles que también sean distintos.<br><br>` +
+    `Se me ocurrió que el plan-especial podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y hecho especialmente para vos.<br><br>` +
+    `Espero de verdad que te haya gustado todo. Al final, esa es siempre mi intención: sacarte una sonrisa, alegrarte aunque sea un ratito y tratar de encontrar maneras diferentes de demostrarte el cariño que te tengo. Me gusta pensar cosas nuevas para vos porque siento que las personas que valen la pena merecen detalles que también sean distintos.<br><br>` +
     `Más allá de cómo salga cada idea, lo importante para mí es que sepas que todo lo hago con mucho cariño y con la esperanza de que te haga sentir especial, porque realmente lo sos.` +
     `</span>`;
     
@@ -1478,11 +1550,12 @@ function enviarDatos() {
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
   const opts = {weekday:'long',day:'numeric',month:'long',year:'numeric'};
-  const ds = selDate ? selDate.toLocaleDateString('es-AR',opts) : '';
+  const timeVal = document.getElementById('plan-time').value;
+  const ds = selDate ? (selDate.toLocaleDateString('es-AR',opts) + (timeVal ? ` a las ${timeVal} hs` : '')) : '';
+  
   const sugLugar = document.getElementById('place-comment').value.trim();
   const sugSerie = document.getElementById('series-comment').value.trim();
 
-  // Armar el string del horario
   const schedDay = document.getElementById('schedule-day').value;
   const schedTime = document.getElementById('schedule-time').value;
   let horarioSeries = "Sin horario definido";
@@ -1496,7 +1569,7 @@ function enviarDatos() {
     sugerenciaLugar: sugLugar || 'Sin sugerencia',
     series: listSeries || 'Ninguna',
     sugerenciaSerie: sugSerie || 'Sin sugerencia',
-    horarioSeries: horarioSeries, // <-- Este es el nuevo dato a guardar en el Excel
+    horarioSeries: horarioSeries,
     fechaElegida: ds || 'Sin fecha'
   };
 
@@ -1544,6 +1617,7 @@ function loadState(){
     data.series.forEach(id => selectedSeries.push(id));
     refreshSeriesNumbers();
   }
+  if(data.planTime) document.getElementById('plan-time').value = data.planTime;
   if(data.date){
     const d = new Date(data.date);
     calY = d.getFullYear();
@@ -1758,7 +1832,6 @@ function petalColors(variety, isBack){
       stripe:'rgba(200,170,240,.20)', spot:[75,30,140],
     };
   } else {
-    // Estas conforman el lirio blanco/rosado original ('w')
     const dm=isBack?12:0;
     return {
       c0:[230-dm,130,165], c1:[245-dm,175,200],
@@ -1988,4 +2061,3 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
-  
