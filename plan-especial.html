@@ -1456,14 +1456,15 @@ function showModal(){
     scheduleLine = `<br>Horario series: <strong>${dayText} ${timeText}</strong>.`;
   }
 
-  document.getElementById('modal-body').innerHTML =
+ document.getElementById('modal-body').innerHTML =
     `Elegiste: <strong>${list}</strong>.${seriesLine}${scheduleLine}<br>Fecha: <strong>${dateStringFinal}</strong>.<br><br>` +
     `¡Empiezo a organizar todo! 🥂<br>` +
     `Vos solo ponete igual de linda como siempre.<br><br>` +
     `<span style="font-size: 0.95rem; line-height: 1.5; display: block; text-align: left; padding-top: 1rem; border-top: 1px solid var(--border);">` +
-    `Se me ocurrió que este plan podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y hecho especialmente para vos.<br><br>` +
-    `Espero de verdad que te haya gustado todo. Al final, esa es siempre mi intención: sacarte una sonrisa, alegrarte aunque sea un ratito y tratar de encontrar maneras diferentes de demostrarte el cariño que te tengo. Me gusta pensar cosas nuevas para vos porque siento que las personas que valen la pena merecen detalles que también sean distintos.<br><br>` +
-    `Más allá de cómo salga cada idea, lo importante para mí es que sepas que todo lo hago con mucho cariño y con la esperanza de que te haga sentir especial, porque realmente lo sos.` +
+    `Se me ocurrió que este plan podía ser una forma distinta de invitarte a hacer algo que teníamos pendiente. Quería que no fuera una invitación común, sino algo un poco más original y pensado especialmente para vos.<br><br>` +
+    `También quería aprovechar para decirte que este es el último de los detalles que tenía pendientes para darte. Cada uno de nació con la misma intención: hacerte sonreír, sorprenderte un poco y demostrarte, a mi manera, el cariño y el aprecio que te tengo.<br><br>` +
+    `Espero de verdad que te haya gustado todo. Más allá de cómo haya salido cada idea, lo importante para mí siempre fue el significado detrás de cada una. Me gustó pensar cosas diferentes para vos porque siento que las personas que valen la pena merecen detalles que también sean especiales.<br><br>` +
+    `Gracias por haber recibido cada regalo, cada ocurrencia y cada momento con la misma buena energía con la que fueron pensados. Ojalá todo esto te haya hecho sentir aunque sea una pequeña parte de lo que sos para mí.` +
     `</span>`;
     
   document.getElementById('modal').classList.add('show');
@@ -1983,7 +1984,7 @@ requestAnimationFrame(loopF);
 ═══════════════════════════════ */
 // 👇 ACÁ TENÉS QUE PEGAR TU LINK RAW DEL MP3 👇
 const explosionSound = new Audio('Fuegos-artificiales.mp3'); 
-explosionSound.volume = 0.15; // VOLUMEN (podés subirlo o bajarlo)
+explosionSound.volume = 0.10; // VOLUMEN (podés subirlo o bajarlo)
 explosionSound.loop = true;   // 👈 ESTO HACE QUE EL AUDIO VUELVA A EMPEZAR SOLO
 
 let fireworksActive = false;
