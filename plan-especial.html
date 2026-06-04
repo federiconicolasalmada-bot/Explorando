@@ -1208,7 +1208,7 @@ places.forEach(place => {
     if(e.target.classList.contains('dot')) goTo(+e.target.dataset.i);
   });
   
-  card.querySelector('.heart-btn').addEventListener('click', function(){
+card.querySelector('.heart-btn').addEventListener('click', function(){
     const id = this.dataset.id;
     const idx = selectedPlaces.indexOf(id);
     if(idx !== -1){
@@ -1220,13 +1220,14 @@ places.forEach(place => {
     updateFavorites();
     saveState();
 
-if (id === 'cine' && selectedPlaces.includes('cine')) {
+    // ESTO TIENE QUE ESTAR ACÁ ADENTRO:
+    if (id === 'cine' && selectedPlaces.includes('cine')) {
       let overlay = card.querySelector('.info-overlay');
       if(!overlay){
         overlay = document.createElement('div');
         overlay.className = 'info-overlay';
         overlay.innerHTML = `<span class="info-msg">Se puede reprogramar la fecha dependiendo de la película 😉</span>`;
-        // 👇 ACÁ ESTÁ EL CAMBIO: Lo agregamos adentro del contenedor de la foto (slider-wrap)
+        // Lo agregamos adentro del contenedor de la foto
         card.querySelector('.slider-wrap').appendChild(overlay);
       }
       
