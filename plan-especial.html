@@ -1149,6 +1149,15 @@ const places = [
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAHdKURxBm9pvcGE5d307SuK-TrEhYm591EdBL57IUtoudlvPlSVPJvP67-f8dzaqE8vU81-D1zcG9FmHyzP9HZ51snSv4x657K0s2jmOG89q6H_b3omHLY_LvcQKUHZEf_GGOAp=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGmEfeESAgOtvvD2Fb1xclZsJDu4LSy0SEhM5-s8cQqcwS-HLQ_B6CSJzGQ8my5C9pJOaNBH4pGWLQ2ZQt9lqOkEX6CXhNOW0htmLiyXXHqacNUzg_wCJJfxW5XtsxLUG2NXMLr=s680-w680-h510-rw'
     ]
+  }, // <-- Acordate de dejar esta coma para separar el destino anterior
+  {
+    id:'ecoparque', tag:'🌳  Naturaleza', title:'Ecoparque',
+    desc:'Una tarde de sol para caminar, rodearnos de verde, ver algunos animalitos y tomar unos mates charlando.',
+    images:[
+      'https://turismo.buenosaires.gob.ar/sites/turismo/files/ecoparque_portada_1200_0.jpg',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/d3/18/88/ecoparque-interactivo.jpg?w=1000&h=-1&s=1',
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/dd/a1/b8/ecoparque-interactivo.jpg?w=1000&h=-1&s=1'
+    ]
   }
 ];
 
@@ -1248,7 +1257,7 @@ function updateFavorites(){
   if(selectedPlaces.length===0){
     list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
   } else {
-    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje'};
+    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque'};
     selectedPlaces.forEach((id, i)=>{
       const t=document.createElement('span');
       t.className='selected-tag';
@@ -1426,7 +1435,7 @@ function checkConfirm(){
 }
 
 function showModal(){
-  const names={museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo'};
+  const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   
   const opts={weekday:'long',day:'numeric',month:'long'};
@@ -1474,7 +1483,7 @@ function enviarDatos() {
   btn.textContent = 'Enviando plan... ⏳'; 
   btn.disabled = true;
 
-  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo'};
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo', ecoparque:'Ecoparque'};
   const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
