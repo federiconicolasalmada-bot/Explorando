@@ -1193,6 +1193,15 @@ const places = [
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGGPi2zSfpj_lKzwCLOL_6Gkx3kABr1S5dJ0Z9TEpIvpaXwB1NWo6NyfB7HQhC2t0d695TXlHr9AQ-aDEiUB22VprhIAaYUeAa74a7lHXL5VvnStOTmBny6vvBfC28ereL5mWjMkA=s680-w680-h510-rw',
       'https://lh3.googleusercontent.com/gps-cs-s/APNQkAGCzax5Ug_FJ__msMOX50Et4Gki8nvEQQx-YremSSdOadjZf7BKoVCkHKanI5QuU3hN0a8VWpz8TeCLZ4JmS49Bk0elsYexocLCuJLLlzRcwY5VW6J1OL1fqs4hCkLqoJPWpvaAng=s680-w680-h510-rw'
     ]
+  },// <-- Acordate de dejar esta coma para separar el destino anterior
+  {
+    id:'minigolf', tag:'⛳  Diversión', title:'Minigolf',
+    desc:'Un rato de competencia sana, algunas risas por los tiros fallidos y a ver quién paga la proxima.',
+    images:[
+      'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/b3/f5/6b/cancha-de-mini-golf-en.jpg?w=1200&h=-1&s=1',
+      'https://palmares.com.ar/wp-content/uploads/2022/10/minigolf-palmares-1024x683.jpg',
+      'https://resizer.glanacion.com/resizer/v2/el-minigolf-es-una-de-las-atracciones-mas-elegidas-NLYZ5L3XONCKXHK2JHQM7QO4PA.jpg?auth=d9f4e24391cf8e9c9c277717d983c271cfc2b79c3d49f0c29a8a7a0302b54546&width=768&quality=70&smart=false'
+    ]
   }
 ];
 
@@ -1300,7 +1309,7 @@ function updateFavorites(){
   if(selectedPlaces.length===0){
     list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
   } else {
-    const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque'};
+   const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf'};
     selectedPlaces.forEach((id, i)=>{
       const t=document.createElement('span');
       t.className='selected-tag';
@@ -1478,7 +1487,7 @@ function checkConfirm(){
 }
 
 function showModal(){
-  const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque'};
+  const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   
   const opts={weekday:'long',day:'numeric',month:'long'};
@@ -1527,7 +1536,7 @@ function enviarDatos() {
   btn.textContent = 'Enviando plan... ⏳'; 
   btn.disabled = true;
 
-  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo', ecoparque:'Ecoparque'};
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo', ecoparque:'Ecoparque', minigolf:'Minigolf'};
   const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
