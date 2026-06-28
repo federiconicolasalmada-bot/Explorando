@@ -1202,8 +1202,18 @@ const places = [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuTf4M1JPYydblBS1N1DUltaoMZMFRBlb9TA&s',
       'https://www.espaciotradem.com/wp-content/uploads/2026/02/golfito6-e1771435687846.jpeg'
     ]
+  } , // <-- Acordate de dejar esta coma para separar el destino anterior
+  {
+    id:'picnic', tag:'🧺  Al aire libre', title:'Picnic',
+    desc:'Un mantel en el pasto, algo rico para comer, solcito y charlas eternas rodeados de naturaleza.',
+    images:[
+      'https://images.unsplash.com/photo-1526406915894-7bcd65f60845?q=80&w=1000',
+      'https://images.unsplash.com/photo-1590377435133-176840656a31?q=80&w=1000',
+      'https://images.unsplash.com/photo-1534080391025-a17af1022850?q=80&w=1000'
+    ]
   }
 ];
+  
 
 const selectedPlaces = []; 
 const grid = document.getElementById('places-grid');
@@ -1309,7 +1319,7 @@ function updateFavorites(){
   if(selectedPlaces.length===0){
     list.innerHTML='<p class="no-selection">Todavía no marcaste ningún lugar  ♡</p>';
   } else {
-   const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf'};
+   const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf', picnic:'🧺 Picnic'};
     selectedPlaces.forEach((id, i)=>{
       const t=document.createElement('span');
       t.className='selected-tag';
@@ -1487,7 +1497,7 @@ function checkConfirm(){
 }
 
 function showModal(){
-  const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf'};
+  const names={museo:'🏛️ Museo',ceramica:'🎨 Cerámica',cena:'🍽️ Cena',jardin:'🌿 Jardín Japonés',cine:'🎬 Cine', bowling:'🎳 Bowling', ateneo:'📚 El Ateneo', patinaje:'⛸️ Patinaje', ecoparque:'🌳 Ecoparque', minigolf:'⛳ Minigolf', picnic:'🧺 Picnic'};
   const list=selectedPlaces.map((id,i)=>`${i+1}. ${names[id]}`).join(', ');
   
   const opts={weekday:'long',day:'numeric',month:'long'};
@@ -1536,7 +1546,7 @@ function enviarDatos() {
   btn.textContent = 'Enviando plan... ⏳'; 
   btn.disabled = true;
 
-  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo', ecoparque:'Ecoparque', minigolf:'Minigolf'};
+  const namesPlaces = {museo:'Museo',ceramica:'Cerámica',cena:'Cena y charla',jardin:'Jardín Japonés',cine:'Cine', bowling:'Bowling', ateneo:'El Ateneo Grand Splendid', patinaje:'Patinaje sobre hielo', ecoparque:'Ecoparque', minigolf:'Minigolf', picnic:'Picnic'};
   const listPlaces = selectedPlaces.map((id,i) => `${i+1}. ${namesPlaces[id]}`).join('\n');
   const listSeries = selectedSeries.map((id,i) => `${i+1}. ${series.find(s=>s.id===id)?.name}`).join('\n');
   
