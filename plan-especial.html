@@ -1060,19 +1060,27 @@ for(let i=0;i<45;i++) particles.push(new Particle());
 /* ═══════════════════════════════
    COUNTDOWN Y SCROLL
 ═══════════════════════════════ */
-// Guarda la hora objetivo en LocalStorage para que no se reinicie si recarga la página
+
+// TRUCO DEV: Si entrás al link agregando "?reset" al final (ej: mipagina.com/?reset), 
+// borra la memoria y vuelve a darte 2 minutos.
+if (window.location.search.includes("?reset")) {
+  localStorage.removeItem('planEspecialTarget');
+  window.location.href = window.location.pathname; // Limpia la URL y recarga
+}
+
 let savedTarget = localStorage.getItem('planEspecialTarget');
 let TARGET;
 
 if (savedTarget) {
+  // Si ya había entrado antes, recupera la fecha guardada
   TARGET = new Date(parseInt(savedTarget));
 } else {
-  // Calcula la hora actual + 2 minutos (120000 milisegundos)
+  // Si es la primera vez (o si usaste el ?reset), calcula 2 minutos y lo guarda
   TARGET = new Date(new Date().getTime() + 120000);
   localStorage.setItem('planEspecialTarget', TARGET.getTime());
 }
 
-let isMainScreen = false; 
+let isMainScreen = false;
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function updateTimer(){
