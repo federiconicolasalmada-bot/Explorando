@@ -1060,7 +1060,18 @@ for(let i=0;i<45;i++) particles.push(new Particle());
 /* ═══════════════════════════════
    COUNTDOWN Y SCROLL
 ═══════════════════════════════ */
-const TARGET = new Date('2026-05-31T22:00:00-03:00');
+// Guarda la hora objetivo en LocalStorage para que no se reinicie si recarga la página
+let savedTarget = localStorage.getItem('planEspecialTarget');
+let TARGET;
+
+if (savedTarget) {
+  TARGET = new Date(parseInt(savedTarget));
+} else {
+  // Calcula la hora actual + 2 minutos (120000 milisegundos)
+  TARGET = new Date(new Date().getTime() + 120000);
+  localStorage.setItem('planEspecialTarget', TARGET.getTime());
+}
+
 let isMainScreen = false; 
 
 function pad(n){ return String(n).padStart(2,'0'); }
