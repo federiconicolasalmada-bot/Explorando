@@ -44,7 +44,6 @@ body{
 ═══════════════════════════ */
 #intro{
   position:fixed;inset:0;z-index:50;
-  /* FOND0 MEJORADO: Gradiente radial para dar profundidad */
   background: radial-gradient(circle at center, #E8607A 0%, var(--rose) 100%);
   display:flex;align-items:center;justify-content:center;flex-direction:column;
   transition:opacity 1.2s ease, transform 1.2s ease;
@@ -53,7 +52,6 @@ body{
 
 .intro-inner{text-align:center;padding:2rem;position:relative;z-index:1}
 
-/* EMOJI MEJORADO: Agregamos un resplandor blanco (drop-shadow) */
 .intro-emoji{
   font-size:4.5rem;display:inline-block;margin-bottom:1.5rem;
   animation:bounce 1.4s ease-in-out infinite;
@@ -74,7 +72,6 @@ body{
   font-size:clamp(1.1rem,3vw,1.5rem);margin-bottom:3rem;
 }
 
-/* BOTÓN MEJORADO: Se agrega animación de latido (pulse) */
 .intro-btn{
   background:white;color:var(--rose);border:none;
   padding:1.1rem 3rem;border-radius:50px;
@@ -87,11 +84,10 @@ body{
 .intro-btn:hover{
   transform:translateY(-4px) scale(1.03);
   box-shadow:0 16px 44px rgba(0,0,0,0.2);
-  animation: none; /* Detiene el latido al pasar el mouse */
+  animation: none;
 }
 .intro-btn:active{transform:scale(0.97)}
 
-/* KEYFRAMES PARA EL LATIDO DEL BOTÓN */
 @keyframes pulseBtn {
   0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
   70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
@@ -317,6 +313,11 @@ body{
   font-style:italic;font-size:1.2rem;color:var(--muted);
   margin-top:0;
 }
+.jar-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:0.95rem;color:var(--rose);
+  margin-top:0.6rem;
+}
 .jar-btn{
   display:inline-block;margin-top:1.5rem;
   background:var(--rose);color:white;
@@ -338,6 +339,84 @@ body{
   0%{opacity:1;transform:translate(0,0) scale(0.4)}
   60%{opacity:1;transform:translate(var(--tx),var(--ty)) scale(1.2)}
   100%{opacity:0;transform:translate(var(--tx2),var(--ty2)) scale(0.8)}
+}
+
+/* ─── SECRET ENVELOPES ─── */
+.mail-section{
+  max-width:900px;margin:0 auto;
+  padding:1rem 2rem 4rem;
+  text-align:center;
+}
+.mail-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:1.4rem;max-width:700px;margin:0 auto;
+}
+.mail-item{
+  aspect-ratio:1;border-radius:16px;position:relative;cursor:pointer;
+  background:linear-gradient(145deg,#FFFFFF,var(--rose-bg));
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  transition:transform 0.3s,box-shadow 0.3s;
+  padding:1rem;
+}
+.mail-item.unlocked:hover{
+  transform:translateY(-6px) scale(1.04);
+  box-shadow:0 18px 40px rgba(200,68,90,0.2);
+}
+.mail-item.unlocked{border-color:var(--rose-lt)}
+.mail-item.locked{
+  opacity:0.55;cursor:not-allowed;
+  background:linear-gradient(145deg,#F3EAE3,#EADFD5);
+}
+.mail-item.read{
+  border-color:var(--gold-lt);
+  background:linear-gradient(145deg,#FFF8EC,#FFF0DA);
+}
+.mail-emoji{font-size:2.4rem;margin-bottom:0.5rem}
+.mail-num{
+  font-family:'Playfair Display',serif;font-size:0.75rem;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);
+}
+.mail-lock{font-size:1.3rem;margin-top:0.3rem;opacity:0.7}
+.mail-read-tag{
+  position:absolute;top:8px;right:10px;font-size:0.9rem;color:var(--gold);
+}
+
+/* Modal overlay for reading a secret letter */
+.mail-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(61,43,31,0.55);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.mail-overlay.show{opacity:1;pointer-events:auto}
+.mail-modal{
+  background:var(--card);border-radius:22px;
+  max-width:520px;width:100%;padding:2.6rem 2.2rem;
+  position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,0.25);
+  transform:translateY(24px) scale(0.96);
+  transition:transform 0.35s ease;
+}
+.mail-overlay.show .mail-modal{transform:translateY(0) scale(1)}
+.mail-modal-close{
+  position:absolute;top:1.1rem;right:1.3rem;
+  background:none;border:none;font-size:1.3rem;color:var(--muted);
+  cursor:pointer;line-height:1;
+}
+.mail-modal-title{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:1.4rem;color:var(--rose);margin-bottom:1.2rem;
+}
+.mail-modal-body{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;line-height:1.85;color:var(--cream);
+}
+.mail-modal-foot{
+  margin-top:1.6rem;font-family:'Cormorant Garamond',serif;
+  font-style:italic;color:var(--muted);font-size:0.95rem;
 }
 
 /* ─── FINAL QUOTE ─── */
@@ -376,6 +455,8 @@ body{
   .letter-card{padding:2rem 1.4rem}
   .letter-body{font-size:1.05rem}
   .choco-msg{font-size:0.8rem}
+  .mail-grid{grid-template-columns:repeat(3,1fr);gap:0.8rem}
+  .mail-modal{padding:2rem 1.4rem}
 }
 </style>
 </head>
@@ -397,7 +478,7 @@ body{
   <div class="hero">
     <div class="hero-tag">✦ Semana de la Dulzura</div>
     <h1>No puedo regalarte<br>algo, pero <em>sí puedo</em><br>regalarte esto.</h1>
-    <p class="hero-sub">Siete chocolates a destiempo, una carta y una jarra de besos virtuales. Porque las mejores sorpresas a veces se hacen esperar un poquito..</p>
+    <p class="hero-sub">Siete chocolates a destiempo, una carta, una jarra de besos y algunas cartas secretas. Porque las mejores sorpresas a veces se hacen esperar un poquito..</p>
     <div class="divider"></div>
   </div>
 
@@ -433,11 +514,11 @@ body{
   </div>
 
   <div class="jar-section">
-    <p class="box-label">✦ Para vos</p>
-    <h2 class="box-title">Jarra de besos virtuales</h2>
+    <p class="box-label">✦ De mí para vos</p>
+    <h2 class="box-title">Un frasco lleno de besos míos</h2>
     <p class="box-desc" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;line-height:1.7">
-      No hay nada más dulce que un beso. Acá te dejo un frasco lleno.<br>
-      Tocá el botón y mandarte uno.
+      Este frasco ya viene lleno: son besos míos, guardados para vos.<br>
+      Cada vez que lo toques, vas a liberar uno y va a viajar directo hacia vos.
     </p>
     <div class="jar-wrap" onclick="addKiss(event)">
       <svg class="jar-svg" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -445,19 +526,36 @@ body{
         <rect x="62" y="14" width="76" height="12" rx="5" fill="#E8607A"/>
         <path d="M35 50 Q30 60 28 110 Q26 160 30 220 Q32 240 50 245 L150 245 Q168 240 170 220 Q174 160 172 110 Q170 60 165 50 Z" fill="white" stroke="#F7C5D0" stroke-width="2"/>
         <rect x="48" y="110" width="104" height="90" rx="10" fill="#FFF0F3" stroke="#E8A0B0" stroke-width="1.5"/>
-        <text x="100" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#C8445A" font-style="italic">Besos para</text>
-        <text x="100" y="156" text-anchor="middle" font-family="serif" font-size="14" fill="#C8445A" font-weight="bold">vos</text>
+        <text x="100" y="140" text-anchor="middle" font-family="serif" font-size="11" fill="#C8445A" font-style="italic">Besos míos</text>
+        <text x="100" y="156" text-anchor="middle" font-family="serif" font-size="14" fill="#C8445A" font-weight="bold">para vos</text>
         <text x="100" y="174" text-anchor="middle" font-size="18">🍬💋🌸</text>
         <text x="100" y="190" text-anchor="middle" font-family="serif" font-size="10" fill="#9A7B6E">Cosecha: este julio</text>
         <ellipse cx="68" cy="80" rx="8" ry="20" fill="white" opacity="0.35" transform="rotate(-15 68 80)"/>
       </svg>
       <div class="jar-count" id="kiss-count">0</div>
     </div>
-    <p class="jar-label">besos guardados en tu frasco</p>
+    <p class="jar-label">besos míos que ya liberaste</p>
+    <p class="jar-hint">(van de mí hacia vos — no hace falta que me devuelvas ninguno, aunque no me quejaría 😄)</p>
     <br>
     <button class="jar-btn" onclick="addKiss(event)">
-      Mandarte un beso 💋
+      Liberar un beso mío 💋
     </button>
+  </div>
+
+  <div class="mail-section">
+    <p class="box-label">✦ Correo secreto</p>
+    <h2 class="box-title">Cartas que se van desbloqueando</h2>
+    <p class="box-desc">Abrí el primer sobre para leerlo. Los demás se van a ir desbloqueando a medida que leas los anteriores.</p>
+    <div class="mail-grid" id="mail-grid"></div>
+  </div>
+
+  <div class="mail-overlay" id="mail-overlay">
+    <div class="mail-modal">
+      <button class="mail-modal-close" onclick="closeMail()">✕</button>
+      <p class="mail-modal-title" id="mail-modal-title">Carta secreta</p>
+      <div class="mail-modal-body" id="mail-modal-body"></div>
+      <p class="mail-modal-foot" id="mail-modal-foot"></p>
+    </div>
   </div>
 
   <div class="quote-section">
@@ -604,7 +702,9 @@ function spawnHearts(el){
   });
 }
 
-/* ═══ KISS JAR ═══ */
+/* ═══ KISS JAR ═══
+   Los besos de este frasco siempre viajan de vos (quien arma la página) hacia ella.
+   Cada click "libera" uno de esos besos y se lo manda. */
 let kisses = 0;
 const kissCount = document.getElementById('kiss-count');
 
@@ -631,6 +731,87 @@ function addKiss(e){
   document.body.appendChild(burst);
   setTimeout(()=>burst.remove(), 1500);
 }
+
+/* ═══ SECRET LETTERS (sobres que se desbloquean uno por uno) ═══ */
+const secretLetters = [
+  {
+    title:'Carta secreta N.º 1',
+    body:`<p>Si estás leyendo esto, ya encontraste el primer sobre. Este es un espacio aparte, solo para las cosas que no dije en la carta grande.</p>
+          <p>Primera confesión: pensé este regalo mucho más de lo que debería admitir.</p>`,
+    foot:'Guardá esto. Viene más.'
+  },
+  {
+    title:'Carta secreta N.º 2',
+    body:`<p>Segunda confesión: hay días en los que algo chiquito me hace acordar a vos, y no puedo evitar sonreír solo.</p>
+          <p>No sé si eso te sorprende. A mí todavía me sorprende un poco.</p>`,
+    foot:'Uno menos para llegar al final.'
+  },
+  {
+    title:'Carta secreta N.º 3',
+    body:`<p>Tercera confesión: de todas las formas en las que podría haberte escrito esta semana, elegí esta porque quería que te tomes un momento solo para vos, sin apuro.</p>
+          <p>Espero que ese momento haya valido la pena.</p>`,
+    foot:'Ya casi. Falta poco.'
+  },
+  {
+    title:'Carta secreta N.º 4',
+    body:`<p>Cuarta confesión: no necesito una fecha en el calendario para pensar en vos. Esta semana solo me dio la excusa perfecta para decírtelo en voz alta.</p>`,
+    foot:'Un sobre más.'
+  },
+  {
+    title:'Carta secreta N.º 5',
+    body:`<p>Última confesión: gracias por abrir cada sobre hasta llegar acá. Eso ya dice algo lindo de vos.</p>
+          <p>Ojalá esta semana, y las que vienen, tengan un poquito más de dulzura gracias a esto.</p>`,
+    foot:'Fin del correo secreto. Con cariño, siempre.'
+  }
+];
+
+let mailUnlocked = 0; // cuántos sobres están desbloqueados (empieza en 1)
+mailUnlocked = 1;
+const mailRead = new Array(secretLetters.length).fill(false);
+
+const mailGrid = document.getElementById('mail-grid');
+function renderMail(){
+  mailGrid.innerHTML = '';
+  secretLetters.forEach((letter, i)=>{
+    const isUnlocked = i < mailUnlocked;
+    const isRead = mailRead[i];
+    const el = document.createElement('div');
+    el.className = 'mail-item ' + (isUnlocked ? 'unlocked' : 'locked') + (isRead ? ' read' : '');
+    el.innerHTML = `
+      ${isRead ? '<span class="mail-read-tag">✓</span>' : ''}
+      <span class="mail-emoji">${isUnlocked ? (isRead ? '💌' : '✉️') : '🔒'}</span>
+      <span class="mail-num">Sobre ${i+1}</span>
+      ${!isUnlocked ? '<span class="mail-lock">bloqueado</span>' : ''}
+    `;
+    if(isUnlocked){
+      el.addEventListener('click', ()=>openMail(i));
+    }
+    mailGrid.appendChild(el);
+  });
+}
+renderMail();
+
+const mailOverlay = document.getElementById('mail-overlay');
+function openMail(i){
+  const letter = secretLetters[i];
+  document.getElementById('mail-modal-title').textContent = letter.title;
+  document.getElementById('mail-modal-body').innerHTML = letter.body;
+  document.getElementById('mail-modal-foot').textContent = letter.foot;
+  mailOverlay.classList.add('show');
+  if(!mailRead[i]){
+    mailRead[i] = true;
+    if(mailUnlocked < secretLetters.length && i === mailUnlocked - 1){
+      mailUnlocked++;
+    }
+  }
+}
+function closeMail(){
+  mailOverlay.classList.remove('show');
+  renderMail();
+}
+mailOverlay.addEventListener('click', (e)=>{
+  if(e.target === mailOverlay) closeMail();
+});
 
 /* ═══ KEYFRAMES via JS for count animation ═══ */
 const ks = document.createElement('style');
