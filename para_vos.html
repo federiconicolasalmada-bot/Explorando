@@ -515,10 +515,11 @@ body{
 
   <div class="jar-section">
     <p class="box-label">✦ De mí para vos</p>
-    <h2 class="box-title">Un frasco lleno de besos míos</h2>
+    <h2 class="box-title">Un frasco lleno de besos </h2>
     <p class="box-desc" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--muted);font-size:1.1rem;line-height:1.7">
-      Este frasco ya viene lleno: son besos míos, guardados para vos.<br>
-      Cada vez que lo toques, vas a liberar uno y va a viajar directo hacia vos.
+      Este frasco ya viene lleno: Son besos en el cachete, abrazos y mucho cariño, guardados para vos.<br>
+      Cada vez que lo toques, vas a liberar un poquito de todo eso y va a viajar directo hacia vos.
+    </p>
     </p>
     <div class="jar-wrap" onclick="addKiss(event)">
       <svg class="jar-svg" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -534,9 +535,8 @@ body{
       </svg>
       <div class="jar-count" id="kiss-count">0</div>
     </div>
-    <p class="jar-label">besos míos que ya liberaste</p>
-    <p class="jar-hint">(van de mí hacia vos — no hace falta que me devuelvas ninguno, aunque no me quejaría 😄)</p>
-    <br>
+    <p class="jar-label">Cariño que ya viajaron hacia vos</p>
+
     <button class="jar-btn" onclick="addKiss(event)">
       Liberar un beso mío 💋
     </button>
@@ -605,7 +605,7 @@ function resizeCv(){
 }
 resizeCv(); window.addEventListener('resize', resizeCv);
 
-const EMOJIS = ['🍬','💗','🌸','💕','🌷','✨','🍭','💝','🌺','💖'];
+const EMOJIS = ['🫂','💗','🌸','💕','🌷','✨','🍭','💝','🌺','💖'];
 
 class Floater{
   constructor(){this.reset(true)}
@@ -649,12 +649,12 @@ const floaters = Array.from({length:35}, ()=>new Floater());
 /* ═══ CHOCOLATES ═══ */
 const chocolates = [
   {emoji:'🍫', day:'Miércoles dulce',   msg:'Sos de esas personas que aparecen poco y cambian todo.'},
-  {emoji:'🍬', day:'Jueves inolvidable',     msg:'Hay algo en la manera en que sos que hace el mundo muy distinto.'},
+  {emoji:'🍬', day:'Jueves inolvidable',     msg:'Hay algo en la manera en la que sos que hace el mundo muy distinto.'},
   {emoji:'🌹', day:'Viernes soñado',    msg:'Si pudiera elegir a alguien en quien pensar, siempre te elegiría a vos.'},
   {emoji:'🍭', day:'Sábado especial',   msg:'No necesitás hacer nada para ser especial. Ya lo sos. Solo por ser vos.'},
   {emoji:'💗', day:'Domingo de magia',     msg:'Ojalá alguien te diga hoy lo bien que te queda sonreír.'},
   {emoji:'🌸', day:'Lunes tierno',      msg:'Hay personas que llegan a tu vida y te hacen entender por qué vale la pena todo.'},
-  {emoji:'✨', day:'Martes especial',     msg:'Esta semana te regalaría todo el dulce del mundo. Quédate con este.'},
+  {emoji:'✨', day:'Martes especial',     msg:'Esta semana te regalaría todos los dulces del mundo. Quédate con este.'},
 ];
 
 const grid = document.getElementById('choco-grid');
@@ -742,9 +742,9 @@ const secretLetters = [
   },
   {
     title:'Carta secreta N.º 2',
-    body:`<p>Segunda confesión: Sé muy bien dónde estamos parados, pero eso no me quita las ganas de cuidarte y de hacerte sentir especial hoy.</p>
-          <p>Tomalo simplemente como un abrazo en forma de sorpresa.</p>`,
-    foot:'Guardá esto. Viene más.'
+    body:`<p>Segunda confesión: Querer a alguien que no siente lo mismo a veces no es fácil, pero hacerte este regalo sí lo fue.</p>
+          <p>Porque más allá de todo, sos una persona importantísima para mí y me hace feliz verte feliz.</p>`,
+    foot:'Uno menos para llegar al final.'
   },
   {
     title:'Carta secreta N.º 3',
