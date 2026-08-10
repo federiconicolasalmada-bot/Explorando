@@ -524,6 +524,25 @@ textarea{resize:vertical;min-height:54px;}
 </main>
 
 <script>
+
+// --- AGREGAR ESTE BLOQUE PARA SOLUCIONAR EL ERROR DE WINDOW.STORAGE ---
+if (!window.storage) {
+  window.storage = {
+    set: async (key, value) => localStorage.setItem(key, value),
+    get: async (key) => ({ value: localStorage.getItem(key) }),
+    delete: async (key) => localStorage.removeItem(key),
+    list: async (prefix) => {
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!prefix || k.startsWith(prefix)) keys.push(k);
+      }
+      return { keys };
+    }
+  };
+}
+
+// ... (aquí sigue el resto de tu código normal) ...
 const PREFIX = 'viaje:';
 
 // ---------- Tabs ----------
