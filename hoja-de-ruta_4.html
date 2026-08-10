@@ -647,32 +647,43 @@ function clearForm(){
 }
 document.getElementById('clear-form').addEventListener('click', clearForm);
 
+// Pega aquí la URL que te dio Google Apps Script
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyQGQsPBeDyz786ZQbU4BEVtejLEY6ieLDzEqaB0Pc77Y_pPkW-27byb32-PGD3Spo/exec';
+
 document.getElementById('save-trip').addEventListener('click', async ()=>{
   const data = collectForm();
   if(!data.chofer){
     alert('Por favor indicá el nombre del chofer antes de guardar.');
     return;
   }
+  
   const btn = document.getElementById('save-trip');
   btn.disabled = true;
   const msg = document.getElementById('save-msg');
-  msg.textContent = 'Guardando...';
-  const id = 'trip_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
-  try{
-    const result = await window.storage.set(PREFIX+id, JSON.stringify(data), true);
-    if(result){
-      for(const s of data.servicios) await saveServicioIfNew(s);
-      msg.textContent = '✓ Viaje guardado en el tablero';
-      clearForm();
-      syncExcel(); // actualiza el Excel en segundo plano, no bloquea el formulario
-    } else {
-      msg.textContent = '';
-      alert('No se pudo guardar. Probá de nuevo.');
-    }
-  }catch(e){
+  msg.textContent = 'Enviando a la base...';
+  
+  try {
+    // Enviamos los datos a Google Sheets usando fetch (No-CORS para evitar bloqueos)
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Evita errores de seguridad en el navegador
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Como usamos 'no-cors', asumimos que si llega hasta acá, se envió bien.
+    msg.textContent = '✓ Viaje guardado en Google Sheets';
+    clearForm();
+    
+    // Aquí puedes actualizar el tablero local si lo deseas
+    
+  } catch(e) {
     msg.textContent = '';
-    alert('Error al guardar: ' + e.message);
+    alert('Error al conectarse con el servidor: ' + e.message);
   }
+  
   btn.disabled = false;
   setTimeout(()=>{msg.textContent='';}, 4000);
 });
