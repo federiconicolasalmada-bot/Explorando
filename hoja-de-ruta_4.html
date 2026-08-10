@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoja de Ruta · Ambulancias</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --navy: #0d2b3e;
+  --navy-deep: #081b28;
+  --teal: #1a6b6b;
+  --amber: #d9822b;
+  --paper: #f4f1ea;
+  --line: #cfc9ba;
+  --ok: #2f7d5e;
+  --ink: #16232b;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --serif: 'Source Serif 4', 'Georgia', serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  min-height:100vh;
+}
+.topbar{
+  background:var(--navy-deep);
+  color:var(--paper);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:4px solid var(--amber);
+}
+.topbar .brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.cross{
+  width:34px;height:34px;
+  background:var(--amber);
+  border-radius:6px;
+  position:relative;
+  flex-shrink:0;
+}
+.cross::before,.cross::after{
+  content:'';
+  position:absolute;
+  background:var(--navy-deep);
+}
+.cross::before{width:16px;height:4px;top:15px;left:9px;}
+.cross::after{width:4px;height:16px;top:9px;left:15px;}
+.brand h1{
+  font-family:var(--serif);
+  font-size:19px;
+  margin:0;
+  letter-spacing:0.3px;
+}
+.brand small{
+  display:block;
+  font-family:var(--mono);
+  font-size:10.5px;
+  color:#9fb8c4;
+  letter-spacing:1px;
+  margin-top:2px;
+}
+.tabs{display:flex;gap:6px;}
+.tab-btn{
+  background:transparent;
+  border:1px solid #3a5666;
+  color:#cfe0e6;
+  padding:8px 16px;
+  border-radius:5px;
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .15s;
+}
+.tab-btn.active{
+  background:var(--amber);
+  border-color:var(--amber);
+  color:var(--navy-deep);
+}
+main{max-width:900px;margin:0 auto;padding:24px 18px 60px;}
+.view{display:none;}
+.view.active{display:block;}
+
+/* ---- FORM VIEW ---- */
+.form-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+}
+.form-header{
+  background:var(--navy);
+  color:var(--paper);
+  padding:16px 20px;
+}
+.form-header h2{
+  font-family:var(--serif);
+  margin:0 0 4px;
+  font-size:20px;
+}
+.form-header p{
+  margin:0;
+  font-family:var(--mono);
+  font-size:11px;
+  color:#a9c2cc;
+}
+.form-body{padding:20px;}
+fieldset{
+  border:none;
+  border-top:1px solid var(--line);
+  padding:16px 0;
+  margin:0;
+}
+fieldset:first-child{border-top:none;padding-top:0;}
+legend{
+  font-family:var(--mono);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  color:var(--teal);
+  font-weight:700;
+  padding:0;
+  margin-bottom:12px;
+}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.field{flex:1 1 200px;display:flex;flex-direction:column;gap:5px;}
+label{font-size:12.5px;font-weight:600;color:var(--navy);}
+input[type=text],input[type=date],input[type=time],input[type=number],textarea{
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:9px 10px;
+  font-family:var(--sans);
+  font-size:14px;
+  background:#fdfcf9;
+  color:var(--ink);
+}
+input:focus,textarea:focus{
+  outline:2px solid var(--amber);
+  outline-offset:0;
+  border-color:var(--amber);
+}
+textarea{resize:vertical;min-height:54px;}
+.radio-group{display:flex;gap:16px;}
+.radio-opt{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--line);
+  padding:8px 14px;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:13.5px;
+  font-weight:600;
+}
+.radio-opt input{accent-color:var(--amber);}
+.radio-opt.urgente-check{border-color:#c14a2c33;}
+
+.person-list{display:flex;flex-direction:column;gap:8px;}
+.person-row{display:flex;gap:8px;align-items:center;}
+.person-row input{flex:1;}
+.icon-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:5px;
+  width:34px;height:34px;
+  font-size:16px;
+  cursor:pointer;
+  color:var(--navy);
+  flex-shrink:0;
+}
+.icon-btn:hover{background:var(--paper);}
+.add-link{
+  align-self:flex-start;
+  background:none;
+  border:none;
+  color:var(--teal);
+  font-weight:700;
+  font-size:13px;
+  cursor:pointer;
+  padding:4px 0;
+}
+.form-footer{
+  padding:16px 20px 20px;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  border-top:1px solid var(--line);
+  background:var(--paper);
+  flex-wrap:wrap;
+}
+.btn-primary{
+  background:var(--amber);
+  color:var(--navy-deep);
+  border:none;
+  padding:12px 24px;
+  border-radius:6px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+}
+.btn-primary:hover{filter:brightness(1.06);}
+.btn-primary:disabled{opacity:0.5;cursor:default;}
+.btn-ghost{
+  background:transparent;
+  border:1px solid var(--line);
+  padding:12px 18px;
+  border-radius:6px;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  color:var(--navy);
+}
+.btn-drive{
+  background:transparent;
+  border:1px solid var(--teal);
+  color:var(--teal);
+  padding:10px 16px;
+  border-radius:6px;
+  font-weight:700;
+  font-size:12.5px;
+  cursor:pointer;
+}
+.btn-drive:hover{background:#1a6b6b12;}
+.btn-drive:disabled{opacity:0.5;cursor:default;}
+.btn-drive.linked{background:var(--ok);border-color:var(--ok);color:#fff;}
+.hint{font-size:12px;color:#7a746a;margin-top:2px;}
+.save-msg{
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:var(--ok);
+  align-self:center;
+  margin-right:auto;
+}
+.drive-msg{
+  font-family:var(--mono);
+  font-size:11.5px;
+  color:var(--teal);
+  width:100%;
+  order:5;
+}
+.drive-msg.error{color:#b0473a;}
+.drive-link{color:var(--teal);font-weight:700;}
+
+/* ---- BOARD VIEW ---- */
+.board-controls{
+  display:flex;
+  gap:10px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.board-controls input,.board-controls select{
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:8px 10px;
+  font-family:var(--sans);
+  font-size:13.5px;
+  background:#fff;
+}
+.board-controls input[type=text]{flex:1;min-width:160px;}
+.trip-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-left:4px solid var(--teal);
+  border-radius:6px;
+  padding:14px 16px;
+  margin-bottom:10px;
+}
+.trip-card.urgente{border-left-color:#c14a2c;}
+.trip-card.pendiente{border-left-color:var(--amber);}
+.trip-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:8px;
+}
+.trip-title{font-weight:700;font-size:15px;color:var(--navy);}
+.trip-title .sep{color:var(--line);margin:0 6px;}
+.badge{
+  font-family:var(--mono);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  padding:3px 8px;
+  border-radius:20px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.badge.urgente{background:#c14a2c;color:#fff;}
+.badge.programado{background:#dfe7e5;color:var(--teal);}
+.badge.pendiente{background:#fdead0;color:var(--amber);}
+.badge.completado{background:#dff0e6;color:var(--ok);}
+.trip-meta{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:6px 14px;
+  font-size:13px;
+  color:#4a4640;
+}
+.trip-meta b{color:var(--ink);font-weight:600;}
+.trip-people{
+  margin-top:8px;
+  font-size:12.5px;
+  color:#6b665c;
+  border-top:1px dashed var(--line);
+  padding-top:8px;
+}
+.empty-state{
+  text-align:center;
+  padding:50px 20px;
+  color:#8b8578;
+}
+.empty-state .cross{margin:0 auto 14px;}
+.empty-state h3{font-family:var(--serif);color:var(--navy);margin:0 0 6px;}
+.loading{text-align:center;padding:40px;color:#8b8578;font-family:var(--mono);font-size:13px;}
+.del-btn{
+  background:none;border:none;color:#b0473a;font-size:12px;cursor:pointer;
+  font-family:var(--mono);text-decoration:underline;padding:0;margin-top:8px;
+}
+.share-note{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#7a746a;
+  text-align:center;
+  margin-top:18px;
+}
+.drive-banner{
+  background:#fff;
+  border:1px solid var(--line);
+  border-left:4px solid var(--teal);
+  border-radius:6px;
+  padding:12px 16px;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.drive-banner p{margin:0;font-size:12.5px;color:#4a4640;}
+.drive-banner strong{color:var(--navy);}
+@media (max-width:520px){
+  .topbar{flex-direction:column;align-items:flex-start;}
+  .tabs{width:100%;}
+  .tab-btn{flex:1;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="cross"></div>
+    <div>
+      <h1>Hoja de Ruta</h1>
+      <small>HCAS-VEH03 · AMBULANCIAS</small>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-view="form">Cargar viaje</button>
+    <button class="tab-btn" data-view="board">Tablero</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- FORM VIEW -->
+  <section id="view-form" class="view active">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Nueva hoja de ruta</h2>
+        <p>Completar antes de la salida del móvil</p>
+      </div>
+      <div class="form-body">
+
+        <fieldset>
+          <legend>Datos generales</legend>
+          <div class="row">
+            <div class="field">
+              <label for="f-fecha">Fecha</label>
+              <input type="date" id="f-fecha">
+            </div>
+            <div class="field">
+              <label>Tipo de viaje</label>
+              <div class="radio-group">
+                <label class="radio-opt urgente-check"><input type="radio" name="tipo" value="Urgente" checked> Urgente</label>
+                <label class="radio-opt"><input type="radio" name="tipo" value="Programado"> Programado</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field" style="flex:1 1 100%">
+              <label>Servicio(s)</label>
+              <div class="person-list" id="servicios-list"></div>
+              <button type="button" class="add-link" id="add-servicio-row">+ Agregar servicio</button>
+              <datalist id="servicios-datalist">
+                <option>Emergencias</option>
+                <option>Internación</option>
+                <option>Terapia Intensiva</option>
+                <option>Neonatología</option>
+                <option>Consultorios Externos</option>
+                <option>Quirófano</option>
+                <option>Hemodiálisis</option>
+                <option>Traslado interinstitucional</option>
+                <option>Admisión</option>
+              </datalist>
+              <span class="hint">Elegí de la lista o escribí uno nuevo — se agrega automáticamente para todos al guardar</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field" style="flex:1 1 100%">
+              <label for="f-motivo">Motivo</label>
+              <textarea id="f-motivo" placeholder="Motivo del traslado"></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Recorrido</legend>
+          <div class="row">
+            <div class="field">
+              <label for="f-desde">Desde</label>
+              <input type="text" id="f-desde">
+            </div>
+            <div class="field">
+              <label for="f-hasta">Hasta</label>
+              <input type="text" id="f-hasta">
+            </div>
+            <div class="field">
+              <label for="f-cant-destinos">Cantidad de destinos</label>
+              <input type="number" id="f-cant-destinos" placeholder="1" min="1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="f-hora-salida">Hora de salida</label>
+              <input type="time" id="f-hora-salida">
+            </div>
+            <div class="field">
+              <label for="f-dominio">Dominio del móvil</label>
+              <input type="text" id="f-dominio" placeholder="Patente">
+            </div>
+            <div class="field">
+              <label for="f-km-salida">Kilometraje (salida)</label>
+              <input type="number" id="f-km-salida" placeholder="0">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Regreso</legend>
+          <div class="row">
+            <div class="field">
+              <label for="f-hora-regreso">Hora de regreso</label>
+              <input type="time" id="f-hora-regreso">
+              <span class="hint">Dejar vacío si el móvil aún no regresó</span>
+            </div>
+            <div class="field">
+              <label for="f-km-regreso">Kilometraje (regreso)</label>
+              <input type="number" id="f-km-regreso" placeholder="0">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Chofer</legend>
+          <div class="row">
+            <div class="field">
+              <label for="f-chofer">Apellido y nombre</label>
+              <input type="text" id="f-chofer" placeholder="Nombre del chofer que carga este viaje">
+            </div>
+          </div>
+        </fieldset>
+
+      </div>
+      <div class="form-footer">
+        <span class="save-msg" id="save-msg"></span>
+        <button type="button" class="btn-ghost" id="clear-form">Limpiar</button>
+        <button type="button" class="btn-primary" id="save-trip">Guardar en el tablero</button>
+        <span class="drive-msg" id="drive-msg"></span>
+      </div>
+    </div>
+    <p class="share-note">Los datos cargados quedan visibles para todos los choferes en la pestaña Tablero, y cada viaje guardado actualiza automáticamente un archivo Excel — sin necesidad de ninguna cuenta.</p>
+  </section>
+
+  <!-- BOARD VIEW -->
+  <section id="view-board" class="view">
+    <div class="drive-banner">
+      <p id="excel-status-text">El Excel se descarga automáticamente al guardar cada viaje. Vinculá un archivo para que se actualice siempre en el mismo lugar (sin descargas repetidas).</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="btn-drive" id="link-excel-btn">Vincular archivo Excel</button>
+        <button type="button" class="btn-drive" id="sync-drive-btn">Descargar Excel actualizado</button>
+      </div>
+    </div>
+    <div class="board-controls">
+      <input type="text" id="filter-chofer" placeholder="Buscar por chofer...">
+      <input type="text" id="filter-dominio" placeholder="Buscar por dominio...">
+      <input type="text" id="filter-servicio" placeholder="Buscar por servicio...">
+      <select id="filter-tipo">
+        <option value="">Todos los tipos</option>
+        <option value="Urgente">Urgente</option>
+        <option value="Programado">Programado</option>
+      </select>
+      <select id="filter-estado">
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendiente de regreso</option>
+        <option value="completado">Completado</option>
+      </select>
+    </div>
+    <div id="board-list"><div class="loading">Cargando tablero...</div></div>
+  </section>
+
+</main>
+
+<script>
+const PREFIX = 'viaje:';
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    if(btn.dataset.view === 'board') loadBoard();
+  });
+});
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ---------- Servicios personalizados (editable, compartido entre choferes) ----------
+const SERVICIOS_KEY = 'servicios-custom';
+const datalistServicios = document.getElementById('servicios-datalist');
+
+async function loadServiciosCustom(){
+  try{
+    const r = await window.storage.get(SERVICIOS_KEY, true);
+    if(r && r.value){
+      const extra = JSON.parse(r.value);
+      extra.forEach(addServicioOption);
+    }
+  }catch(e){ /* sin servicios custom todavía */ }
+}
+
+function addServicioOption(nombre){
+  if(!nombre) return;
+  const yaExiste = Array.from(datalistServicios.options).some(o=>o.value.toLowerCase() === nombre.toLowerCase());
+  if(!yaExiste){
+    const opt = document.createElement('option');
+    opt.value = nombre;
+    datalistServicios.appendChild(opt);
+  }
+}
+
+async function saveServicioIfNew(nombre){
+  if(!nombre) return;
+  const yaExiste = Array.from(datalistServicios.options).some(o=>o.value.toLowerCase() === nombre.toLowerCase());
+  if(yaExiste) return;
+  addServicioOption(nombre);
+  try{
+    const r = await window.storage.get(SERVICIOS_KEY, true);
+    let extra = [];
+    try{ if(r && r.value) extra = JSON.parse(r.value); }catch(e){}
+    if(!extra.some(s=>s.toLowerCase() === nombre.toLowerCase())){
+      extra.push(nombre);
+      await window.storage.set(SERVICIOS_KEY, JSON.stringify(extra), true);
+    }
+  }catch(e){ /* si falla, el servicio igual se guardó en este viaje */ }
+}
+
+loadServiciosCustom();
+
+// ---------- Filas dinámicas de servicios (uno debajo del otro) ----------
+const serviciosList = document.getElementById('servicios-list');
+function addServicioRow(valor=''){
+  const row = document.createElement('div');
+  row.className = 'person-row';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'servicio-input';
+  input.setAttribute('list', 'servicios-datalist');
+  input.placeholder = 'Escribir o elegir un servicio...';
+  input.value = valor;
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.className = 'icon-btn';
+  removeBtn.title = 'Quitar';
+  removeBtn.textContent = '×';
+  removeBtn.addEventListener('click', ()=>{
+    if(serviciosList.children.length > 1) row.remove();
+    else input.value = '';
+  });
+  row.appendChild(input);
+  row.appendChild(removeBtn);
+  serviciosList.appendChild(row);
+}
+document.getElementById('add-servicio-row').addEventListener('click', ()=>addServicioRow());
+addServicioRow();
+
+// ---------- Set default date to today ----------
+document.getElementById('f-fecha').value = new Date().toISOString().slice(0,10);
+
+// ---------- Save trip ----------
+function collectForm(){
+  const servicios = Array.from(serviciosList.querySelectorAll('.servicio-input'))
+    .map(i=>i.value.trim())
+    .filter(v=>v);
+  return {
+    fecha: document.getElementById('f-fecha').value,
+    tipo: document.querySelector('input[name=tipo]:checked').value,
+    servicios,
+    motivo: document.getElementById('f-motivo').value.trim(),
+    desde: document.getElementById('f-desde').value.trim(),
+    hasta: document.getElementById('f-hasta').value.trim(),
+    cantDestinos: document.getElementById('f-cant-destinos').value,
+    horaSalida: document.getElementById('f-hora-salida').value,
+    dominio: document.getElementById('f-dominio').value.trim(),
+    kmSalida: document.getElementById('f-km-salida').value,
+    horaRegreso: document.getElementById('f-hora-regreso').value,
+    kmRegreso: document.getElementById('f-km-regreso').value,
+    chofer: document.getElementById('f-chofer').value.trim(),
+    creado: Date.now()
+  };
+}
+
+function clearForm(){
+  document.getElementById('f-fecha').value = new Date().toISOString().slice(0,10);
+  document.querySelector('input[name=tipo][value=Urgente]').checked = true;
+  ['f-motivo','f-desde','f-hasta','f-cant-destinos','f-hora-salida','f-dominio',
+   'f-km-salida','f-hora-regreso','f-km-regreso','f-chofer']
+   .forEach(id=>document.getElementById(id).value='');
+  serviciosList.innerHTML = '';
+  addServicioRow();
+}
+document.getElementById('clear-form').addEventListener('click', clearForm);
+
+document.getElementById('save-trip').addEventListener('click', async ()=>{
+  const data = collectForm();
+  if(!data.chofer){
+    alert('Por favor indicá el nombre del chofer antes de guardar.');
+    return;
+  }
+  const btn = document.getElementById('save-trip');
+  btn.disabled = true;
+  const msg = document.getElementById('save-msg');
+  msg.textContent = 'Guardando...';
+  const id = 'trip_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+  try{
+    const result = await window.storage.set(PREFIX+id, JSON.stringify(data), true);
+    if(result){
+      for(const s of data.servicios) await saveServicioIfNew(s);
+      msg.textContent = '✓ Viaje guardado en el tablero';
+      clearForm();
+      syncExcel(); // actualiza el Excel en segundo plano, no bloquea el formulario
+    } else {
+      msg.textContent = '';
+      alert('No se pudo guardar. Probá de nuevo.');
+    }
+  }catch(e){
+    msg.textContent = '';
+    alert('Error al guardar: ' + e.message);
+  }
+  btn.disabled = false;
+  setTimeout(()=>{msg.textContent='';}, 4000);
+});
+
+// ---------- Excel local (sin cuenta) ----------
+const EXCEL_HEADERS = ['Fecha','Tipo','Servicios','Motivo','Desde','Hasta','Cant. destinos','Hora salida','Dominio','Km salida','Hora regreso','Km regreso','Chofer'];
+let linkedFileHandle = null; // sólo dura mientras la pestaña está abierta (la API no persiste el permiso entre recargas)
+const fsAccessSupported = typeof window.showSaveFilePicker === 'function';
+
+async function fetchAllTrips(){
+  const keysResult = await window.storage.list(PREFIX, true);
+  const keys = (keysResult && keysResult.keys) || [];
+  const trips = [];
+  for(const k of keys){
+    try{
+      const r = await window.storage.get(k, true);
+      if(r && r.value){
+        const d = JSON.parse(r.value);
+        d._key = k;
+        trips.push(d);
+      }
+    }catch(e){ /* skip unreadable entry */ }
+  }
+  trips.sort((a,b)=>(a.creado||0)-(b.creado||0));
+  return trips;
+}
+
+function buildWorkbook(trips){
+  const rows = trips.map(t => [
+    t.fecha, t.tipo, (t.servicios||[]).join(' / '), t.motivo, t.desde, t.hasta,
+    t.cantDestinos, t.horaSalida, t.dominio, t.kmSalida, t.horaRegreso, t.kmRegreso, t.chofer
+  ]);
+  const ws = XLSX.utils.aoa_to_sheet([EXCEL_HEADERS, ...rows]);
+  ws['!cols'] = EXCEL_HEADERS.map(h => ({ wch: Math.max(12, h.length + 2) }));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Viajes');
+  return wb;
+}
+
+function setDriveMsg(text, isError){
+  const el = document.getElementById('drive-msg');
+  if(!el) return;
+  el.textContent = text;
+  el.classList.toggle('error', !!isError);
+}
+
+function updateLinkBtnState(){
+  const btn = document.getElementById('link-excel-btn');
+  const statusText = document.getElementById('excel-status-text');
+  if(!btn) return;
+  if(linkedFileHandle){
+    btn.textContent = '✓ Archivo vinculado';
+    btn.classList.add('linked');
+    if(statusText) statusText.innerHTML = 'El Excel se actualiza automáticamente en el archivo que elegiste, cada vez que se guarda un viaje.';
+  } else {
+    btn.textContent = 'Vincular archivo Excel';
+    btn.classList.remove('linked');
+    if(statusText){
+      statusText.textContent = fsAccessSupported
+        ? 'El Excel se descarga automáticamente al guardar cada viaje. Vinculá un archivo para que se actualice siempre en el mismo lugar (sin descargas repetidas).'
+        : 'Este navegador no permite actualizar un mismo archivo en el lugar; cada viaje descarga una nueva versión del Excel a tu carpeta de Descargas.';
+    }
+  }
+}
+
+document.getElementById('link-excel-btn').addEventListener('click', async ()=>{
+  if(!fsAccessSupported){
+    alert('Tu navegador no soporta vincular un archivo directamente (probá con Chrome o Edge). Mientras tanto, cada viaje descarga una nueva versión del Excel.');
+    return;
+  }
+  try{
+    linkedFileHandle = await window.showSaveFilePicker({
+      suggestedName: 'Hoja de Ruta Ambulancias.xlsx',
+      types: [{ description: 'Excel', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+    });
+    updateLinkBtnState();
+    await syncExcel(); // vuelca el estado actual apenas se vincula
+  }catch(e){
+    // el usuario canceló el selector de archivo — no hacer nada
+  }
+});
+
+let excelSyncing = false;
+async function syncExcel(){
+  if(excelSyncing) return;
+  excelSyncing = true;
+  const syncBtn = document.getElementById('sync-drive-btn');
+  if(syncBtn) syncBtn.disabled = true;
+  try{
+    const trips = await fetchAllTrips();
+    if(trips.length === 0){
+      setDriveMsg('', false);
+      return;
+    }
+    const wb = buildWorkbook(trips);
+
+    if(linkedFileHandle){
+      setDriveMsg('Actualizando el archivo vinculado...', false);
+      const arrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const writable = await linkedFileHandle.createWritable();
+      await writable.write(new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+      await writable.close();
+      setDriveMsg('✓ Excel actualizado (' + trips.length + ' viajes)', false);
+    } else {
+      setDriveMsg('Descargando Excel actualizado...', false);
+      XLSX.writeFile(wb, 'Hoja de Ruta Ambulancias.xlsx');
+      setDriveMsg('✓ Excel descargado (' + trips.length + ' viajes)', false);
+    }
+  }catch(e){
+    setDriveMsg('Error al generar el Excel: ' + e.message, true);
+  }finally{
+    excelSyncing = false;
+    if(syncBtn) syncBtn.disabled = false;
+    setTimeout(()=>setDriveMsg('', false), 6000);
+  }
+}
+document.getElementById('sync-drive-btn').addEventListener('click', ()=>syncExcel());
+updateLinkBtnState();
+
+// ---------- Board ----------
+let allTrips = [];
+
+async function loadBoard(){
+  const listEl = document.getElementById('board-list');
+  listEl.innerHTML = '<div class="loading">Cargando tablero...</div>';
+  try{
+    const keysResult = await window.storage.list(PREFIX, true);
+    const keys = (keysResult && keysResult.keys) || [];
+    if(keys.length === 0){
+      renderEmpty();
+      return;
+    }
+    const trips = [];
+    for(const k of keys){
+      try{
+        const r = await window.storage.get(k, true);
+        if(r && r.value){
+          const d = JSON.parse(r.value);
+          d._key = k;
+          trips.push(d);
+        }
+      }catch(e){ /* skip unreadable entry */ }
+    }
+    trips.sort((a,b)=>(b.creado||0)-(a.creado||0));
+    allTrips = trips;
+    renderBoard();
+  }catch(e){
+    listEl.innerHTML = '<div class="loading">No se pudo cargar el tablero. Reintentá más tarde.</div>';
+  }
+}
+
+function renderEmpty(){
+  document.getElementById('board-list').innerHTML = `
+    <div class="empty-state">
+      <div class="cross" style="width:40px;height:40px;background:var(--line);"></div>
+      <h3>Sin viajes cargados</h3>
+      <p>Los viajes que carguen los choferes van a aparecer acá.</p>
+    </div>`;
+}
+
+function tripEstado(t){
+  return t.horaRegreso ? 'completado' : 'pendiente';
+}
+
+function renderBoard(){
+  const choferFilter = document.getElementById('filter-chofer').value.toLowerCase().trim();
+  const dominioFilter = document.getElementById('filter-dominio').value.toLowerCase().trim();
+  const servicioFilter = document.getElementById('filter-servicio').value.toLowerCase().trim();
+  const tipoFilter = document.getElementById('filter-tipo').value;
+  const estadoFilter = document.getElementById('filter-estado').value;
+
+  const filtered = allTrips.filter(t=>{
+    if(tipoFilter && t.tipo !== tipoFilter) return false;
+    if(estadoFilter && tripEstado(t) !== estadoFilter) return false;
+    if(choferFilter && !(t.chofer||'').toLowerCase().includes(choferFilter)) return false;
+    if(dominioFilter && !(t.dominio||'').toLowerCase().includes(dominioFilter)) return false;
+    if(servicioFilter && !((t.servicios||[]).join(' ').toLowerCase().includes(servicioFilter))) return false;
+    return true;
+  });
+
+  const listEl = document.getElementById('board-list');
+  if(filtered.length === 0){
+    if(allTrips.length === 0) return renderEmpty();
+    listEl.innerHTML = '<div class="empty-state"><h3>Sin resultados</h3><p>Ajustá los filtros de búsqueda.</p></div>';
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(t=>{
+    const estado = tripEstado(t);
+    const cardClass = t.tipo === 'Urgente' ? 'urgente' : (estado==='pendiente' ? 'pendiente' : '');
+    return `
+      <div class="trip-card ${cardClass}" data-key="${t._key}">
+        <div class="trip-top">
+          <div class="trip-title">${escapeHtml(t.fecha||'Sin fecha')}<span class="sep">·</span>${escapeHtml(t.desde||'?')} → ${escapeHtml(t.hasta||'?')}</div>
+          <div style="display:flex;gap:6px;">
+            <span class="badge ${t.tipo==='Urgente'?'urgente':'programado'}">${escapeHtml(t.tipo)}</span>
+            <span class="badge ${estado}">${estado==='pendiente'?'Pendiente':'Completado'}</span>
+          </div>
+        </div>
+        <div class="trip-meta">
+          <div><b>Chofer:</b> ${escapeHtml(t.chofer||'—')}</div>
+          <div><b>Dominio:</b> ${escapeHtml(t.dominio||'—')}</div>
+          <div><b>Servicio(s):</b> ${escapeHtml((t.servicios && t.servicios.length) ? t.servicios.join(', ') : '—')}</div>
+          <div><b>Cant. destinos:</b> ${escapeHtml(t.cantDestinos||'—')}</div>
+          <div><b>Salida:</b> ${escapeHtml(t.horaSalida||'—')} · Km ${escapeHtml(t.kmSalida||'—')}</div>
+          <div><b>Regreso:</b> ${escapeHtml(t.horaRegreso||'—')} · Km ${escapeHtml(t.kmRegreso||'—')}</div>
+        </div>
+        ${t.motivo ? `<div class="trip-people"><b>Motivo:</b> ${escapeHtml(t.motivo)}</div>` : ''}
+        <button class="del-btn" data-key="${t._key}">Eliminar registro</button>
+      </div>
+    `;
+  }).join('');
+
+  listEl.querySelectorAll('.del-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      if(!confirm('¿Eliminar este viaje del tablero? Esta acción no se puede deshacer.')) return;
+      try{
+        await window.storage.delete(btn.dataset.key, true);
+        allTrips = allTrips.filter(t=>t._key !== btn.dataset.key);
+        renderBoard();
+      }catch(e){
+        alert('No se pudo eliminar: ' + e.message);
+      }
+    });
+  });
+}
+
+document.getElementById('filter-chofer').addEventListener('input', renderBoard);
+document.getElementById('filter-dominio').addEventListener('input', renderBoard);
+document.getElementById('filter-servicio').addEventListener('input', renderBoard);
+document.getElementById('filter-tipo').addEventListener('change', renderBoard);
+document.getElementById('filter-estado').addEventListener('change', renderBoard);
+</script>
+
+</body>
+</html>
