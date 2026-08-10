@@ -524,8 +524,8 @@ textarea{resize:vertical;min-height:54px;}
 </main>
 
 <script>
-
-// --- AGREGAR ESTE BLOQUE PARA SOLUCIONAR EL ERROR DE WINDOW.STORAGE ---
+  
+// 1. Solución para el error de almacenamiento local
 if (!window.storage) {
   window.storage = {
     set: async (key, value) => localStorage.setItem(key, value),
@@ -542,10 +542,12 @@ if (!window.storage) {
   };
 }
 
-// ... (aquí sigue el resto de tu código normal) ...
 const PREFIX = 'viaje:';
 
-// ---------- Tabs ----------
+// PEGA AQUÍ LA URL QUE COPIASTE DE GOOGLE APPS SCRIPT
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyQGQsPBeDyz786ZQbU4BEVtejLEY6ieLDzEqaB0Pc77Y_pPkW-27byb32-PGD3Spo/exec';
+
+// ---------- Pestañas ----------
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -560,7 +562,7 @@ function escapeHtml(s){
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ---------- Servicios personalizados (editable, compartido entre choferes) ----------
+// ---------- Servicios personalizados ----------
 const SERVICIOS_KEY = 'servicios-custom';
 const datalistServicios = document.getElementById('servicios-datalist');
 
@@ -571,7 +573,7 @@ async function loadServiciosCustom(){
       const extra = JSON.parse(r.value);
       extra.forEach(addServicioOption);
     }
-  }catch(e){ /* sin servicios custom todavía */ }
+  }catch(e){}
 }
 
 function addServicioOption(nombre){
@@ -597,12 +599,12 @@ async function saveServicioIfNew(nombre){
       extra.push(nombre);
       await window.storage.set(SERVICIOS_KEY, JSON.stringify(extra), true);
     }
-  }catch(e){ /* si falla, el servicio igual se guardó en este viaje */ }
+  }catch(e){}
 }
 
 loadServiciosCustom();
 
-// ---------- Filas dinámicas de servicios (uno debajo del otro) ----------
+// ---------- Filas dinámicas de servicios ----------
 const serviciosList = document.getElementById('servicios-list');
 function addServicioRow(valor=''){
   const row = document.createElement('div');
@@ -629,10 +631,8 @@ function addServicioRow(valor=''){
 document.getElementById('add-servicio-row').addEventListener('click', ()=>addServicioRow());
 addServicioRow();
 
-// ---------- Set default date to today ----------
 document.getElementById('f-fecha').value = new Date().toISOString().slice(0,10);
 
-// ---------- Save trip ----------
 function collectForm(){
   const servicios = Array.from(serviciosList.querySelectorAll('.servicio-input'))
     .map(i=>i.value.trim())
@@ -666,9 +666,7 @@ function clearForm(){
 }
 document.getElementById('clear-form').addEventListener('click', clearForm);
 
-// Pega aquí la URL que te dio Google Apps Script
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyQGQsPBeDyz786ZQbU4BEVtejLEY6ieLDzEqaB0Pc77Y_pPkW-27byb32-PGD3Spo/exec';
-
+// ---------- GUARDAR VIAJE ----------
 document.getElementById('save-trip').addEventListener('click', async ()=>{
   const data = collectForm();
   if(!data.chofer){
@@ -676,47 +674,49 @@ document.getElementById('save-trip').addEventListener('click', async ()=>{
     return;
   }
   
+  // Guardar servicios nuevos si fueron ingresados
+  if(data.servicios && data.servicios.length){
+    for(const s of data.servicios) await saveServicioIfNew(s);
+  }
+  
   const btn = document.getElementById('save-trip');
   btn.disabled = true;
   const msg = document.getElementById('save-msg');
-  msg.textContent = 'Enviando a la base...';
+  msg.textContent = 'Enviando a Google Sheets...';
   
   try {
-    // 1. Enviamos los datos a Google Sheets (No-CORS)
+    // 1. Enviar datos a Google Sheets
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(data)
     });
 
-    // 2. ¡FALTA ESTO! Guardar en la base de datos local para que el Tablero y el Excel lo detecten
+    // 2. Guardar en la base de datos local (para Tablero)
     const newKey = PREFIX + Date.now();
     await window.storage.set(newKey, JSON.stringify(data), true);
 
-    msg.textContent = '✓ Viaje guardado correctamente';
+    msg.textContent = '✓ Guardado en Google Sheets y en el Tablero';
     clearForm();
     
-    // 3. ¡FALTA ESTO! Refrescar el tablero y actualizar el Excel automáticamente
-    loadBoard(); 
-    
-    // Si hay un archivo vinculado o queremos forzar descarga, ejecutamos syncExcel
+    // 3. Sincronizar Excel local si está vinculado
     await syncExcel();
     
   } catch(e) {
     msg.textContent = '';
-    alert('Error al conectarse con el servidor: ' + e.message);
+    alert('Error al enviar los datos: ' + e.message);
   }
   
   btn.disabled = false;
   setTimeout(()=>{msg.textContent='';}, 4000);
 });
 
-// ---------- Excel local (sin cuenta) ----------
+// ---------- Excel local ----------
 const EXCEL_HEADERS = ['Fecha','Tipo','Servicios','Motivo','Desde','Hasta','Cant. destinos','Hora salida','Dominio','Km salida','Hora regreso','Km regreso','Chofer'];
-let linkedFileHandle = null; // sólo dura mientras la pestaña está abierta (la API no persiste el permiso entre recargas)
+let linkedFileHandle = null;
 const fsAccessSupported = typeof window.showSaveFilePicker === 'function';
 
 async function fetchAllTrips(){
@@ -731,7 +731,7 @@ async function fetchAllTrips(){
         d._key = k;
         trips.push(d);
       }
-    }catch(e){ /* skip unreadable entry */ }
+    }catch(e){}
   }
   trips.sort((a,b)=>(a.creado||0)-(b.creado||0));
   return trips;
@@ -763,21 +763,16 @@ function updateLinkBtnState(){
   if(linkedFileHandle){
     btn.textContent = '✓ Archivo vinculado';
     btn.classList.add('linked');
-    if(statusText) statusText.innerHTML = 'El Excel se actualiza automáticamente en el archivo que elegiste, cada vez que se guarda un viaje.';
+    if(statusText) statusText.innerHTML = 'El Excel se actualiza automáticamente en el archivo que elegiste.';
   } else {
     btn.textContent = 'Vincular archivo Excel';
     btn.classList.remove('linked');
-    if(statusText){
-      statusText.textContent = fsAccessSupported
-        ? 'El Excel se descarga automáticamente al guardar cada viaje. Vinculá un archivo para que se actualice siempre en el mismo lugar (sin descargas repetidas).'
-        : 'Este navegador no permite actualizar un mismo archivo en el lugar; cada viaje descarga una nueva versión del Excel a tu carpeta de Descargas.';
-    }
   }
 }
 
 document.getElementById('link-excel-btn').addEventListener('click', async ()=>{
   if(!fsAccessSupported){
-    alert('Tu navegador no soporta vincular un archivo directamente (probá con Chrome o Edge). Mientras tanto, cada viaje descarga una nueva versión del Excel.');
+    alert('Tu navegador no soporta vincular un archivo directamente.');
     return;
   }
   try{
@@ -786,10 +781,8 @@ document.getElementById('link-excel-btn').addEventListener('click', async ()=>{
       types: [{ description: 'Excel', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
     });
     updateLinkBtnState();
-    await syncExcel(); // vuelca el estado actual apenas se vincula
-  }catch(e){
-    // el usuario canceló el selector de archivo — no hacer nada
-  }
+    await syncExcel();
+  }catch(e){}
 });
 
 let excelSyncing = false;
@@ -813,10 +806,6 @@ async function syncExcel(){
       await writable.write(new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
       await writable.close();
       setDriveMsg('✓ Excel actualizado (' + trips.length + ' viajes)', false);
-    } else {
-      setDriveMsg('Descargando Excel actualizado...', false);
-      XLSX.writeFile(wb, 'Hoja de Ruta Ambulancias.xlsx');
-      setDriveMsg('✓ Excel descargado (' + trips.length + ' viajes)', false);
     }
   }catch(e){
     setDriveMsg('Error al generar el Excel: ' + e.message, true);
@@ -829,7 +818,7 @@ async function syncExcel(){
 document.getElementById('sync-drive-btn').addEventListener('click', ()=>syncExcel());
 updateLinkBtnState();
 
-// ---------- Board ----------
+// ---------- Tablero ----------
 let allTrips = [];
 
 async function loadBoard(){
@@ -851,13 +840,13 @@ async function loadBoard(){
           d._key = k;
           trips.push(d);
         }
-      }catch(e){ /* skip unreadable entry */ }
+      }catch(e){}
     }
     trips.sort((a,b)=>(b.creado||0)-(a.creado||0));
     allTrips = trips;
     renderBoard();
   }catch(e){
-    listEl.innerHTML = '<div class="loading">No se pudo cargar el tablero. Reintentá más tarde.</div>';
+    listEl.innerHTML = '<div class="loading">No se pudo cargar el tablero.</div>';
   }
 }
 
@@ -866,7 +855,7 @@ function renderEmpty(){
     <div class="empty-state">
       <div class="cross" style="width:40px;height:40px;background:var(--line);"></div>
       <h3>Sin viajes cargados</h3>
-      <p>Los viajes que carguen los choferes van a aparecer acá.</p>
+      <p>Los viajes que carguen van a aparecer acá.</p>
     </div>`;
 }
 
@@ -925,7 +914,7 @@ function renderBoard(){
 
   listEl.querySelectorAll('.del-btn').forEach(btn=>{
     btn.addEventListener('click', async ()=>{
-      if(!confirm('¿Eliminar este viaje del tablero? Esta acción no se puede deshacer.')) return;
+      if(!confirm('¿Eliminar este viaje del tablero?')) return;
       try{
         await window.storage.delete(btn.dataset.key, true);
         allTrips = allTrips.filter(t=>t._key !== btn.dataset.key);
@@ -943,6 +932,3 @@ document.getElementById('filter-servicio').addEventListener('input', renderBoard
 document.getElementById('filter-tipo').addEventListener('change', renderBoard);
 document.getElementById('filter-estado').addEventListener('change', renderBoard);
 </script>
-
-</body>
-</html>
