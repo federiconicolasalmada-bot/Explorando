@@ -663,21 +663,28 @@ document.getElementById('save-trip').addEventListener('click', async ()=>{
   msg.textContent = 'Enviando a la base...';
   
   try {
-    // Enviamos los datos a Google Sheets usando fetch (No-CORS para evitar bloqueos)
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    // 1. Enviamos los datos a Google Sheets (No-CORS)
+    await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors', // Evita errores de seguridad en el navegador
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
     });
 
-    // Como usamos 'no-cors', asumimos que si llega hasta acá, se envió bien.
-    msg.textContent = '✓ Viaje guardado en Google Sheets';
+    // 2. ¡FALTA ESTO! Guardar en la base de datos local para que el Tablero y el Excel lo detecten
+    const newKey = PREFIX + Date.now();
+    await window.storage.set(newKey, JSON.stringify(data), true);
+
+    msg.textContent = '✓ Viaje guardado correctamente';
     clearForm();
     
-    // Aquí puedes actualizar el tablero local si lo deseas
+    // 3. ¡FALTA ESTO! Refrescar el tablero y actualizar el Excel automáticamente
+    loadBoard(); 
+    
+    // Si hay un archivo vinculado o queremos forzar descarga, ejecutamos syncExcel
+    await syncExcel();
     
   } catch(e) {
     msg.textContent = '';
