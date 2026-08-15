@@ -836,29 +836,29 @@
     overflow: hidden;
   }
 
-.bg-polaroid {
-  position: absolute;
-  background: #fdfaf3;
-  padding: 8px 8px 30px 8px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-  width: clamp(140px, 18vw, 200px); /* Ancho ajustado */
-  opacity: 0.8; /* Sin efecto transparente fuerte */
-  filter: brightness(0.9); /* Sin sepia (a color) */
-  pointer-events: auto; 
-  cursor: zoom-in; 
-  transition: filter 0.3s ease, opacity 0.3s ease, z-index 0s; 
-}
+  .bg-polaroid {
+    position: absolute;
+    background: #fdfaf3;
+    padding: 8px 8px 30px 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    width: clamp(140px, 18vw, 200px); /* Ancho ajustado */
+    opacity: 0.8; /* Sin efecto transparente fuerte */
+    filter: brightness(0.9); /* Sin sepia (a color) */
+    pointer-events: auto; 
+    cursor: zoom-in; 
+    transition: filter 0.3s ease, opacity 0.3s ease, z-index 0s; 
+  }
 
-.bg-polaroid img {
-  width: 100%;
-  aspect-ratio: 4 / 3; /* <--- LA CLAVE: Formato rectangular (4 de ancho por 3 de alto) */
-  object-fit: cover;
-  display: block;
-  background: #ddd;
-}
+  .bg-polaroid:hover {
+    filter: brightness(1.1); 
+    opacity: 1; 
+    transform: scale(1.08) rotate(0deg) !important; 
+    z-index: 10;
+  }
+
   .bg-polaroid img {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Hace que la foto sea cuadrada */
+    aspect-ratio: 4 / 3; /* Formato rectangular apaisado */
     object-fit: cover;
     display: block;
     background: #ddd;
