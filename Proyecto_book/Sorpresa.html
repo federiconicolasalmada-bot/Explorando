@@ -882,12 +882,126 @@
   .bg-polaroid.p11 { bottom: 4%; left: 28%; transform: rotate(12deg); }
   .bg-polaroid.p12 { bottom: 5%; right: 28%; transform: rotate(-9deg); }
 
+/* ============================================================
+   PANTALLA DE INTRODUCCIÓN (antes del sobre)
+   ============================================================ */
+.intro-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6vh 5vw;
+  background: radial-gradient(ellipse at 50% -10%, var(--ink-soft), var(--ink) 65%);
+  opacity: 1;
+  transition: opacity .7s ease;
+}
+
+.intro-overlay.hide { opacity: 0; pointer-events: none; }
+.intro-overlay[hidden] { display: none; }
+
+.intro-card {
+  max-width: 460px; width: 100%;
+  position: relative;
+  background: linear-gradient(180deg, rgba(38,49,63,.92), rgba(20,27,37,.96));
+  border: 1px solid rgba(201,162,39,.3);
+  border-radius: 3px;
+  padding: 46px 38px 38px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 50px rgba(201,162,39,.05);
+  animation: introFadeIn 1s ease;
+}
+
+@keyframes introFadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.intro-card::before {
+  content: ""; position: absolute; inset: 10px;
+  border: 1px solid rgba(201,162,39,.35);
+  pointer-events: none;
+}
+
+.intro-corner {
+  position: absolute; width: 14px; height: 14px;
+  border: 1px solid rgba(201,162,39,.6);
+  pointer-events: none;
+}
+.intro-corner.tl { top: 9px; left: 9px; border-width: 1px 0 0 1px; }
+.intro-corner.tr { top: 9px; right: 9px; border-width: 1px 1px 0 0; }
+.intro-corner.bl { bottom: 9px; left: 9px; border-width: 0 0 1px 1px; }
+.intro-corner.br { bottom: 9px; right: 9px; border-width: 0 1px 1px 0; }
+
+.intro-card h2 {
+  font-family: var(--display);
+  color: var(--gold);
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 0 0 6px;
+  letter-spacing: .02em;
+}
+
+.intro-card h2::before {
+  content: "✦"; display: block; text-align: center; font-size: .7rem;
+  color: var(--gold); margin-bottom: 6px; letter-spacing: .3em;
+}
+
+.intro-card h2::after {
+  content: ""; display: block; width: 60px; height: 1px; margin: 14px auto 26px;
+  background: linear-gradient(90deg, transparent, var(--gold) 15%, var(--gold) 85%, transparent);
+}
+
+.intro-list { list-style: none; margin: 0 0 32px; padding: 0; }
+
+.intro-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-family: var(--body); font-size: 1.08rem; line-height: 1.45;
+  color: var(--text-light); opacity: .9;
+  margin-bottom: 16px;
+}
+
+.intro-list li span.ico { flex-shrink: 0; font-size: 1.15rem; margin-top: 1px; }
+.intro-list li strong { color: var(--paper); font-weight: 600; }
+
+.intro-btn {
+  display: block; width: 100%;
+  font-family: var(--display); font-size: 1rem; letter-spacing: .04em;
+  background: linear-gradient(135deg, var(--rose), #8a3d48);
+  color: var(--text-light);
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  padding: 15px 26px;
+  cursor: pointer;
+  transition: background .25s ease, transform .2s ease, box-shadow .25s ease;
+  box-shadow: 0 8px 24px rgba(201,123,132,.25);
+}
+
+.intro-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(201,123,132,.35);
+}  
+  
 </style>
 </head>
 <body>
 
 <div class="stars" id="stars"></div>
 
+<!-- INTRODUCCIÓN -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-card">
+    <span class="intro-corner tl"></span><span class="intro-corner tr"></span>
+    <span class="intro-corner bl"></span><span class="intro-corner br"></span>
+    <h2>Antes de empezar...</h2>
+    <ul class="intro-list">
+      <li><span class="ico">🎧</span><span><strong>Ponte auriculares</strong> para vivir mejor la experiencia.</span></li>
+      <li><span class="ico">🔊</span><span><strong>Subí el volumen</strong> de tu compu o celular.</span></li>
+      <li><span class="ico">🌙</span><span><strong>Buscá un lugar tranquilo</strong>, sin apuro.</span></li>
+      <li><span class="ico">✨</span><span><strong>Poné la pantalla completa</strong> (F11) si podés.</span></li>
+      <li><span class="ico">💛</span><span>Espero que esto, aunque sea, te saque una sonrisa.</span></li>
+      <li><span class="ico">💌</span><span><strong>Interactuá con el sobre</strong> que va a aparecer después.</span></li>
+    </ul>
+    <button class="intro-btn" id="introBtn">Estoy lista ♡</button>
+  </div>
+</div>  
+  
 <!-- FOTOS DE FONDO -->
 <div class="bg-photos-container">
   <div class="bg-polaroid p1"><img src="Img8.jpeg" alt="Sol, mar, paz. ☀️🌊"></div>
@@ -2035,6 +2149,17 @@ backgroundPolaroids.forEach(polaroid => {
     }
   });
 });
+
+// ---- pantalla de introducción ----
+const introOverlay = document.getElementById('introOverlay');
+const introBtn = document.getElementById('introBtn');
+
+if (introBtn && introOverlay) {
+  introBtn.addEventListener('click', () => {
+    introOverlay.classList.add('hide');
+    setTimeout(() => { introOverlay.hidden = true; }, 700);
+  });
+}  
 
 </script>
 </body>
