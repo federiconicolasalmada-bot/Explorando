@@ -994,13 +994,27 @@
       <li><span class="ico">🎧</span><span><strong>Ponte auriculares</strong> para vivir mejor la experiencia.</span></li>
       <li><span class="ico">🔊</span><span><strong>Subí el volumen</strong> de tu compu o celular.</span></li>
       <li><span class="ico">🌙</span><span><strong>Buscá un lugar tranquilo</strong>, sin apuro.</span></li>
-      <li><span class="ico">✨</span><span><strong>Poné la pantalla completa</strong> (F11) si podés.</span></li>
+      <li><span class="ico">💻</span><span>Para una mejor experiencia, <strong>es ideal usar una computadora</strong>.</span></li>
+      <li><span class="ico">✨</span><span><strong>Poné la pantalla completa</strong> (F11).</span></li>
       <li><span class="ico">💛</span><span>Espero que esto, aunque sea, te saque una sonrisa.</span></li>
-      <li><span class="ico">💌</span><span><strong>Interactuá con el sobre</strong> que va a aparecer después.</span></li>
+      <li><span class="ico">💌</span><span><strong>Interactuá con lo que aparecera a continuación</span></li>
     </ul>
-    <button class="intro-btn" id="introBtn">Estoy lista ♡</button>
+    
+    <!-- Botón inicial de Continuar -->
+    <button class="intro-btn" id="introContinueBtn">Continuar →</button>
+    
+    <!-- Sección oculta con el link y el botón final -->
+    <div id="introHiddenSection" style="display: none; margin-top: 20px; text-align: center; animation: introFadeIn 0.5s ease;">
+        <p style="font-family: var(--body); font-size: 1.15rem; color: var(--text-light); margin-bottom: 12px; line-height: 1.4;">
+           Si estás en el celular, podés copiar este enlace para abrirlo luego en la compu:
+        </p>
+        <div style="background: rgba(27,36,48,.55); padding: 12px; border-radius: 4px; border: 1px dashed rgba(201,162,39,.4); margin-bottom: 24px; word-break: break-all; font-family: monospace; color: var(--paper); font-size: 0.95rem; user-select: all;">
+            https://federiconicolasalmada-bot.github.io/Explorando/Proyecto_book/Sorpresa.html
+        </div>
+        <button class="intro-btn" id="introBtn">Estoy lista ♡</button>
+    </div>
   </div>
-</div>  
+</div>
   
 <!-- FOTOS DE FONDO -->
 <div class="bg-photos-container">
@@ -2153,13 +2167,29 @@ backgroundPolaroids.forEach(polaroid => {
 // ---- pantalla de introducción ----
 const introOverlay = document.getElementById('introOverlay');
 const introBtn = document.getElementById('introBtn');
+const introContinueBtn = document.getElementById('introContinueBtn');
+const introHiddenSection = document.getElementById('introHiddenSection');
 
+// Lógica para desplegar el link
+if (introContinueBtn && introHiddenSection) {
+  introContinueBtn.addEventListener('click', () => {
+    introContinueBtn.style.display = 'none'; // Oculta el botón "Continuar"
+    introHiddenSection.style.display = 'block'; // Muestra el link y el botón final
+    
+    // Hace un pequeño scroll hacia abajo por si la pantalla del celular es chica
+    setTimeout(() => {
+      introHiddenSection.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 50);
+  });
+}
+
+// Lógica para empezar la experiencia
 if (introBtn && introOverlay) {
   introBtn.addEventListener('click', () => {
     introOverlay.classList.add('hide');
     setTimeout(() => { introOverlay.hidden = true; }, 700);
   });
-}  
+}
 
 </script>
 </body>
