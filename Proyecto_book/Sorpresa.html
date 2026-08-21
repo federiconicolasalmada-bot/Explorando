@@ -997,20 +997,24 @@
       <li><span class="ico">💻</span><span>Para una mejor experiencia, <strong>es ideal usar una computadora</strong>.</span></li>
       <li><span class="ico">✨</span><span><strong>Poné la pantalla completa</strong> (F11).</span></li>
       <li><span class="ico">💛</span><span>Espero que esto, aunque sea, te saque una sonrisa.</span></li>
-      <li><span class="ico">💌</span><span><strong>Interactuá con lo que aparecera a continuación</span></li>
+      <li><span class="ico">💌</span><span><strong>Interactuá con lo que aparecera a continuación.</span></li>
     </ul>
     
     <!-- Botón inicial de Continuar -->
     <button class="intro-btn" id="introContinueBtn">Continuar →</button>
     
-    <!-- Sección oculta con el link y el botón final -->
+    <!-- Sección oculta con el link interactivo y el botón final -->
     <div id="introHiddenSection" style="display: none; margin-top: 20px; text-align: center; animation: introFadeIn 0.5s ease;">
         <p style="font-family: var(--body); font-size: 1.15rem; color: var(--text-light); margin-bottom: 12px; line-height: 1.4;">
-           Si estás en el celular, podés copiar este enlace para abrirlo luego en la compu:
+           Si estás en el celular, podés tocar este enlace para copiarlo y abrirlo luego en la compu:
         </p>
-        <div style="background: rgba(27,36,48,.55); padding: 12px; border-radius: 4px; border: 1px dashed rgba(201,162,39,.4); margin-bottom: 24px; word-break: break-all; font-family: monospace; color: var(--paper); font-size: 0.95rem; user-select: all;">
-            https://federiconicolasalmada-bot.github.io/Explorando/Proyecto_book/Sorpresa.html
-        </div>
+        
+        <!-- Botón para copiar el link -->
+        <button id="copyLinkBtn" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(27,36,48,.55); padding: 12px; border-radius: 4px; border: 1px dashed rgba(201,162,39,.4); margin-bottom: 24px; cursor: pointer; transition: all 0.3s ease;">
+            <span id="linkText" style="word-break: break-all; margin-bottom: 10px; font-family: monospace; color: var(--paper); font-size: 0.95rem;">https://federiconicolasalmada-bot.github.io/Explorando/Proyecto_book/Sorpresa.html</span>
+            <span id="copyFeedback" style="font-family: var(--body); font-weight: 600; font-size: 1rem; color: var(--gold); background: rgba(201,162,39,0.15); padding: 4px 14px; border-radius: 12px; transition: all 0.3s ease;">📋 Tocar para copiar</span>
+        </button>
+
         <button class="intro-btn" id="introBtn">Estoy lista ♡</button>
     </div>
   </div>
@@ -2170,16 +2174,50 @@ const introBtn = document.getElementById('introBtn');
 const introContinueBtn = document.getElementById('introContinueBtn');
 const introHiddenSection = document.getElementById('introHiddenSection');
 
+// Elementos para copiar el link
+const copyLinkBtn = document.getElementById('copyLinkBtn');
+const linkText = document.getElementById('linkText');
+const copyFeedback = document.getElementById('copyFeedback');
+
 // Lógica para desplegar el link
 if (introContinueBtn && introHiddenSection) {
   introContinueBtn.addEventListener('click', () => {
     introContinueBtn.style.display = 'none'; // Oculta el botón "Continuar"
-    introHiddenSection.style.display = 'block'; // Muestra el link y el botón final
+    introHiddenSection.style.display = 'block'; // Muestra la sección
     
-    // Hace un pequeño scroll hacia abajo por si la pantalla del celular es chica
     setTimeout(() => {
       introHiddenSection.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }, 50);
+  });
+}
+
+// Lógica para copiar automáticamente el link al portapapeles
+if (copyLinkBtn) {
+  copyLinkBtn.addEventListener('click', async () => {
+    try {
+      // API moderna para copiar texto
+      await navigator.clipboard.writeText(linkText.textContent.trim());
+      
+      // Efecto visual de éxito
+      copyFeedback.textContent = '¡Copiado! ✅';
+      copyFeedback.style.color = '#fff';
+      copyFeedback.style.background = 'rgba(120,150,90,.4)'; // Verde sutil
+      copyLinkBtn.style.borderColor = 'rgba(120,150,90,.8)';
+      copyLinkBtn.style.background = 'rgba(120,150,90,.1)';
+      
+      // Vuelve a la normalidad después de 2.5 segundos
+      setTimeout(() => {
+        copyFeedback.textContent = '📋 Tocar para copiar';
+        copyFeedback.style.color = 'var(--gold)';
+        copyFeedback.style.background = 'rgba(201,162,39,0.15)';
+        copyLinkBtn.style.borderColor = 'rgba(201,162,39,.4)';
+        copyLinkBtn.style.background = 'rgba(27,36,48,.55)';
+      }, 2500);
+      
+    } catch (err) {
+      // Por si el celular bloquea el portapapeles
+      copyFeedback.textContent = 'Uy, error al copiar ❌';
+    }
   });
 }
 
