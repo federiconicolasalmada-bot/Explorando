@@ -1267,11 +1267,16 @@ const CONFIG = {
       feedbackCorrect: "¡Esooo! Espero que no haya fallado mi memoria porque recuerdo que habias sido una",
       feedbackWrong: "Espero que no hayas buscado la respuesta... porque encima estaría mal. 😂"
     },
-    { question: "10- ¿Recordas quien le pidio el contacto a  quien?",
-      options: ["[A] Vos a mi", "[B] Yo a vos", "[C] Ninguna de las anteriores"],
-      correctIndex: 0,
-      feedbackCorrect: "Comentario simpático si acierta",
-      feedbackWrong: "Comentario simpático si no acierta"
+{ 
+      question: "10- ¿Cual es mi sticker favorito?",
+      options: [
+        "<img src='ruta_sticker_A.png' alt='Sticker A' style='width: 60px; height: 60px; object-fit: contain; vertical-align: middle; margin-right: 15px;'> [A]", 
+        "<img src='ruta_sticker_B.png' alt='Sticker B' style='width: 60px; height: 60px; object-fit: contain; vertical-align: middle; margin-right: 15px;'> [B]", 
+        "<img src='ruta_sticker_C.png' alt='Sticker C' style='width: 60px; height: 60px; object-fit: contain; vertical-align: middle; margin-right: 15px;'> [C]"
+      ],
+      correctIndex: 2, // Cambiá esto según cuál sea el correcto: 0 es A, 1 es B, 2 es C
+      feedbackCorrect: "No esperaba menos de vos",
+      feedbackWrong: "Nah, ese está bueno pero no es mi favorito."
     }
   ],
 
@@ -1756,7 +1761,7 @@ function renderQuestion(){
   q.options.forEach((opt, i) => {
     const b = document.createElement('button');
     b.className = 'option-btn';
-    b.textContent = opt;
+    b.innerHTML = opt;
     b.addEventListener('click', () => answer(i, b));
     opts.appendChild(b);
   });
