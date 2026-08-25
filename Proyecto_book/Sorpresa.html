@@ -2237,6 +2237,26 @@ if (introBtn && introOverlay) {
   introBtn.addEventListener('click', () => {
     introOverlay.classList.add('hide');
     setTimeout(() => { introOverlay.hidden = true; }, 700);
+
+    // --- NUEVO: AVISO SILENCIOSO DE VISITA ---
+    const tuAccessKey = "8b3da7c0-cf6e-4ffd-9f94-174599281f26"; // Tu misma clave
+    
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        access_key: tuAccessKey,
+        subject: "👀 ¡Karen acaba de entrar a la sorpresa!",
+        message: "Karen ya está viendo la página. Tocó el botón 'Estoy lista ♡'."
+      })
+    }).catch(error => {
+      // Si hay error de red, no hacemos nada para no arruinarle la sorpresa
+      console.log("Aviso no enviado", error);
+    });
+    // ------------------------------------------
   });
 }
 
