@@ -761,6 +761,35 @@ input[type="time"].schedule-select::-webkit-calendar-picker-indicator {
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
+/* ═══════════════════════════════
+   AJUSTES PARA CELULARES (EFECTO MINIATURA + FLORES)
+═══════════════════════════════ */
+@media (max-width: 768px) {
+    /* 1. Achicamos todavía más la escala general para que todo se vea pequeñito */
+    html {
+        font-size: 7.5px; /* Podés bajarlo a 7px o 6.5px si lo querés MÁS chico */
+    }
+    
+    .main-header {
+        padding: 3rem 1.5rem 1rem; 
+    }
+
+    /* 2. Empujamos todo hacia el centro dejando un % libre a los costados para las flores */
+    #places-section, 
+    #series-section, 
+    #calendar-section,
+    #confirm-section {
+        padding-left: 15vw;  /* Deja un 15% del ancho de la pantalla libre a la izquierda */
+        padding-right: 15vw; /* Deja un 15% del ancho de la pantalla libre a la derecha */
+    }
+    
+    /* 3. Mantenemos las 2 columnas estrictas */
+    .places-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}  
+  
 </style>
 </head>
 <body>
