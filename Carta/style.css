@@ -327,6 +327,6 @@ body {
 @media (max-width: 768px) {
     .envelope {
         /* Bajamos el scale de 0.5 a 0.3 para que se vea mucho más chico */
-        transform: translate(-50%, -50%) scale(0.4);
+        transform: translate(-50%, -50%) scale(0.6);
     }
 }
