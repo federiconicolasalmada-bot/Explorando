@@ -450,6 +450,11 @@ body{
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:520px){
+  /* ¡Esta es la línea clave! Achica la escala general de la página */
+  html {
+    font-size: 12px; /* El tamaño normal es 16px, al bajarlo todo se hace más pequeño */
+  }
+
   .choco-box{padding:1.5rem 1rem}
   .box-grid{grid-template-columns:repeat(3,1fr);gap:0.8rem}
   .letter-card{padding:2rem 1.4rem}
@@ -458,6 +463,7 @@ body{
   .mail-grid{grid-template-columns:repeat(3,1fr);gap:0.8rem}
   .mail-modal{padding:2rem 1.4rem}
 }
+  
 </style>
 </head>
 <body>
