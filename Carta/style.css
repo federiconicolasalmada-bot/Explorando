@@ -321,3 +321,12 @@ body {
     /* ❌ sin borde inferior */
     pointer-events: none; /* Para que no interfiera con los clics */
 }
+/* ═══════════════════════════════
+   AJUSTES PARA CELULARES (MINIATURA)
+   ═══════════════════════════════ */
+@media (max-width: 768px) {
+    .envelope {
+        /* Mantiene el centrado que ya tenías, pero reduce el tamaño general al 50% */
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+}
