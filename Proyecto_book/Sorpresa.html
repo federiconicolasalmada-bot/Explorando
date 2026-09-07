@@ -982,6 +982,42 @@
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(201,123,132,.35);
 }  
+
+/* ═══════════════════════════════
+   AJUSTES PARA CELULARES (EFECTO ESCRITORIO)
+   ═══════════════════════════════ */
+@media (max-width: 768px) {
+    /* 1. Achicamos todos los textos y proporciones generales */
+    html { 
+        font-size: 10px; 
+    }
+
+    /* 2. Forzamos a que la carta y el cartel de inicio dejen márgenes a los lados */
+    .paper, .intro-card {
+        width: 75vw !important; 
+        padding: 30px 25px !important; 
+    }
+
+    /* 3. Achicamos el sobre para que quede centrado y chiquito */
+    .envelope, .fake-envelope-front {
+        width: 60vw !important;
+    }
+
+    /* 4. Achicamos las fotitos de fondo para que parezcan miniaturas */
+    .bg-polaroid {
+        width: 22vw !important;
+        padding: 4px 4px 15px 4px !important;
+    }
+
+    /* 5. Achicamos la galería de fotos del final */
+    .polaroid {
+        width: 130px !important;
+        padding: 8px 8px 35px !important;
+    }
+    .polaroid img {
+        height: 130px !important;
+    }
+}  
   
 </style>
 </head>
