@@ -984,51 +984,52 @@
 }  
 
 @media (max-width: 768px) {
-    /* 1. Bajamos un poquito más la escala de los textos y espacios */
+    /* 1. Escala miniatura */
     html { 
         font-size: 5px; 
     }
 
-    /* 2. Achicamos el ancho de la carta para que quede bien en el centro */
+    /* 2. Carta centrada */
     .paper, .intro-card {
-        width: 50vw !important; /* Antes 65vw, ahora ocupa solo la mitad de la pantalla */
+        width: 50vw !important; 
         padding: 20px 20px !important; 
     }
 
-    /* 3. Achicamos el sobre en la misma proporción */
+    /* 3. Sobre proporcionado a la carta */
     .envelope, .fake-envelope-front {
-        width: 38vw !important; /* Antes 50vw */
+        width: 38vw !important; 
     }
 
-    /* 4. Las fotitos de fondo también más chiquitas */
+    /* 4. Tamaño de fotitos de fondo */
     .bg-polaroid {
-        width: 16vw !important; /* Antes 22vw */
+        width: 16vw !important; 
         padding: 3px 3px 12px 3px !important;
     }
 
-    /* 5. Mantenemos las fotos despejando el centro */
-    /* GRUPO ARRIBA */
-    .bg-polaroid.p1  { top: 2%;  left: -2%;  transform: rotate(-10deg); }
+    /* 5. REUBICACIÓN DE LAS FOTOS (Más cerca del centro) */
+    
+    /* GRUPO ARRIBA (Metimos p1 y p5 hacia adentro) */
+    .bg-polaroid.p1  { top: 2%;  left: 4%;   transform: rotate(-10deg); }
     .bg-polaroid.p9  { top: 4%;  left: 28%;  transform: rotate(5deg); }
     .bg-polaroid.p10 { top: 2%;  right: 28%; transform: rotate(-8deg); }
-    .bg-polaroid.p5  { top: 5%;  right: -2%; transform: rotate(12deg); }
+    .bg-polaroid.p5  { top: 5%;  right: 4%;  transform: rotate(12deg); }
 
-    /* GRUPO ABAJO */
-    .bg-polaroid.p4  { bottom: 2%;  left: -2%;  transform: rotate(8deg); }
+    /* GRUPO ABAJO (Metimos p4 y p8 hacia adentro) */
+    .bg-polaroid.p4  { bottom: 2%;  left: 4%;   transform: rotate(8deg); }
     .bg-polaroid.p11 { bottom: 5%;  left: 28%;  transform: rotate(-5deg); }
     .bg-polaroid.p12 { bottom: 2%;  right: 28%; transform: rotate(6deg); }
-    .bg-polaroid.p8  { bottom: 6%;  right: -2%; transform: rotate(-12deg); }
+    .bg-polaroid.p8  { bottom: 6%;  right: 4%;  transform: rotate(-12deg); }
 
-    /* GRUPO IZQUIERDA (Centro) */
-    .bg-polaroid.p2  { top: 28%; left: -6%; transform: rotate(15deg); }
-    .bg-polaroid.p3  { top: 50%; left: -8%; transform: rotate(-10deg); }
-    .bg-polaroid.p13 { top: 72%; left: -4%;  transform: rotate(12deg); }
+    /* GRUPO IZQUIERDA (Centro) - Ahora en positivo para que entren a la pantalla */
+    .bg-polaroid.p2  { top: 28%; left: 6%; transform: rotate(15deg); }
+    .bg-polaroid.p3  { top: 50%; left: 3%; transform: rotate(-10deg); }
+    .bg-polaroid.p13 { top: 72%; left: 8%; transform: rotate(12deg); }
 
-    /* GRUPO DERECHA (Centro) */
-    .bg-polaroid.p6  { top: 35%; right: -6%; transform: rotate(-15deg); }
-    .bg-polaroid.p7  { top: 60%; right: -8%; transform: rotate(10deg); }
+    /* GRUPO DERECHA (Centro) - Ahora en positivo para que entren a la pantalla */
+    .bg-polaroid.p6  { top: 35%; right: 6%; transform: rotate(-15deg); }
+    .bg-polaroid.p7  { top: 60%; right: 3%; transform: rotate(10deg); }
 
-    /* 6. Galería del final también un poco más chica */
+    /* 6. Galería del final */
     .polaroid {
         width: 100px !important;
         padding: 6px 6px 25px !important;
