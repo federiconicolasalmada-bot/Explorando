@@ -1023,11 +1023,11 @@
     /* GRUPO IZQUIERDA (Centro) - Ahora en positivo para que entren a la pantalla */
     .bg-polaroid.p2  { top: 28%; left: 6%; transform: rotate(15deg); }
     .bg-polaroid.p3  { top: 50%; left: 3%; transform: rotate(-10deg); }
-    .bg-polaroid.p13 { top: 64%; left: 8%; transform: rotate(12deg); }
+    .bg-polaroid.p13 { top: 64%; left: 8%; bottom: auto !important; transform: rotate(12deg); } /* <-- Magia acá */
 
     /* GRUPO DERECHA (Centro) - Ahora en positivo para que entren a la pantalla */
     .bg-polaroid.p6  { top: 35%; right: 6%; transform: rotate(-15deg); }
-    .bg-polaroid.p7  { top: 60%; right: 3%; transform: rotate(10deg); }
+    .bg-polaroid.p7  { top: 60%; right: 3%; bottom: auto !important; transform: rotate(10deg); } /* <-- Por las dudas acá también */
 
     /* 6. Galería del final */
     .polaroid {
