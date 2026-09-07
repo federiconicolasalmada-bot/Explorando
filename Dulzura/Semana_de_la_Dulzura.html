@@ -450,9 +450,20 @@ body{
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:520px){
-  /* ¡Esta es la línea clave! Achica la escala general de la página */
+  /* 1. Achicamos AÚN MÁS la escala general */
   html {
-    font-size: 12px; /* El tamaño normal es 16px, al bajarlo todo se hace más pequeño */
+    font-size: 9px; /* Podés probar con 10px, 9px u 8px */
+  }
+
+  /* 2. Empujamos todo hacia el centro dejando márgenes a los lados */
+  .hero,
+  .box-section, 
+  .letter-section, 
+  .jar-section, 
+  .mail-section, 
+  .quote-section {
+    padding-left: 8vw;  /* Deja un 8% de espacio a la izquierda */
+    padding-right: 8vw; /* Deja un 8% de espacio a la derecha */
   }
 
   .choco-box{padding:1.5rem 1rem}
